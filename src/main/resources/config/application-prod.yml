@@ -62,7 +62,7 @@ spring:
   rabbitmq:
     host: orangutan.rmq.cloudamqp.com
     port: 1883
-    username: yygztgvq:yygztgvq
+    username: yygztgvq
     password: ucfl80q7qXxhCOa-Hpr3eM-zPuldGIjR
 
 # ===================================================================
