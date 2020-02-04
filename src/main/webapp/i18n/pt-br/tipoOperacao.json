@@ -1,0 +1,11 @@
+{
+  "sicapuc20201App": {
+    "TipoOperacao": {
+      "null": "",
+      "MINERIO_FERRO_PELOTAS": "MINERIO_FERRO_PELOTAS",
+      "NIQUEL": "NIQUEL",
+      "MANGANES_FERROLIGAS": "MANGANES_FERROLIGAS",
+      "CARVAO_COBRE": "CARVAO_COBRE"
+    }
+  }
+}

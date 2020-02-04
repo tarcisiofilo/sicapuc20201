@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity MedicaoInstrumento.
+    -->
+    <changeSet id="20200204174641-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="instrumento_monitoramento_id"
+                                 baseTableName="medicao_instrumento"
+                                 constraintName="fk_medicao_instrumento_instrumento_monitoramento_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="instrumento_monitoramento"/>
+
+    </changeSet>
+</databaseChangeLog>

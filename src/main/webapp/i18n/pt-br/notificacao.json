@@ -1,0 +1,23 @@
+{
+  "sicapuc20201App": {
+    "notificacao": {
+      "home": {
+        "title": "Notificacaos",
+        "createLabel": "Criar novo Notificacao",
+        "createOrEditLabel": "Criar ou editar Notificacao"
+      },
+      "created": "Um novo Notificacao foi criado com o identificador {{ param }}",
+      "updated": "Um Notificacao foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Notificacao foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Notificacao {{ id }}?"
+      },
+      "detail": {
+        "title": "Notificacao"
+      },
+      "dataNotifacao": "Data Notifacao",
+      "tipoNotificacao": "Tipo Notificacao",
+      "incidente": "Incidente"
+    }
+  }
+}

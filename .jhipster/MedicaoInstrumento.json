@@ -1,0 +1,44 @@
+{
+    "name": "MedicaoInstrumento",
+    "fields": [
+        {
+            "fieldName": "data",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "valor",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "incidente",
+            "otherEntityRelationshipName": "medicaoInstrumento",
+            "relationshipName": "incidente",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "instrumentoMonitoramento",
+            "otherEntityRelationshipName": "medicaoInstrumento",
+            "relationshipName": "instrumentoMonitoramento",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174641",
+    "entityTableName": "medicao_instrumento",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="areaSusceptivel">
+            <h2><span jhiTranslate="sicapuc20201App.areaSusceptivel.detail.title">Area Susceptivel</span> {{areaSusceptivel.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.areaSusceptivel.identificacao">Identificacao</span></dt>
+                <dd>
+                    <span>{{areaSusceptivel.identificacao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.areaSusceptivel.nivelProximidade">Nivel Proximidade</span></dt>
+                <dd>
+                    <span>{{areaSusceptivel.nivelProximidade}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.areaSusceptivel.ativo">Ativo</span></dt>
+                <dd>
+                    <div *ngIf="areaSusceptivel.ativo">
+                        <a [routerLink]="['/ativo', areaSusceptivel.ativo?.id, 'view']">{{areaSusceptivel.ativo?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/area-susceptivel', areaSusceptivel.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

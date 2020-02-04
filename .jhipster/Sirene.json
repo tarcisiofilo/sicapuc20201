@@ -1,0 +1,37 @@
+{
+    "name": "Sirene",
+    "fields": [
+        {
+            "fieldName": "identificacao",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "urlAtivar",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "areaSusceptivel",
+            "otherEntityRelationshipName": "sirene",
+            "relationshipName": "areaSusceptivel",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174637",
+    "entityTableName": "sirene",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

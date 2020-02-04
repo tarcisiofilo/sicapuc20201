@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-incidente-heading" jhiTranslate="sicapuc20201App.incidente.home.createOrEditLabel">Create or edit a Incidente</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!incidente.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.identificacao" for="field_identificacao">Identificacao</label>
+                    <input type="text" class="form-control" name="identificacao" id="field_identificacao"
+                           formControlName="identificacao"/>
+                    <div *ngIf="editForm.get('identificacao').invalid && (editForm.get('identificacao').dirty || editForm.get('identificacao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('identificacao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.origem" for="field_origem">Origem</label>
+                    <select class="form-control" name="origem" formControlName="origem" id="field_origem">
+                        <option value="MONITORAMENTO_SENSORES">{{'sicapuc20201App.OrigemIncidente.MONITORAMENTO_SENSORES' | translate}}</option>
+                        <option value="MANUAL">{{'sicapuc20201App.OrigemIncidente.MANUAL' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('origem').invalid && (editForm.get('origem').dirty || editForm.get('origem').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('origem').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.medicaoInstrumento" for="field_medicaoInstrumento">Medicao Instrumento</label>
+                    <select class="form-control" id="field_medicaoInstrumento" name="medicaoInstrumento" formControlName="medicaoInstrumento">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="medicaoInstrumentoOption.id === editForm.get('medicaoInstrumento').value?.id ? editForm.get('medicaoInstrumento').value : medicaoInstrumentoOption" *ngFor="let medicaoInstrumentoOption of medicaoinstrumentos; trackBy: trackMedicaoInstrumentoById">{{medicaoInstrumentoOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.nivelIncidente" for="field_nivelIncidente">Nivel Incidente</label>
+                    <select class="form-control" id="field_nivelIncidente" name="nivelIncidente" formControlName="nivelIncidente">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="nivelIncidenteOption.id === editForm.get('nivelIncidente').value?.id ? editForm.get('nivelIncidente').value : nivelIncidenteOption" *ngFor="let nivelIncidenteOption of nivelincidentes; trackBy: trackNivelIncidenteById">{{nivelIncidenteOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

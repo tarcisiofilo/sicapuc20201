@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-setor-mineracao-heading" jhiTranslate="sicapuc20201App.setorMineracao.home.createOrEditLabel">Create or edit a Setor Mineracao</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!setorMineracao.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.nome" for="field_nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="field_nome"
+                           formControlName="nome"/>
+                    <div *ngIf="editForm.get('nome').invalid && (editForm.get('nome').dirty || editForm.get('nome').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nome').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.diretor" for="field_diretor">Diretor</label>
+                    <select class="form-control" id="field_diretor" name="diretor" formControlName="diretor">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="funcionarioOption.id === editForm.get('diretor').value?.id ? editForm.get('diretor').value : funcionarioOption" *ngFor="let funcionarioOption of diretors; trackBy: trackFuncionarioById">{{funcionarioOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.gerente" for="field_gerente">Gerente</label>
+                    <select class="form-control" id="field_gerente" name="gerente" formControlName="gerente">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="funcionarioOption.id === editForm.get('gerente').value?.id ? editForm.get('gerente').value : funcionarioOption" *ngFor="let funcionarioOption of gerentes; trackBy: trackFuncionarioById">{{funcionarioOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.minaOperacao" for="field_minaOperacao">Mina Operacao</label>
+                    <select class="form-control" id="field_minaOperacao" name="minaOperacao" formControlName="minaOperacao">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="minaOperacaoOption.id === editForm.get('minaOperacao').value?.id ? editForm.get('minaOperacao').value : minaOperacaoOption" *ngFor="let minaOperacaoOption of minaoperacaos; trackBy: trackMinaOperacaoById">{{minaOperacaoOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

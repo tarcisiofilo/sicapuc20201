@@ -1,0 +1,25 @@
+{
+  "sicapuc20201App": {
+    "areaSusceptivel": {
+      "home": {
+        "title": "Area Susceptivels",
+        "createLabel": "Criar novo Area Susceptivel",
+        "createOrEditLabel": "Criar ou editar Area Susceptivel"
+      },
+      "created": "Um novo Area Susceptivel foi criado com o identificador {{ param }}",
+      "updated": "Um Area Susceptivel foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Area Susceptivel foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Area Susceptivel {{ id }}?"
+      },
+      "detail": {
+        "title": "Area Susceptivel"
+      },
+      "identificacao": "Identificacao",
+      "nivelProximidade": "Nivel Proximidade",
+      "familia": "Familia",
+      "sirene": "Sirene",
+      "ativo": "Ativo"
+    }
+  }
+}

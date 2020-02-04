@@ -1,0 +1,26 @@
+{
+  "sicapuc20201App": {
+    "setorMineracao": {
+      "home": {
+        "title": "Setor Mineracaos",
+        "createLabel": "Criar novo Setor Mineracao",
+        "createOrEditLabel": "Criar ou editar Setor Mineracao"
+      },
+      "created": "Um novo Setor Mineracao foi criado com o identificador {{ param }}",
+      "updated": "Um Setor Mineracao foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Setor Mineracao foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Setor Mineracao {{ id }}?"
+      },
+      "detail": {
+        "title": "Setor Mineracao"
+      },
+      "nome": "Nome",
+      "diretor": "Diretor",
+      "gerente": "Gerente",
+      "funcionarios": "Funcionarios",
+      "ativo": "Ativo",
+      "minaOperacao": "Mina Operacao"
+    }
+  }
+}

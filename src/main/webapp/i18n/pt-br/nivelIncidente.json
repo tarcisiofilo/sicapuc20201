@@ -1,0 +1,27 @@
+{
+  "sicapuc20201App": {
+    "nivelIncidente": {
+      "home": {
+        "title": "Nivel Incidentes",
+        "createLabel": "Criar novo Nivel Incidente",
+        "createOrEditLabel": "Criar ou editar Nivel Incidente"
+      },
+      "created": "Um novo Nivel Incidente foi criado com o identificador {{ param }}",
+      "updated": "Um Nivel Incidente foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Nivel Incidente foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Nivel Incidente {{ id }}?"
+      },
+      "detail": {
+        "title": "Nivel Incidente"
+      },
+      "nome": "Nome",
+      "notificaDNPM": "Notifica DNPM",
+      "notificaEmail": "Notifica Email",
+      "notificacaoSmsWhatsapp": "Notificacao Sms Whatsapp",
+      "notificacaoDispositivoSeguranca": "Notificacao Dispositivo Seguranca",
+      "notificaSirene": "Notifica Sirene",
+      "incidente": "Incidente"
+    }
+  }
+}

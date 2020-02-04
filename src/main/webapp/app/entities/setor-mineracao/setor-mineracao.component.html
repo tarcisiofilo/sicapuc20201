@@ -1,0 +1,72 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sicapuc20201App.setorMineracao.home.title">Setor Mineracaos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-setor-mineracao" [routerLink]="['/setor-mineracao/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="sicapuc20201App.setorMineracao.home.createLabel">
+            Create new Setor Mineracao
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="setorMineracaos">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="sicapuc20201App.setorMineracao.nome">Nome</span></th>
+            <th><span jhiTranslate="sicapuc20201App.setorMineracao.diretor">Diretor</span></th>
+            <th><span jhiTranslate="sicapuc20201App.setorMineracao.gerente">Gerente</span></th>
+            <th><span jhiTranslate="sicapuc20201App.setorMineracao.minaOperacao">Mina Operacao</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let setorMineracao of setorMineracaos ;trackBy: trackId">
+                <td><a [routerLink]="['/setor-mineracao', setorMineracao.id, 'view' ]">{{setorMineracao.id}}</a></td>
+                <td>{{setorMineracao.nome}}</td>
+                <td>
+                    <div *ngIf="setorMineracao.diretor">
+                        <a [routerLink]="['../funcionario', setorMineracao.diretor?.id, 'view' ]" >{{setorMineracao.diretor?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="setorMineracao.gerente">
+                        <a [routerLink]="['../funcionario', setorMineracao.gerente?.id, 'view' ]" >{{setorMineracao.gerente?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="setorMineracao.minaOperacao">
+                        <a [routerLink]="['../mina-operacao', setorMineracao.minaOperacao?.id, 'view' ]" >{{setorMineracao.minaOperacao?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/setor-mineracao', setorMineracao.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/setor-mineracao', setorMineracao.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'setor-mineracao', { outlets: { popup: setorMineracao.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{
+  "sicapuc20201App": {
+    "ativo": {
+      "home": {
+        "title": "Ativos",
+        "createLabel": "Criar novo Ativo",
+        "createOrEditLabel": "Criar ou editar Ativo"
+      },
+      "created": "Um novo Ativo foi criado com o identificador {{ param }}",
+      "updated": "Um Ativo foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Ativo foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Ativo {{ id }}?"
+      },
+      "detail": {
+        "title": "Ativo"
+      },
+      "idTipoAtivo": "Id Tipo Ativo",
+      "tipoAtivo": "Tipo Ativo",
+      "periodicidadeDiasManutencao": "Periodicidade Dias Manutencao",
+      "setorMineracao": "Setor Mineracao",
+      "areaSusceptivel": "Area Susceptivel",
+      "incidente": "Incidente"
+    }
+  }
+}

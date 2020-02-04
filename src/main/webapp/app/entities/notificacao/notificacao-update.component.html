@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-notificacao-heading" jhiTranslate="sicapuc20201App.notificacao.home.createOrEditLabel">Create or edit a Notificacao</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!notificacao.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.notificacao.dataNotifacao" for="field_dataNotifacao">Data Notifacao</label>
+                    <div class="d-flex">
+                        <input id="field_dataNotifacao" type="datetime-local" class="form-control" name="dataNotifacao" formControlName="dataNotifacao" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('dataNotifacao').invalid && (editForm.get('dataNotifacao').dirty || editForm.get('dataNotifacao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dataNotifacao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('dataNotifacao').errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.notificacao.tipoNotificacao" for="field_tipoNotificacao">Tipo Notificacao</label>
+                    <select class="form-control" name="tipoNotificacao" formControlName="tipoNotificacao" id="field_tipoNotificacao">
+                        <option value="DNPM">{{'sicapuc20201App.TipoNoficacao.DNPM' | translate}}</option>
+                        <option value="EMAIL">{{'sicapuc20201App.TipoNoficacao.EMAIL' | translate}}</option>
+                        <option value="SMS_WHATAPP">{{'sicapuc20201App.TipoNoficacao.SMS_WHATAPP' | translate}}</option>
+                        <option value="DISPOSITIVO_SEGURANCA">{{'sicapuc20201App.TipoNoficacao.DISPOSITIVO_SEGURANCA' | translate}}</option>
+                        <option value="SIRENE">{{'sicapuc20201App.TipoNoficacao.SIRENE' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('tipoNotificacao').invalid && (editForm.get('tipoNotificacao').dirty || editForm.get('tipoNotificacao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoNotificacao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.notificacao.incidente" for="field_incidente">Incidente</label>
+                    <select class="form-control" id="field_incidente" name="incidente" formControlName="incidente">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="incidenteOption.id === editForm.get('incidente').value?.id ? editForm.get('incidente').value : incidenteOption" *ngFor="let incidenteOption of incidentes; trackBy: trackIncidenteById">{{incidenteOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

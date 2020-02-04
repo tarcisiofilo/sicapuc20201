@@ -1,0 +1,24 @@
+{
+  "sicapuc20201App": {
+    "medicaoInstrumento": {
+      "home": {
+        "title": "Medicao Instrumentos",
+        "createLabel": "Criar novo Medicao Instrumento",
+        "createOrEditLabel": "Criar ou editar Medicao Instrumento"
+      },
+      "created": "Um novo Medicao Instrumento foi criado com o identificador {{ param }}",
+      "updated": "Um Medicao Instrumento foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Medicao Instrumento foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Medicao Instrumento {{ id }}?"
+      },
+      "detail": {
+        "title": "Medicao Instrumento"
+      },
+      "data": "Data",
+      "valor": "Valor",
+      "incidente": "Incidente",
+      "instrumentoMonitoramento": "Instrumento Monitoramento"
+    }
+  }
+}

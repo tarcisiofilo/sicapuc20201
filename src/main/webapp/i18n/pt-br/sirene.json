@@ -1,0 +1,23 @@
+{
+  "sicapuc20201App": {
+    "sirene": {
+      "home": {
+        "title": "Sirenes",
+        "createLabel": "Criar novo Sirene",
+        "createOrEditLabel": "Criar ou editar Sirene"
+      },
+      "created": "Um novo Sirene foi criado com o identificador {{ param }}",
+      "updated": "Um Sirene foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Sirene foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Sirene {{ id }}?"
+      },
+      "detail": {
+        "title": "Sirene"
+      },
+      "identificacao": "Identificacao",
+      "urlAtivar": "Url Ativar",
+      "areaSusceptivel": "Area Susceptivel"
+    }
+  }
+}

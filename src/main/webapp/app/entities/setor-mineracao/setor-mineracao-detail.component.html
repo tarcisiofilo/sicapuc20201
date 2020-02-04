@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="setorMineracao">
+            <h2><span jhiTranslate="sicapuc20201App.setorMineracao.detail.title">Setor Mineracao</span> {{setorMineracao.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.setorMineracao.nome">Nome</span></dt>
+                <dd>
+                    <span>{{setorMineracao.nome}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.setorMineracao.diretor">Diretor</span></dt>
+                <dd>
+                    <div *ngIf="setorMineracao.diretor">
+                        <a [routerLink]="['/funcionario', setorMineracao.diretor?.id, 'view']">{{setorMineracao.diretor?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.setorMineracao.gerente">Gerente</span></dt>
+                <dd>
+                    <div *ngIf="setorMineracao.gerente">
+                        <a [routerLink]="['/funcionario', setorMineracao.gerente?.id, 'view']">{{setorMineracao.gerente?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.setorMineracao.minaOperacao">Mina Operacao</span></dt>
+                <dd>
+                    <div *ngIf="setorMineracao.minaOperacao">
+                        <a [routerLink]="['/mina-operacao', setorMineracao.minaOperacao?.id, 'view']">{{setorMineracao.minaOperacao?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/setor-mineracao', setorMineracao.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+{
+  "sicapuc20201App": {
+    "TipoMedicao": {
+      "null": "",
+      "MANUAL": "MANUAL",
+      "API": "API"
+    }
+  }
+}

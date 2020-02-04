@@ -1,0 +1,59 @@
+{
+    "name": "Incidente",
+    "fields": [
+        {
+            "fieldName": "identificacao",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "origem",
+            "fieldType": "OrigemIncidente",
+            "fieldValues": "MONITORAMENTO_SENSORES,MANUAL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "medicaoInstrumento",
+            "otherEntityRelationshipName": "incidente",
+            "relationshipName": "medicaoInstrumento",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "nivelIncidente",
+            "otherEntityRelationshipName": "incidente",
+            "relationshipName": "nivelIncidente",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "notificacao",
+            "otherEntityRelationshipName": "incidente",
+            "relationshipName": "notificacao"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ativo",
+            "otherEntityRelationshipName": "incidente",
+            "relationshipName": "ativo"
+        }
+    ],
+    "changelogDate": "20200204174638",
+    "entityTableName": "incidente",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

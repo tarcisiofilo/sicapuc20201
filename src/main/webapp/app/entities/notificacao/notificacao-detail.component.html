@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="notificacao">
+            <h2><span jhiTranslate="sicapuc20201App.notificacao.detail.title">Notificacao</span> {{notificacao.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.notificacao.dataNotifacao">Data Notifacao</span></dt>
+                <dd>
+                    <span>{{notificacao.dataNotifacao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.notificacao.tipoNotificacao">Tipo Notificacao</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'sicapuc20201App.TipoNoficacao.' + notificacao.tipoNotificacao}}">{{notificacao.tipoNotificacao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.notificacao.incidente">Incidente</span></dt>
+                <dd>
+                    <div *ngIf="notificacao.incidente">
+                        <a [routerLink]="['/incidente', notificacao.incidente?.id, 'view']">{{notificacao.incidente?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/notificacao', notificacao.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

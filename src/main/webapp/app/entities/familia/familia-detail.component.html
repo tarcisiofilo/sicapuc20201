@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="familia">
+            <h2><span jhiTranslate="sicapuc20201App.familia.detail.title">Familia</span> {{familia.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.familia.identificacao">Identificacao</span></dt>
+                <dd>
+                    <span>{{familia.identificacao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.familia.areaSusceptivel">Area Susceptivel</span></dt>
+                <dd>
+                    <div *ngIf="familia.areaSusceptivel">
+                        <a [routerLink]="['/area-susceptivel', familia.areaSusceptivel?.id, 'view']">{{familia.areaSusceptivel?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/familia', familia.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

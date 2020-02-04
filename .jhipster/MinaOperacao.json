@@ -1,0 +1,44 @@
+{
+    "name": "MinaOperacao",
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "segmento",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tipoOperacao",
+            "fieldType": "TipoOperacao",
+            "fieldValues": "MINERIO_FERRO_PELOTAS,NIQUEL,MANGANES_FERROLIGAS,CARVAO_COBRE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "setorMineracao",
+            "otherEntityRelationshipName": "minaOperacao",
+            "relationshipName": "setorMineracao"
+        }
+    ],
+    "changelogDate": "20200204174630",
+    "entityTableName": "mina_operacao",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

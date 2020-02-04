@@ -7,6 +7,20 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entidades",
+        "minaOperacao": "Mina Operacao",
+        "setorMineracao": "Setor Mineracao",
+        "pessoa": "Pessoa",
+        "funcionario": "Funcionario",
+        "areaSusceptivel": "Area Susceptivel",
+        "familia": "Familia",
+        "ativo": "Ativo",
+        "sirene": "Sirene",
+        "incidente": "Incidente",
+        "vistoria": "Vistoria",
+        "instrumentoMonitoramento": "Instrumento Monitoramento",
+        "medicaoInstrumento": "Medicao Instrumento",
+        "notificacao": "Notificacao",
+        "nivelIncidente": "Nivel Incidente",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

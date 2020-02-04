@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity Incidente.
+    -->
+    <changeSet id="20200204174638-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="medicao_instrumento_id"
+                                 baseTableName="incidente"
+                                 constraintName="fk_incidente_medicao_instrumento_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="medicao_instrumento"/>
+
+        <addForeignKeyConstraint baseColumnNames="nivel_incidente_id"
+                                 baseTableName="incidente"
+                                 constraintName="fk_incidente_nivel_incidente_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nivel_incidente"/>
+
+    </changeSet>
+</databaseChangeLog>

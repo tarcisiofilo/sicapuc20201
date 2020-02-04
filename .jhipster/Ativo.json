@@ -1,0 +1,58 @@
+{
+    "name": "Ativo",
+    "fields": [
+        {
+            "fieldName": "idTipoAtivo",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tipoAtivo",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "periodicidadeDiasManutencao",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "setorMineracao",
+            "otherEntityRelationshipName": "ativo",
+            "relationshipName": "setorMineracao",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "areaSusceptivel",
+            "otherEntityRelationshipName": "ativo",
+            "relationshipName": "areaSusceptivel"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "incidente",
+            "otherEntityRelationshipName": "ativo",
+            "relationshipName": "incidente",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174636",
+    "entityTableName": "ativo",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

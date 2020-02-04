@@ -1,0 +1,38 @@
+{
+    "name": "Notificacao",
+    "fields": [
+        {
+            "fieldName": "dataNotifacao",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tipoNotificacao",
+            "fieldType": "TipoNoficacao",
+            "fieldValues": "DNPM,EMAIL,SMS_WHATAPP,DISPOSITIVO_SEGURANCA,SIRENE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "incidente",
+            "otherEntityRelationshipName": "notificacao",
+            "relationshipName": "incidente",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174642",
+    "entityTableName": "notificacao",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

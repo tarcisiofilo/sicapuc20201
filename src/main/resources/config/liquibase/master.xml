@@ -11,6 +11,31 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174630_added_entity_MinaOperacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174631_added_entity_SetorMineracao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174632_added_entity_Pessoa.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174633_added_entity_Funcionario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174634_added_entity_AreaSusceptivel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174635_added_entity_Familia.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174636_added_entity_Ativo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174637_added_entity_Sirene.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174638_added_entity_Incidente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174639_added_entity_Vistoria.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174640_added_entity_InstrumentoMonitoramento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174641_added_entity_MedicaoInstrumento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174642_added_entity_Notificacao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174643_added_entity_NivelIncidente.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20200204174631_added_entity_constraints_SetorMineracao.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174632_added_entity_constraints_Pessoa.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174633_added_entity_constraints_Funcionario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174634_added_entity_constraints_AreaSusceptivel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174635_added_entity_constraints_Familia.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174636_added_entity_constraints_Ativo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174637_added_entity_constraints_Sirene.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174638_added_entity_constraints_Incidente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174639_added_entity_constraints_Vistoria.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174641_added_entity_constraints_MedicaoInstrumento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200204174642_added_entity_constraints_Notificacao.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

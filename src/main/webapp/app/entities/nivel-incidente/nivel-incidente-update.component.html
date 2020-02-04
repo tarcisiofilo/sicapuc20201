@@ -1,0 +1,90 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-nivel-incidente-heading" jhiTranslate="sicapuc20201App.nivelIncidente.home.createOrEditLabel">Create or edit a Nivel Incidente</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!nivelIncidente.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.nivelIncidente.nome" for="field_nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="field_nome"
+                           formControlName="nome"/>
+                    <div *ngIf="editForm.get('nome').invalid && (editForm.get('nome').dirty || editForm.get('nome').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nome').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.nivelIncidente.notificaDNPM" for="field_notificaDNPM">Notifica DNPM</label>
+                    <input type="checkbox" class="form-control" name="notificaDNPM" id="field_notificaDNPM"
+                           formControlName="notificaDNPM"/>
+                    <div *ngIf="editForm.get('notificaDNPM').invalid && (editForm.get('notificaDNPM').dirty || editForm.get('notificaDNPM').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notificaDNPM').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.nivelIncidente.notificaEmail" for="field_notificaEmail">Notifica Email</label>
+                    <input type="checkbox" class="form-control" name="notificaEmail" id="field_notificaEmail"
+                           formControlName="notificaEmail"/>
+                    <div *ngIf="editForm.get('notificaEmail').invalid && (editForm.get('notificaEmail').dirty || editForm.get('notificaEmail').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notificaEmail').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.nivelIncidente.notificacaoSmsWhatsapp" for="field_notificacaoSmsWhatsapp">Notificacao Sms Whatsapp</label>
+                    <input type="checkbox" class="form-control" name="notificacaoSmsWhatsapp" id="field_notificacaoSmsWhatsapp"
+                           formControlName="notificacaoSmsWhatsapp"/>
+                    <div *ngIf="editForm.get('notificacaoSmsWhatsapp').invalid && (editForm.get('notificacaoSmsWhatsapp').dirty || editForm.get('notificacaoSmsWhatsapp').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notificacaoSmsWhatsapp').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.nivelIncidente.notificacaoDispositivoSeguranca" for="field_notificacaoDispositivoSeguranca">Notificacao Dispositivo Seguranca</label>
+                    <input type="checkbox" class="form-control" name="notificacaoDispositivoSeguranca" id="field_notificacaoDispositivoSeguranca"
+                           formControlName="notificacaoDispositivoSeguranca"/>
+                    <div *ngIf="editForm.get('notificacaoDispositivoSeguranca').invalid && (editForm.get('notificacaoDispositivoSeguranca').dirty || editForm.get('notificacaoDispositivoSeguranca').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notificacaoDispositivoSeguranca').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.nivelIncidente.notificaSirene" for="field_notificaSirene">Notifica Sirene</label>
+                    <input type="checkbox" class="form-control" name="notificaSirene" id="field_notificaSirene"
+                           formControlName="notificaSirene"/>
+                    <div *ngIf="editForm.get('notificaSirene').invalid && (editForm.get('notificaSirene').dirty || editForm.get('notificaSirene').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notificaSirene').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

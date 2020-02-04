@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-mina-operacao-heading" jhiTranslate="sicapuc20201App.minaOperacao.home.createOrEditLabel">Create or edit a Mina Operacao</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!minaOperacao.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.minaOperacao.nome" for="field_nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="field_nome"
+                           formControlName="nome"/>
+                    <div *ngIf="editForm.get('nome').invalid && (editForm.get('nome').dirty || editForm.get('nome').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nome').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.minaOperacao.segmento" for="field_segmento">Segmento</label>
+                    <input type="text" class="form-control" name="segmento" id="field_segmento"
+                           formControlName="segmento"/>
+                    <div *ngIf="editForm.get('segmento').invalid && (editForm.get('segmento').dirty || editForm.get('segmento').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('segmento').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.minaOperacao.tipoOperacao" for="field_tipoOperacao">Tipo Operacao</label>
+                    <select class="form-control" name="tipoOperacao" formControlName="tipoOperacao" id="field_tipoOperacao">
+                        <option value="MINERIO_FERRO_PELOTAS">{{'sicapuc20201App.TipoOperacao.MINERIO_FERRO_PELOTAS' | translate}}</option>
+                        <option value="NIQUEL">{{'sicapuc20201App.TipoOperacao.NIQUEL' | translate}}</option>
+                        <option value="MANGANES_FERROLIGAS">{{'sicapuc20201App.TipoOperacao.MANGANES_FERROLIGAS' | translate}}</option>
+                        <option value="CARVAO_COBRE">{{'sicapuc20201App.TipoOperacao.CARVAO_COBRE' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('tipoOperacao').invalid && (editForm.get('tipoOperacao').dirty || editForm.get('tipoOperacao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoOperacao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

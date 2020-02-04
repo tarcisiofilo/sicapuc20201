@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="vistoria">
+            <h2><span jhiTranslate="sicapuc20201App.vistoria.detail.title">Vistoria</span> {{vistoria.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.vistoria.identificao">Identificao</span></dt>
+                <dd>
+                    <span>{{vistoria.identificao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.vistoria.data">Data</span></dt>
+                <dd>
+                    <span>{{vistoria.data}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.vistoria.valor">Valor</span></dt>
+                <dd>
+                    <span>{{vistoria.valor}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.vistoria.instrumentoMonitoramento">Instrumento Monitoramento</span></dt>
+                <dd>
+                    <div *ngIf="vistoria.instrumentoMonitoramento">
+                        <a [routerLink]="['/instrumento-monitoramento', vistoria.instrumentoMonitoramento?.id, 'view']">{{vistoria.instrumentoMonitoramento?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vistoria', vistoria.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

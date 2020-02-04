@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="instrumentoMonitoramento">
+            <h2><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.detail.title">Instrumento Monitoramento</span> {{instrumentoMonitoramento.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.identificao">Identificao</span></dt>
+                <dd>
+                    <span>{{instrumentoMonitoramento.identificao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.tipoInstrumentoMonitoramento">Tipo Instrumento Monitoramento</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'sicapuc20201App.TipoInstrumentoMonitoramento.' + instrumentoMonitoramento.tipoInstrumentoMonitoramento}}">{{instrumentoMonitoramento.tipoInstrumentoMonitoramento}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.tipoMedicao">Tipo Medicao</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'sicapuc20201App.TipoMedicao.' + instrumentoMonitoramento.tipoMedicao}}">{{instrumentoMonitoramento.tipoMedicao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.urlGetMedicao">Url Get Medicao</span></dt>
+                <dd>
+                    <span>{{instrumentoMonitoramento.urlGetMedicao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.intervaloMedicaoAPI">Intervalo Medicao API</span></dt>
+                <dd>
+                    <span>{{instrumentoMonitoramento.intervaloMedicaoAPI}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.varianciaTolerada">Variancia Tolerada</span></dt>
+                <dd>
+                    <span>{{instrumentoMonitoramento.varianciaTolerada}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.instrumentoMonitoramento.limiteSuperior">Limite Superior</span></dt>
+                <dd>
+                    <span>{{instrumentoMonitoramento.limiteSuperior}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/instrumento-monitoramento', instrumentoMonitoramento.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

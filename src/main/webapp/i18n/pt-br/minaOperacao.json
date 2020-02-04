@@ -1,0 +1,24 @@
+{
+  "sicapuc20201App": {
+    "minaOperacao": {
+      "home": {
+        "title": "Mina Operacaos",
+        "createLabel": "Criar novo Mina Operacao",
+        "createOrEditLabel": "Criar ou editar Mina Operacao"
+      },
+      "created": "Um novo Mina Operacao foi criado com o identificador {{ param }}",
+      "updated": "Um Mina Operacao foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Mina Operacao foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Mina Operacao {{ id }}?"
+      },
+      "detail": {
+        "title": "Mina Operacao"
+      },
+      "nome": "Nome",
+      "segmento": "Segmento",
+      "tipoOperacao": "Tipo Operacao",
+      "setorMineracao": "Setor Mineracao"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+    "name": "Familia",
+    "fields": [
+        {
+            "fieldName": "identificacao",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pessoa",
+            "otherEntityRelationshipName": "familia",
+            "relationshipName": "pessoa"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "areaSusceptivel",
+            "otherEntityRelationshipName": "familia",
+            "relationshipName": "areaSusceptivel",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174635",
+    "entityTableName": "familia",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

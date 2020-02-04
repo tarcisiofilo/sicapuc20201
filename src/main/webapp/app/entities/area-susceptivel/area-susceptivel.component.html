@@ -1,0 +1,62 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sicapuc20201App.areaSusceptivel.home.title">Area Susceptivels</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-area-susceptivel" [routerLink]="['/area-susceptivel/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="sicapuc20201App.areaSusceptivel.home.createLabel">
+            Create new Area Susceptivel
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="areaSusceptivels">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="sicapuc20201App.areaSusceptivel.identificacao">Identificacao</span></th>
+            <th><span jhiTranslate="sicapuc20201App.areaSusceptivel.nivelProximidade">Nivel Proximidade</span></th>
+            <th><span jhiTranslate="sicapuc20201App.areaSusceptivel.ativo">Ativo</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let areaSusceptivel of areaSusceptivels ;trackBy: trackId">
+                <td><a [routerLink]="['/area-susceptivel', areaSusceptivel.id, 'view' ]">{{areaSusceptivel.id}}</a></td>
+                <td>{{areaSusceptivel.identificacao}}</td>
+                <td>{{areaSusceptivel.nivelProximidade}}</td>
+                <td>
+                    <div *ngIf="areaSusceptivel.ativo">
+                        <a [routerLink]="['../ativo', areaSusceptivel.ativo?.id, 'view' ]" >{{areaSusceptivel.ativo?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/area-susceptivel', areaSusceptivel.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/area-susceptivel', areaSusceptivel.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'area-susceptivel', { outlets: { popup: areaSusceptivel.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

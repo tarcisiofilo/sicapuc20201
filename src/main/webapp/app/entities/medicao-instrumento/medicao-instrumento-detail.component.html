@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="medicaoInstrumento">
+            <h2><span jhiTranslate="sicapuc20201App.medicaoInstrumento.detail.title">Medicao Instrumento</span> {{medicaoInstrumento.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.medicaoInstrumento.data">Data</span></dt>
+                <dd>
+                    <span>{{medicaoInstrumento.data}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.medicaoInstrumento.valor">Valor</span></dt>
+                <dd>
+                    <span>{{medicaoInstrumento.valor}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.medicaoInstrumento.instrumentoMonitoramento">Instrumento Monitoramento</span></dt>
+                <dd>
+                    <div *ngIf="medicaoInstrumento.instrumentoMonitoramento">
+                        <a [routerLink]="['/instrumento-monitoramento', medicaoInstrumento.instrumentoMonitoramento?.id, 'view']">{{medicaoInstrumento.instrumentoMonitoramento?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/medicao-instrumento', medicaoInstrumento.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

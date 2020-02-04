@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity AreaSusceptivel.
+    -->
+    <changeSet id="20200204174634-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="ativo_id"
+                                 baseTableName="area_susceptivel"
+                                 constraintName="fk_area_susceptivel_ativo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ativo"/>
+
+    </changeSet>
+</databaseChangeLog>

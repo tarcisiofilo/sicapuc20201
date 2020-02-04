@@ -1,0 +1,59 @@
+{
+    "name": "SetorMineracao",
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "funcionario",
+            "otherEntityRelationshipName": "setorMineracao",
+            "relationshipName": "diretor",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "funcionario",
+            "otherEntityRelationshipName": "setorMineracao",
+            "relationshipName": "gerente",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "funcionario",
+            "otherEntityRelationshipName": "setorMineracao",
+            "relationshipName": "funcionarios"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "ativo",
+            "otherEntityRelationshipName": "setorMineracao",
+            "relationshipName": "ativo",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "minaOperacao",
+            "otherEntityRelationshipName": "setorMineracao",
+            "relationshipName": "minaOperacao",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174631",
+    "entityTableName": "setor_mineracao",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

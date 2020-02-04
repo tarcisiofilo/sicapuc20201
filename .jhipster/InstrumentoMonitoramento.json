@@ -1,0 +1,74 @@
+{
+    "name": "InstrumentoMonitoramento",
+    "fields": [
+        {
+            "fieldName": "identificao",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tipoInstrumentoMonitoramento",
+            "fieldType": "TipoInstrumentoMonitoramento",
+            "fieldValues": "PIEZOMETRO,MEDIDOR_NIVEL_AGUA,INCLINOMETRO",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tipoMedicao",
+            "fieldType": "TipoMedicao",
+            "fieldValues": "MANUAL,API",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "urlGetMedicao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "intervaloMedicaoAPI",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "varianciaTolerada",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "limiteSuperior",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "medicaoInstrumento",
+            "otherEntityRelationshipName": "instrumentoMonitoramento",
+            "relationshipName": "medicaoInstrumento"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "vistoria",
+            "otherEntityRelationshipName": "instrumentoMonitoramento",
+            "relationshipName": "vistoria",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20200204174640",
+    "entityTableName": "instrumento_monitoramento",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

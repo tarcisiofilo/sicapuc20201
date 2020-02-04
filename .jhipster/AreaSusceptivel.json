@@ -1,0 +1,49 @@
+{
+    "name": "AreaSusceptivel",
+    "fields": [
+        {
+            "fieldName": "identificacao",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "nivelProximidade",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "familia",
+            "otherEntityRelationshipName": "areaSusceptivel",
+            "relationshipName": "familia"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sirene",
+            "otherEntityRelationshipName": "areaSusceptivel",
+            "relationshipName": "sirene"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "ativo",
+            "otherEntityRelationshipName": "areaSusceptivel",
+            "relationshipName": "ativo",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204174634",
+    "entityTableName": "area_susceptivel",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,62 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sicapuc20201App.sirene.home.title">Sirenes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sirene" [routerLink]="['/sirene/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="sicapuc20201App.sirene.home.createLabel">
+            Create new Sirene
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="sirenes">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="sicapuc20201App.sirene.identificacao">Identificacao</span></th>
+            <th><span jhiTranslate="sicapuc20201App.sirene.urlAtivar">Url Ativar</span></th>
+            <th><span jhiTranslate="sicapuc20201App.sirene.areaSusceptivel">Area Susceptivel</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sirene of sirenes ;trackBy: trackId">
+                <td><a [routerLink]="['/sirene', sirene.id, 'view' ]">{{sirene.id}}</a></td>
+                <td>{{sirene.identificacao}}</td>
+                <td>{{sirene.urlAtivar}}</td>
+                <td>
+                    <div *ngIf="sirene.areaSusceptivel">
+                        <a [routerLink]="['../area-susceptivel', sirene.areaSusceptivel?.id, 'view' ]" >{{sirene.areaSusceptivel?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/sirene', sirene.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sirene', sirene.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'sirene', { outlets: { popup: sirene.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+{
+  "sicapuc20201App": {
+    "TipoInstrumentoMonitoramento": {
+      "null": "",
+      "PIEZOMETRO": "PIEZOMETRO",
+      "MEDIDOR_NIVEL_AGUA": "MEDIDOR_NIVEL_AGUA",
+      "INCLINOMETRO": "INCLINOMETRO"
+    }
+  }
+}

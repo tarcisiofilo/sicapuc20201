@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-area-susceptivel-heading" jhiTranslate="sicapuc20201App.areaSusceptivel.home.createOrEditLabel">Create or edit a Area Susceptivel</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!areaSusceptivel.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.areaSusceptivel.identificacao" for="field_identificacao">Identificacao</label>
+                    <input type="text" class="form-control" name="identificacao" id="field_identificacao"
+                           formControlName="identificacao"/>
+                    <div *ngIf="editForm.get('identificacao').invalid && (editForm.get('identificacao').dirty || editForm.get('identificacao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('identificacao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.areaSusceptivel.nivelProximidade" for="field_nivelProximidade">Nivel Proximidade</label>
+                    <input type="number" class="form-control" name="nivelProximidade" id="field_nivelProximidade"
+                           formControlName="nivelProximidade"/>
+                    <div *ngIf="editForm.get('nivelProximidade').invalid && (editForm.get('nivelProximidade').dirty || editForm.get('nivelProximidade').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nivelProximidade').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('nivelProximidade')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.areaSusceptivel.ativo" for="field_ativo">Ativo</label>
+                    <select class="form-control" id="field_ativo" name="ativo" formControlName="ativo">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ativoOption.id === editForm.get('ativo').value?.id ? editForm.get('ativo').value : ativoOption" *ngFor="let ativoOption of ativos; trackBy: trackAtivoById">{{ativoOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

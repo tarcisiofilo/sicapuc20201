@@ -1,0 +1,26 @@
+{
+  "sicapuc20201App": {
+    "incidente": {
+      "home": {
+        "title": "Incidentes",
+        "createLabel": "Criar novo Incidente",
+        "createOrEditLabel": "Criar ou editar Incidente"
+      },
+      "created": "Um novo Incidente foi criado com o identificador {{ param }}",
+      "updated": "Um Incidente foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Incidente foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Incidente {{ id }}?"
+      },
+      "detail": {
+        "title": "Incidente"
+      },
+      "identificacao": "Identificacao",
+      "origem": "Origem",
+      "medicaoInstrumento": "Medicao Instrumento",
+      "nivelIncidente": "Nivel Incidente",
+      "notificacao": "Notificacao",
+      "ativo": "Ativo"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-instrumento-monitoramento-heading" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.home.createOrEditLabel">Create or edit a Instrumento Monitoramento</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!instrumentoMonitoramento.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.identificao" for="field_identificao">Identificao</label>
+                    <input type="text" class="form-control" name="identificao" id="field_identificao"
+                           formControlName="identificao"/>
+                    <div *ngIf="editForm.get('identificao').invalid && (editForm.get('identificao').dirty || editForm.get('identificao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('identificao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.tipoInstrumentoMonitoramento" for="field_tipoInstrumentoMonitoramento">Tipo Instrumento Monitoramento</label>
+                    <select class="form-control" name="tipoInstrumentoMonitoramento" formControlName="tipoInstrumentoMonitoramento" id="field_tipoInstrumentoMonitoramento">
+                        <option value="PIEZOMETRO">{{'sicapuc20201App.TipoInstrumentoMonitoramento.PIEZOMETRO' | translate}}</option>
+                        <option value="MEDIDOR_NIVEL_AGUA">{{'sicapuc20201App.TipoInstrumentoMonitoramento.MEDIDOR_NIVEL_AGUA' | translate}}</option>
+                        <option value="INCLINOMETRO">{{'sicapuc20201App.TipoInstrumentoMonitoramento.INCLINOMETRO' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('tipoInstrumentoMonitoramento').invalid && (editForm.get('tipoInstrumentoMonitoramento').dirty || editForm.get('tipoInstrumentoMonitoramento').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoInstrumentoMonitoramento').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.tipoMedicao" for="field_tipoMedicao">Tipo Medicao</label>
+                    <select class="form-control" name="tipoMedicao" formControlName="tipoMedicao" id="field_tipoMedicao">
+                        <option value="MANUAL">{{'sicapuc20201App.TipoMedicao.MANUAL' | translate}}</option>
+                        <option value="API">{{'sicapuc20201App.TipoMedicao.API' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('tipoMedicao').invalid && (editForm.get('tipoMedicao').dirty || editForm.get('tipoMedicao').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoMedicao').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.urlGetMedicao" for="field_urlGetMedicao">Url Get Medicao</label>
+                    <input type="text" class="form-control" name="urlGetMedicao" id="field_urlGetMedicao"
+                           formControlName="urlGetMedicao"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.intervaloMedicaoAPI" for="field_intervaloMedicaoAPI">Intervalo Medicao API</label>
+                    <input type="number" class="form-control" name="intervaloMedicaoAPI" id="field_intervaloMedicaoAPI"
+                           formControlName="intervaloMedicaoAPI"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.varianciaTolerada" for="field_varianciaTolerada">Variancia Tolerada</label>
+                    <input type="number" class="form-control" name="varianciaTolerada" id="field_varianciaTolerada"
+                           formControlName="varianciaTolerada"/>
+                    <div *ngIf="editForm.get('varianciaTolerada').invalid && (editForm.get('varianciaTolerada').dirty || editForm.get('varianciaTolerada').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('varianciaTolerada').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('varianciaTolerada')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.instrumentoMonitoramento.limiteSuperior" for="field_limiteSuperior">Limite Superior</label>
+                    <input type="number" class="form-control" name="limiteSuperior" id="field_limiteSuperior"
+                           formControlName="limiteSuperior"/>
+                    <div *ngIf="editForm.get('limiteSuperior').invalid && (editForm.get('limiteSuperior').dirty || editForm.get('limiteSuperior').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('limiteSuperior').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('limiteSuperior')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

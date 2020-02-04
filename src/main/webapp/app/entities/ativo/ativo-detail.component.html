@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="ativo">
+            <h2><span jhiTranslate="sicapuc20201App.ativo.detail.title">Ativo</span> {{ativo.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.ativo.idTipoAtivo">Id Tipo Ativo</span></dt>
+                <dd>
+                    <span>{{ativo.idTipoAtivo}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.ativo.tipoAtivo">Tipo Ativo</span></dt>
+                <dd>
+                    <span>{{ativo.tipoAtivo}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.ativo.periodicidadeDiasManutencao">Periodicidade Dias Manutencao</span></dt>
+                <dd>
+                    <span>{{ativo.periodicidadeDiasManutencao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.ativo.setorMineracao">Setor Mineracao</span></dt>
+                <dd>
+                    <div *ngIf="ativo.setorMineracao">
+                        <a [routerLink]="['/setor-mineracao', ativo.setorMineracao?.id, 'view']">{{ativo.setorMineracao?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.ativo.incidente">Incidente</span></dt>
+                <dd>
+                    <div *ngIf="ativo.incidente">
+                        <a [routerLink]="['/incidente', ativo.incidente?.id, 'view']">{{ativo.incidente?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/ativo', ativo.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

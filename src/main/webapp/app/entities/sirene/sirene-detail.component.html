@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sirene">
+            <h2><span jhiTranslate="sicapuc20201App.sirene.detail.title">Sirene</span> {{sirene.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.sirene.identificacao">Identificacao</span></dt>
+                <dd>
+                    <span>{{sirene.identificacao}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.sirene.urlAtivar">Url Ativar</span></dt>
+                <dd>
+                    <span>{{sirene.urlAtivar}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.sirene.areaSusceptivel">Area Susceptivel</span></dt>
+                <dd>
+                    <div *ngIf="sirene.areaSusceptivel">
+                        <a [routerLink]="['/area-susceptivel', sirene.areaSusceptivel?.id, 'view']">{{sirene.areaSusceptivel?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sirene', sirene.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+{
+  "sicapuc20201App": {
+    "TipoNoficacao": {
+      "null": "",
+      "DNPM": "DNPM",
+      "EMAIL": "EMAIL",
+      "SMS_WHATAPP": "SMS_WHATAPP",
+      "DISPOSITIVO_SEGURANCA": "DISPOSITIVO_SEGURANCA",
+      "SIRENE": "SIRENE"
+    }
+  }
+}

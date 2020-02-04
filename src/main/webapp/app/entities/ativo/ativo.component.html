@@ -1,0 +1,70 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sicapuc20201App.ativo.home.title">Ativos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ativo" [routerLink]="['/ativo/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="sicapuc20201App.ativo.home.createLabel">
+            Create new Ativo
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="ativos">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="sicapuc20201App.ativo.idTipoAtivo">Id Tipo Ativo</span></th>
+            <th><span jhiTranslate="sicapuc20201App.ativo.tipoAtivo">Tipo Ativo</span></th>
+            <th><span jhiTranslate="sicapuc20201App.ativo.periodicidadeDiasManutencao">Periodicidade Dias Manutencao</span></th>
+            <th><span jhiTranslate="sicapuc20201App.ativo.setorMineracao">Setor Mineracao</span></th>
+            <th><span jhiTranslate="sicapuc20201App.ativo.incidente">Incidente</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let ativo of ativos ;trackBy: trackId">
+                <td><a [routerLink]="['/ativo', ativo.id, 'view' ]">{{ativo.id}}</a></td>
+                <td>{{ativo.idTipoAtivo}}</td>
+                <td>{{ativo.tipoAtivo}}</td>
+                <td>{{ativo.periodicidadeDiasManutencao}}</td>
+                <td>
+                    <div *ngIf="ativo.setorMineracao">
+                        <a [routerLink]="['../setor-mineracao', ativo.setorMineracao?.id, 'view' ]" >{{ativo.setorMineracao?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="ativo.incidente">
+                        <a [routerLink]="['../incidente', ativo.incidente?.id, 'view' ]" >{{ativo.incidente?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/ativo', ativo.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/ativo', ativo.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'ativo', { outlets: { popup: ativo.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

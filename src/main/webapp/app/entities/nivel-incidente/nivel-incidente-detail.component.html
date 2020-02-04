@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="nivelIncidente">
+            <h2><span jhiTranslate="sicapuc20201App.nivelIncidente.detail.title">Nivel Incidente</span> {{nivelIncidente.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sicapuc20201App.nivelIncidente.nome">Nome</span></dt>
+                <dd>
+                    <span>{{nivelIncidente.nome}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.nivelIncidente.notificaDNPM">Notifica DNPM</span></dt>
+                <dd>
+                    <span>{{nivelIncidente.notificaDNPM}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.nivelIncidente.notificaEmail">Notifica Email</span></dt>
+                <dd>
+                    <span>{{nivelIncidente.notificaEmail}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.nivelIncidente.notificacaoSmsWhatsapp">Notificacao Sms Whatsapp</span></dt>
+                <dd>
+                    <span>{{nivelIncidente.notificacaoSmsWhatsapp}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.nivelIncidente.notificacaoDispositivoSeguranca">Notificacao Dispositivo Seguranca</span></dt>
+                <dd>
+                    <span>{{nivelIncidente.notificacaoDispositivoSeguranca}}</span>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.nivelIncidente.notificaSirene">Notifica Sirene</span></dt>
+                <dd>
+                    <span>{{nivelIncidente.notificaSirene}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/nivel-incidente', nivelIncidente.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

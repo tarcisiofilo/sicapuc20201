@@ -1,0 +1,64 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sicapuc20201App.vistoria.home.title">Vistorias</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-vistoria" [routerLink]="['/vistoria/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="sicapuc20201App.vistoria.home.createLabel">
+            Create new Vistoria
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="vistorias">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="sicapuc20201App.vistoria.identificao">Identificao</span></th>
+            <th><span jhiTranslate="sicapuc20201App.vistoria.data">Data</span></th>
+            <th><span jhiTranslate="sicapuc20201App.vistoria.valor">Valor</span></th>
+            <th><span jhiTranslate="sicapuc20201App.vistoria.instrumentoMonitoramento">Instrumento Monitoramento</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let vistoria of vistorias ;trackBy: trackId">
+                <td><a [routerLink]="['/vistoria', vistoria.id, 'view' ]">{{vistoria.id}}</a></td>
+                <td>{{vistoria.identificao}}</td>
+                <td>{{vistoria.data | date:'medium'}}</td>
+                <td>{{vistoria.valor}}</td>
+                <td>
+                    <div *ngIf="vistoria.instrumentoMonitoramento">
+                        <a [routerLink]="['../instrumento-monitoramento', vistoria.instrumentoMonitoramento?.id, 'view' ]" >{{vistoria.instrumentoMonitoramento?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/vistoria', vistoria.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/vistoria', vistoria.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'vistoria', { outlets: { popup: vistoria.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

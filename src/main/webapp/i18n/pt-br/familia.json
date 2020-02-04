@@ -1,0 +1,23 @@
+{
+  "sicapuc20201App": {
+    "familia": {
+      "home": {
+        "title": "Familias",
+        "createLabel": "Criar novo Familia",
+        "createOrEditLabel": "Criar ou editar Familia"
+      },
+      "created": "Um novo Familia foi criado com o identificador {{ param }}",
+      "updated": "Um Familia foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Familia foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Familia {{ id }}?"
+      },
+      "detail": {
+        "title": "Familia"
+      },
+      "identificacao": "Identificacao",
+      "pessoa": "Pessoa",
+      "areaSusceptivel": "Area Susceptivel"
+    }
+  }
+}

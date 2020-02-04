@@ -1,0 +1,9 @@
+{
+  "sicapuc20201App": {
+    "OrigemIncidente": {
+      "null": "",
+      "MONITORAMENTO_SENSORES": "MONITORAMENTO_SENSORES",
+      "MANUAL": "MANUAL"
+    }
+  }
+}
