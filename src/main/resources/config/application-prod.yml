@@ -59,7 +59,7 @@ spring:
     password:
   thymeleaf:
     cache: true
-  rabbit:
+  rabbitmq:
     host: orangutan.rmq.cloudamqp.com
     port: 1883
     username: yygztgvq:yygztgvq
