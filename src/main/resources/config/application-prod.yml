@@ -59,6 +59,11 @@ spring:
     password:
   thymeleaf:
     cache: true
+  rabbit:
+    host: orangutan.rmq.cloudamqp.com
+    port: 1883
+    username: yygztgvq:yygztgvq
+    password: ucfl80q7qXxhCOa-Hpr3eM-zPuldGIjR
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
