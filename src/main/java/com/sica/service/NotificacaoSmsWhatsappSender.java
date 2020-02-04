@@ -15,7 +15,7 @@ public class NotificacaoSmsWhatsappSender {
 	@Autowired
 	private Queue notificacaoSmsWhatsappQueue;
 
-	@Scheduled(fixedDelay = 1000, initialDelay = 500)
+	@Scheduled(fixedDelay = 1000 * 60 * 60, initialDelay = 500)
 	public void send() {
 		String message = "Hello World!";
 		this.rabbitTemplate.convertAndSend(notificacaoSmsWhatsappQueue.getName(),
