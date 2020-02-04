@@ -1,0 +1,168 @@
+enum TipoOperacao {
+	MINERIO_FERRO_PELOTAS, NIQUEL, MANGANES_FERROLIGAS, CARVAO_COBRE
+}
+
+enum TipoInstrumentoMonitoramento {
+	PIEZOMETRO, MEDIDOR_NIVEL_AGUA, INCLINOMETRO
+}
+
+entity MinaOperacao {
+  nome String required
+  segmento String required
+  tipoOperacao TipoOperacao required
+}
+
+entity SetorMineracao {
+	nome String required
+}
+
+entity Pessoa {
+	cpf String required
+    nome String required
+    email String required
+    telefone String required
+}
+
+entity Funcionario {
+    cargo String required
+    idDispositivoMonitoramento Long required
+}
+
+entity AreaSusceptivel {
+	identificacao String required
+    nivelProximidade Double required
+}
+
+entity Familia {
+	identificacao String required
+}
+
+entity Ativo {
+	idTipoAtivo Long required,
+	tipoAtivo String required,
+	periodicidadeDiasManutencao Long required,    
+}
+
+entity Sirene {
+	identificacao String required,
+    urlAtivar String required
+}
+
+entity Incidente {
+	identificacao String required
+    origem OrigemIncidente required
+}
+
+relationship OneToOne {
+	Incidente to MedicaoInstrumento
+}
+
+entity Vistoria {
+	identificao String required
+    data ZonedDateTime required
+    valor Double required
+}
+
+relationship OneToOne {
+	Vistoria to InstrumentoMonitoramento
+}
+
+entity InstrumentoMonitoramento {
+	identificao String required
+    tipoInstrumentoMonitoramento TipoInstrumentoMonitoramento required
+    tipoMedicao TipoMedicao required
+    urlGetMedicao String
+    intervaloMedicaoAPI Double
+    varianciaTolerada Double required
+    limiteSuperior Double required
+}
+
+enum TipoMedicao {
+	MANUAL, API
+}
+
+entity MedicaoInstrumento {
+	data ZonedDateTime required,
+    valor Double required
+}
+
+relationship OneToMany {
+	InstrumentoMonitoramento to MedicaoInstrumento
+}
+
+enum TipoNoficacao {
+	DNPM, EMAIL, SMS_WHATAPP, DISPOSITIVO_SEGURANCA, SIRENE
+}
+
+entity Notificacao {
+	dataNotifacao ZonedDateTime required
+    tipoNotificacao TipoNoficacao required
+}
+
+
+
+enum OrigemIncidente {
+	MONITORAMENTO_SENSORES, MANUAL
+}
+
+entity NivelIncidente {
+	nome String required
+    notificaDNPM Boolean required
+    notificaEmail Boolean required
+    notificacaoSmsWhatsapp Boolean required
+    notificacaoDispositivoSeguranca Boolean required
+    notificaSirene Boolean required
+}
+
+relationship OneToMany {
+	Incidente to Notificacao
+}
+
+relationship OneToOne {
+	Incidente to NivelIncidente
+}
+
+relationship OneToOne {
+	Ativo to SetorMineracao
+}
+
+relationship OneToMany {
+	Incidente to Ativo
+}
+
+relationship OneToMany {
+	Ativo to AreaSusceptivel
+}
+
+relationship OneToMany {
+	Familia to Pessoa
+}
+
+relationship OneToMany {
+	AreaSusceptivel to Familia
+}
+
+relationship OneToMany {
+	AreaSusceptivel to Sirene
+}
+
+relationship OneToOne {
+	SetorMineracao{diretor} to Funcionario
+}
+
+relationship OneToOne {
+	SetorMineracao{gerente} to Funcionario
+}
+
+
+relationship OneToMany {
+	SetorMineracao{funcionarios} to Funcionario
+}
+
+relationship OneToOne {
+	Funcionario to Pessoa
+}
+relationship OneToMany {
+	MinaOperacao to SetorMineracao
+}
+

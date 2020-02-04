@@ -1,26 +1,32 @@
 package com.sica;
 
-import com.sica.config.ApplicationProperties;
-import com.sica.config.DefaultProfileUtil;
-
-import io.github.jhipster.config.JHipsterConstants;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.core.env.Environment;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+import com.sica.config.ApplicationProperties;
+import com.sica.config.DefaultProfileUtil;
+
+import io.github.jhipster.config.JHipsterConstants;
+
 @SpringBootApplication
+@EnableScheduling
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class Sicapuc20201App implements InitializingBean {
 
@@ -95,4 +101,5 @@ public class Sicapuc20201App implements InitializingBean {
             contextPath,
             env.getActiveProfiles());
     }
+    
 }
