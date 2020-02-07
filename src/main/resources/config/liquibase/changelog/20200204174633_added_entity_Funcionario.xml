@@ -22,13 +22,13 @@
             <column name="id_dispositivo_monitoramento" type="bigint">
                 <constraints nullable="false" />
             </column>
-
-            <column name="setor_mineracao_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="pessoa_id" type="bigint">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_funcionario_pessoa_id" />
             </column>
+            <column name="setor_mineracao_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 

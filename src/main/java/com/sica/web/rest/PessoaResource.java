@@ -1,8 +1,8 @@
 package com.sica.web.rest;
 
-import com.sica.domain.Pessoa;
-import com.sica.repository.PessoaRepository;
+import com.sica.service.PessoaService;
 import com.sica.web.rest.errors.BadRequestAlertException;
+import com.sica.service.dto.PessoaDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,8 +18,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing {@link com.sica.domain.Pessoa}.
@@ -35,26 +33,26 @@ public class PessoaResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final PessoaRepository pessoaRepository;
+    private final PessoaService pessoaService;
 
-    public PessoaResource(PessoaRepository pessoaRepository) {
-        this.pessoaRepository = pessoaRepository;
+    public PessoaResource(PessoaService pessoaService) {
+        this.pessoaService = pessoaService;
     }
 
     /**
      * {@code POST  /pessoas} : Create a new pessoa.
      *
-     * @param pessoa the pessoa to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new pessoa, or with status {@code 400 (Bad Request)} if the pessoa has already an ID.
+     * @param pessoaDTO the pessoaDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new pessoaDTO, or with status {@code 400 (Bad Request)} if the pessoa has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/pessoas")
-    public ResponseEntity<Pessoa> createPessoa(@Valid @RequestBody Pessoa pessoa) throws URISyntaxException {
-        log.debug("REST request to save Pessoa : {}", pessoa);
-        if (pessoa.getId() != null) {
+    public ResponseEntity<PessoaDTO> createPessoa(@Valid @RequestBody PessoaDTO pessoaDTO) throws URISyntaxException {
+        log.debug("REST request to save Pessoa : {}", pessoaDTO);
+        if (pessoaDTO.getId() != null) {
             throw new BadRequestAlertException("A new pessoa cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Pessoa result = pessoaRepository.save(pessoa);
+        PessoaDTO result = pessoaService.save(pessoaDTO);
         return ResponseEntity.created(new URI("/api/pessoas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,66 +61,58 @@ public class PessoaResource {
     /**
      * {@code PUT  /pessoas} : Updates an existing pessoa.
      *
-     * @param pessoa the pessoa to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pessoa,
-     * or with status {@code 400 (Bad Request)} if the pessoa is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the pessoa couldn't be updated.
+     * @param pessoaDTO the pessoaDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pessoaDTO,
+     * or with status {@code 400 (Bad Request)} if the pessoaDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the pessoaDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/pessoas")
-    public ResponseEntity<Pessoa> updatePessoa(@Valid @RequestBody Pessoa pessoa) throws URISyntaxException {
-        log.debug("REST request to update Pessoa : {}", pessoa);
-        if (pessoa.getId() == null) {
+    public ResponseEntity<PessoaDTO> updatePessoa(@Valid @RequestBody PessoaDTO pessoaDTO) throws URISyntaxException {
+        log.debug("REST request to update Pessoa : {}", pessoaDTO);
+        if (pessoaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Pessoa result = pessoaRepository.save(pessoa);
+        PessoaDTO result = pessoaService.save(pessoaDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, pessoa.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, pessoaDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code GET  /pessoas} : get all the pessoas.
      *
-     * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of pessoas in body.
      */
     @GetMapping("/pessoas")
-    public List<Pessoa> getAllPessoas(@RequestParam(required = false) String filter) {
-        if ("funcionario-is-null".equals(filter)) {
-            log.debug("REST request to get all Pessoas where funcionario is null");
-            return StreamSupport
-                .stream(pessoaRepository.findAll().spliterator(), false)
-                .filter(pessoa -> pessoa.getFuncionario() == null)
-                .collect(Collectors.toList());
-        }
+    public List<PessoaDTO> getAllPessoas() {
         log.debug("REST request to get all Pessoas");
-        return pessoaRepository.findAll();
+        return pessoaService.findAll();
     }
 
     /**
      * {@code GET  /pessoas/:id} : get the "id" pessoa.
      *
-     * @param id the id of the pessoa to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the pessoa, or with status {@code 404 (Not Found)}.
+     * @param id the id of the pessoaDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the pessoaDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/pessoas/{id}")
-    public ResponseEntity<Pessoa> getPessoa(@PathVariable Long id) {
+    public ResponseEntity<PessoaDTO> getPessoa(@PathVariable Long id) {
         log.debug("REST request to get Pessoa : {}", id);
-        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(pessoa);
+        Optional<PessoaDTO> pessoaDTO = pessoaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(pessoaDTO);
     }
 
     /**
      * {@code DELETE  /pessoas/:id} : delete the "id" pessoa.
      *
-     * @param id the id of the pessoa to delete.
+     * @param id the id of the pessoaDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/pessoas/{id}")
     public ResponseEntity<Void> deletePessoa(@PathVariable Long id) {
         log.debug("REST request to delete Pessoa : {}", id);
-        pessoaRepository.deleteById(id);
+        pessoaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

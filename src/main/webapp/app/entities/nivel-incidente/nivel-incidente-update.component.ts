@@ -3,12 +3,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
 import { INivelIncidente, NivelIncidente } from 'app/shared/model/nivel-incidente.model';
 import { NivelIncidenteService } from './nivel-incidente.service';
-import { IIncidente } from 'app/shared/model/incidente.model';
-import { IncidenteService } from 'app/entities/incidente';
 
 @Component({
   selector: 'jhi-nivel-incidente-update',
@@ -18,25 +14,18 @@ export class NivelIncidenteUpdateComponent implements OnInit {
   nivelIncidente: INivelIncidente;
   isSaving: boolean;
 
-  incidentes: IIncidente[];
-
   editForm = this.fb.group({
     id: [],
     nome: [null, [Validators.required]],
     notificaDNPM: [null, [Validators.required]],
     notificaEmail: [null, [Validators.required]],
-    notificacaoSmsWhatsapp: [null, [Validators.required]],
+    notificacaoSms: [null, [Validators.required]],
+    notificacaoWhatsapp: [null, [Validators.required]],
     notificacaoDispositivoSeguranca: [null, [Validators.required]],
     notificaSirene: [null, [Validators.required]]
   });
 
-  constructor(
-    protected jhiAlertService: JhiAlertService,
-    protected nivelIncidenteService: NivelIncidenteService,
-    protected incidenteService: IncidenteService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  constructor(protected nivelIncidenteService: NivelIncidenteService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.isSaving = false;
@@ -44,13 +33,6 @@ export class NivelIncidenteUpdateComponent implements OnInit {
       this.updateForm(nivelIncidente);
       this.nivelIncidente = nivelIncidente;
     });
-    this.incidenteService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IIncidente[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IIncidente[]>) => response.body)
-      )
-      .subscribe((res: IIncidente[]) => (this.incidentes = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(nivelIncidente: INivelIncidente) {
@@ -59,7 +41,8 @@ export class NivelIncidenteUpdateComponent implements OnInit {
       nome: nivelIncidente.nome,
       notificaDNPM: nivelIncidente.notificaDNPM,
       notificaEmail: nivelIncidente.notificaEmail,
-      notificacaoSmsWhatsapp: nivelIncidente.notificacaoSmsWhatsapp,
+      notificacaoSms: nivelIncidente.notificacaoSms,
+      notificacaoWhatsapp: nivelIncidente.notificacaoWhatsapp,
       notificacaoDispositivoSeguranca: nivelIncidente.notificacaoDispositivoSeguranca,
       notificaSirene: nivelIncidente.notificaSirene
     });
@@ -86,7 +69,8 @@ export class NivelIncidenteUpdateComponent implements OnInit {
       nome: this.editForm.get(['nome']).value,
       notificaDNPM: this.editForm.get(['notificaDNPM']).value,
       notificaEmail: this.editForm.get(['notificaEmail']).value,
-      notificacaoSmsWhatsapp: this.editForm.get(['notificacaoSmsWhatsapp']).value,
+      notificacaoSms: this.editForm.get(['notificacaoSms']).value,
+      notificacaoWhatsapp: this.editForm.get(['notificacaoWhatsapp']).value,
       notificacaoDispositivoSeguranca: this.editForm.get(['notificacaoDispositivoSeguranca']).value,
       notificaSirene: this.editForm.get(['notificaSirene']).value
     };
@@ -104,12 +88,5 @@ export class NivelIncidenteUpdateComponent implements OnInit {
 
   protected onSaveError() {
     this.isSaving = false;
-  }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
-
-  trackIncidenteById(index: number, item: IIncidente) {
-    return item.id;
   }
 }

@@ -9,8 +9,6 @@ import { ISetorMineracao, SetorMineracao } from 'app/shared/model/setor-mineraca
 import { SetorMineracaoService } from './setor-mineracao.service';
 import { IFuncionario } from 'app/shared/model/funcionario.model';
 import { FuncionarioService } from 'app/entities/funcionario';
-import { IAtivo } from 'app/shared/model/ativo.model';
-import { AtivoService } from 'app/entities/ativo';
 import { IMinaOperacao } from 'app/shared/model/mina-operacao.model';
 import { MinaOperacaoService } from 'app/entities/mina-operacao';
 
@@ -22,27 +20,22 @@ export class SetorMineracaoUpdateComponent implements OnInit {
   setorMineracao: ISetorMineracao;
   isSaving: boolean;
 
-  diretors: IFuncionario[];
-
-  gerentes: IFuncionario[];
-
-  ativos: IAtivo[];
+  funcionarios: IFuncionario[];
 
   minaoperacaos: IMinaOperacao[];
 
   editForm = this.fb.group({
     id: [],
     nome: [null, [Validators.required]],
-    diretor: [],
-    gerente: [],
-    minaOperacao: []
+    diretorId: [],
+    gerenteId: [],
+    minaOperacaoId: []
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected setorMineracaoService: SetorMineracaoService,
     protected funcionarioService: FuncionarioService,
-    protected ativoService: AtivoService,
     protected minaOperacaoService: MinaOperacaoService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -55,62 +48,12 @@ export class SetorMineracaoUpdateComponent implements OnInit {
       this.setorMineracao = setorMineracao;
     });
     this.funcionarioService
-      .query({ filter: 'setormineracao-is-null' })
-      .pipe(
-        filter((mayBeOk: HttpResponse<IFuncionario[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IFuncionario[]>) => response.body)
-      )
-      .subscribe(
-        (res: IFuncionario[]) => {
-          if (!this.setorMineracao.diretor || !this.setorMineracao.diretor.id) {
-            this.diretors = res;
-          } else {
-            this.funcionarioService
-              .find(this.setorMineracao.diretor.id)
-              .pipe(
-                filter((subResMayBeOk: HttpResponse<IFuncionario>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<IFuncionario>) => subResponse.body)
-              )
-              .subscribe(
-                (subRes: IFuncionario) => (this.diretors = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
-          }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.funcionarioService
-      .query({ filter: 'setormineracao-is-null' })
-      .pipe(
-        filter((mayBeOk: HttpResponse<IFuncionario[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IFuncionario[]>) => response.body)
-      )
-      .subscribe(
-        (res: IFuncionario[]) => {
-          if (!this.setorMineracao.gerente || !this.setorMineracao.gerente.id) {
-            this.gerentes = res;
-          } else {
-            this.funcionarioService
-              .find(this.setorMineracao.gerente.id)
-              .pipe(
-                filter((subResMayBeOk: HttpResponse<IFuncionario>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<IFuncionario>) => subResponse.body)
-              )
-              .subscribe(
-                (subRes: IFuncionario) => (this.gerentes = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
-          }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.ativoService
       .query()
       .pipe(
-        filter((mayBeOk: HttpResponse<IAtivo[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IAtivo[]>) => response.body)
+        filter((mayBeOk: HttpResponse<IFuncionario[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IFuncionario[]>) => response.body)
       )
-      .subscribe((res: IAtivo[]) => (this.ativos = res), (res: HttpErrorResponse) => this.onError(res.message));
+      .subscribe((res: IFuncionario[]) => (this.funcionarios = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.minaOperacaoService
       .query()
       .pipe(
@@ -124,9 +67,9 @@ export class SetorMineracaoUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: setorMineracao.id,
       nome: setorMineracao.nome,
-      diretor: setorMineracao.diretor,
-      gerente: setorMineracao.gerente,
-      minaOperacao: setorMineracao.minaOperacao
+      diretorId: setorMineracao.diretorId,
+      gerenteId: setorMineracao.gerenteId,
+      minaOperacaoId: setorMineracao.minaOperacaoId
     });
   }
 
@@ -149,9 +92,9 @@ export class SetorMineracaoUpdateComponent implements OnInit {
       ...new SetorMineracao(),
       id: this.editForm.get(['id']).value,
       nome: this.editForm.get(['nome']).value,
-      diretor: this.editForm.get(['diretor']).value,
-      gerente: this.editForm.get(['gerente']).value,
-      minaOperacao: this.editForm.get(['minaOperacao']).value
+      diretorId: this.editForm.get(['diretorId']).value,
+      gerenteId: this.editForm.get(['gerenteId']).value,
+      minaOperacaoId: this.editForm.get(['minaOperacaoId']).value
     };
     return entity;
   }
@@ -173,10 +116,6 @@ export class SetorMineracaoUpdateComponent implements OnInit {
   }
 
   trackFuncionarioById(index: number, item: IFuncionario) {
-    return item.id;
-  }
-
-  trackAtivoById(index: number, item: IAtivo) {
     return item.id;
   }
 

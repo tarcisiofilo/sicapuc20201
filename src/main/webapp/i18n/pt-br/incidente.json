@@ -17,9 +17,9 @@
       },
       "identificacao": "Identificacao",
       "origem": "Origem",
+      "mensagem": "Mensagem",
       "medicaoInstrumento": "Medicao Instrumento",
       "nivelIncidente": "Nivel Incidente",
-      "notificacao": "Notificacao",
       "ativo": "Ativo"
     }
   }

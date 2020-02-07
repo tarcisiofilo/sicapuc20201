@@ -8,17 +8,17 @@
     -->
     <changeSet id="20200204174633-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="setor_mineracao_id"
-                                 baseTableName="funcionario"
-                                 constraintName="fk_funcionario_setor_mineracao_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="setor_mineracao"/>
-
         <addForeignKeyConstraint baseColumnNames="pessoa_id"
                                  baseTableName="funcionario"
                                  constraintName="fk_funcionario_pessoa_id"
                                  referencedColumnNames="id"
                                  referencedTableName="pessoa"/>
+
+        <addForeignKeyConstraint baseColumnNames="setor_mineracao_id"
+                                 baseTableName="funcionario"
+                                 constraintName="fk_funcionario_setor_mineracao_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="setor_mineracao"/>
 
     </changeSet>
 </databaseChangeLog>

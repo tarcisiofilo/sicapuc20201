@@ -23,7 +23,7 @@ export class FamiliaUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     identificacao: [null, [Validators.required]],
-    areaSusceptivel: []
+    areaSusceptivelId: []
   });
 
   constructor(
@@ -53,7 +53,7 @@ export class FamiliaUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: familia.id,
       identificacao: familia.identificacao,
-      areaSusceptivel: familia.areaSusceptivel
+      areaSusceptivelId: familia.areaSusceptivelId
     });
   }
 
@@ -76,7 +76,7 @@ export class FamiliaUpdateComponent implements OnInit {
       ...new Familia(),
       id: this.editForm.get(['id']).value,
       identificacao: this.editForm.get(['identificacao']).value,
-      areaSusceptivel: this.editForm.get(['areaSusceptivel']).value
+      areaSusceptivelId: this.editForm.get(['areaSusceptivelId']).value
     };
     return entity;
   }

@@ -3,13 +3,19 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Incidente;
 import com.sica.repository.IncidenteRepository;
+import com.sica.service.IncidenteService;
+import com.sica.service.dto.IncidenteDTO;
+import com.sica.service.mapper.IncidenteMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -19,11 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.sica.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,8 +48,23 @@ public class IncidenteResourceIT {
     private static final OrigemIncidente DEFAULT_ORIGEM = OrigemIncidente.MONITORAMENTO_SENSORES;
     private static final OrigemIncidente UPDATED_ORIGEM = OrigemIncidente.MANUAL;
 
+    private static final String DEFAULT_MENSAGEM = "AAAAAAAAAA";
+    private static final String UPDATED_MENSAGEM = "BBBBBBBBBB";
+
     @Autowired
     private IncidenteRepository incidenteRepository;
+
+    @Mock
+    private IncidenteRepository incidenteRepositoryMock;
+
+    @Autowired
+    private IncidenteMapper incidenteMapper;
+
+    @Mock
+    private IncidenteService incidenteServiceMock;
+
+    @Autowired
+    private IncidenteService incidenteService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -65,7 +88,7 @@ public class IncidenteResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IncidenteResource incidenteResource = new IncidenteResource(incidenteRepository);
+        final IncidenteResource incidenteResource = new IncidenteResource(incidenteService);
         this.restIncidenteMockMvc = MockMvcBuilders.standaloneSetup(incidenteResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -83,7 +106,8 @@ public class IncidenteResourceIT {
     public static Incidente createEntity(EntityManager em) {
         Incidente incidente = new Incidente()
             .identificacao(DEFAULT_IDENTIFICACAO)
-            .origem(DEFAULT_ORIGEM);
+            .origem(DEFAULT_ORIGEM)
+            .mensagem(DEFAULT_MENSAGEM);
         return incidente;
     }
     /**
@@ -95,7 +119,8 @@ public class IncidenteResourceIT {
     public static Incidente createUpdatedEntity(EntityManager em) {
         Incidente incidente = new Incidente()
             .identificacao(UPDATED_IDENTIFICACAO)
-            .origem(UPDATED_ORIGEM);
+            .origem(UPDATED_ORIGEM)
+            .mensagem(UPDATED_MENSAGEM);
         return incidente;
     }
 
@@ -110,9 +135,10 @@ public class IncidenteResourceIT {
         int databaseSizeBeforeCreate = incidenteRepository.findAll().size();
 
         // Create the Incidente
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(incidente);
         restIncidenteMockMvc.perform(post("/api/incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(incidente)))
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Incidente in the database
@@ -121,6 +147,7 @@ public class IncidenteResourceIT {
         Incidente testIncidente = incidenteList.get(incidenteList.size() - 1);
         assertThat(testIncidente.getIdentificacao()).isEqualTo(DEFAULT_IDENTIFICACAO);
         assertThat(testIncidente.getOrigem()).isEqualTo(DEFAULT_ORIGEM);
+        assertThat(testIncidente.getMensagem()).isEqualTo(DEFAULT_MENSAGEM);
     }
 
     @Test
@@ -130,11 +157,12 @@ public class IncidenteResourceIT {
 
         // Create the Incidente with an existing ID
         incidente.setId(1L);
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(incidente);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restIncidenteMockMvc.perform(post("/api/incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(incidente)))
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Incidente in the database
@@ -151,10 +179,11 @@ public class IncidenteResourceIT {
         incidente.setIdentificacao(null);
 
         // Create the Incidente, which fails.
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(incidente);
 
         restIncidenteMockMvc.perform(post("/api/incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(incidente)))
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<Incidente> incidenteList = incidenteRepository.findAll();
@@ -169,10 +198,30 @@ public class IncidenteResourceIT {
         incidente.setOrigem(null);
 
         // Create the Incidente, which fails.
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(incidente);
 
         restIncidenteMockMvc.perform(post("/api/incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(incidente)))
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Incidente> incidenteList = incidenteRepository.findAll();
+        assertThat(incidenteList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkMensagemIsRequired() throws Exception {
+        int databaseSizeBeforeTest = incidenteRepository.findAll().size();
+        // set the field null
+        incidente.setMensagem(null);
+
+        // Create the Incidente, which fails.
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(incidente);
+
+        restIncidenteMockMvc.perform(post("/api/incidentes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<Incidente> incidenteList = incidenteRepository.findAll();
@@ -191,9 +240,43 @@ public class IncidenteResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(incidente.getId().intValue())))
             .andExpect(jsonPath("$.[*].identificacao").value(hasItem(DEFAULT_IDENTIFICACAO.toString())))
-            .andExpect(jsonPath("$.[*].origem").value(hasItem(DEFAULT_ORIGEM.toString())));
+            .andExpect(jsonPath("$.[*].origem").value(hasItem(DEFAULT_ORIGEM.toString())))
+            .andExpect(jsonPath("$.[*].mensagem").value(hasItem(DEFAULT_MENSAGEM.toString())));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllIncidentesWithEagerRelationshipsIsEnabled() throws Exception {
+        IncidenteResource incidenteResource = new IncidenteResource(incidenteServiceMock);
+        when(incidenteServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restIncidenteMockMvc = MockMvcBuilders.standaloneSetup(incidenteResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restIncidenteMockMvc.perform(get("/api/incidentes?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(incidenteServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllIncidentesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        IncidenteResource incidenteResource = new IncidenteResource(incidenteServiceMock);
+            when(incidenteServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restIncidenteMockMvc = MockMvcBuilders.standaloneSetup(incidenteResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restIncidenteMockMvc.perform(get("/api/incidentes?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(incidenteServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getIncidente() throws Exception {
@@ -206,7 +289,8 @@ public class IncidenteResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(incidente.getId().intValue()))
             .andExpect(jsonPath("$.identificacao").value(DEFAULT_IDENTIFICACAO.toString()))
-            .andExpect(jsonPath("$.origem").value(DEFAULT_ORIGEM.toString()));
+            .andExpect(jsonPath("$.origem").value(DEFAULT_ORIGEM.toString()))
+            .andExpect(jsonPath("$.mensagem").value(DEFAULT_MENSAGEM.toString()));
     }
 
     @Test
@@ -231,11 +315,13 @@ public class IncidenteResourceIT {
         em.detach(updatedIncidente);
         updatedIncidente
             .identificacao(UPDATED_IDENTIFICACAO)
-            .origem(UPDATED_ORIGEM);
+            .origem(UPDATED_ORIGEM)
+            .mensagem(UPDATED_MENSAGEM);
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(updatedIncidente);
 
         restIncidenteMockMvc.perform(put("/api/incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
             .andExpect(status().isOk());
 
         // Validate the Incidente in the database
@@ -244,6 +330,7 @@ public class IncidenteResourceIT {
         Incidente testIncidente = incidenteList.get(incidenteList.size() - 1);
         assertThat(testIncidente.getIdentificacao()).isEqualTo(UPDATED_IDENTIFICACAO);
         assertThat(testIncidente.getOrigem()).isEqualTo(UPDATED_ORIGEM);
+        assertThat(testIncidente.getMensagem()).isEqualTo(UPDATED_MENSAGEM);
     }
 
     @Test
@@ -252,11 +339,12 @@ public class IncidenteResourceIT {
         int databaseSizeBeforeUpdate = incidenteRepository.findAll().size();
 
         // Create the Incidente
+        IncidenteDTO incidenteDTO = incidenteMapper.toDto(incidente);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restIncidenteMockMvc.perform(put("/api/incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(incidente)))
+            .content(TestUtil.convertObjectToJsonBytes(incidenteDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Incidente in the database
@@ -295,5 +383,28 @@ public class IncidenteResourceIT {
         assertThat(incidente1).isNotEqualTo(incidente2);
         incidente1.setId(null);
         assertThat(incidente1).isNotEqualTo(incidente2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(IncidenteDTO.class);
+        IncidenteDTO incidenteDTO1 = new IncidenteDTO();
+        incidenteDTO1.setId(1L);
+        IncidenteDTO incidenteDTO2 = new IncidenteDTO();
+        assertThat(incidenteDTO1).isNotEqualTo(incidenteDTO2);
+        incidenteDTO2.setId(incidenteDTO1.getId());
+        assertThat(incidenteDTO1).isEqualTo(incidenteDTO2);
+        incidenteDTO2.setId(2L);
+        assertThat(incidenteDTO1).isNotEqualTo(incidenteDTO2);
+        incidenteDTO1.setId(null);
+        assertThat(incidenteDTO1).isNotEqualTo(incidenteDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(incidenteMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(incidenteMapper.fromId(null)).isNull();
     }
 }

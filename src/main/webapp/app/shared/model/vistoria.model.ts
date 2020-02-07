@@ -1,12 +1,11 @@
 import { Moment } from 'moment';
-import { IInstrumentoMonitoramento } from 'app/shared/model/instrumento-monitoramento.model';
 
 export interface IVistoria {
   id?: number;
   identificao?: string;
   data?: Moment;
   valor?: number;
-  instrumentoMonitoramento?: IInstrumentoMonitoramento;
+  instrumentoMonitoramentoId?: number;
 }
 
 export class Vistoria implements IVistoria {
@@ -15,6 +14,6 @@ export class Vistoria implements IVistoria {
     public identificao?: string,
     public data?: Moment,
     public valor?: number,
-    public instrumentoMonitoramento?: IInstrumentoMonitoramento
+    public instrumentoMonitoramentoId?: number
   ) {}
 }

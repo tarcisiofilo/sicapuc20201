@@ -18,10 +18,10 @@
       "nome": "Nome",
       "notificaDNPM": "Notifica DNPM",
       "notificaEmail": "Notifica Email",
-      "notificacaoSmsWhatsapp": "Notificacao Sms Whatsapp",
+      "notificacaoSms": "Notificacao Sms",
+      "notificacaoWhatsapp": "Notificacao Whatsapp",
       "notificacaoDispositivoSeguranca": "Notificacao Dispositivo Seguranca",
-      "notificaSirene": "Notifica Sirene",
-      "incidente": "Incidente"
+      "notificaSirene": "Notifica Sirene"
     }
   }
 }

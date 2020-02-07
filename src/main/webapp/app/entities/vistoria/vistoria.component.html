@@ -29,8 +29,8 @@
                 <td>{{vistoria.data | date:'medium'}}</td>
                 <td>{{vistoria.valor}}</td>
                 <td>
-                    <div *ngIf="vistoria.instrumentoMonitoramento">
-                        <a [routerLink]="['../instrumento-monitoramento', vistoria.instrumentoMonitoramento?.id, 'view' ]" >{{vistoria.instrumentoMonitoramento?.id}}</a>
+                    <div *ngIf="vistoria.instrumentoMonitoramentoId">
+                        <a [routerLink]="['../instrumento-monitoramento', vistoria.instrumentoMonitoramentoId , 'view' ]" >{{vistoria.instrumentoMonitoramentoId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

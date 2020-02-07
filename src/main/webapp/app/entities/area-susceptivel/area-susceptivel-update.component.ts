@@ -24,7 +24,7 @@ export class AreaSusceptivelUpdateComponent implements OnInit {
     id: [],
     identificacao: [null, [Validators.required]],
     nivelProximidade: [null, [Validators.required]],
-    ativo: []
+    ativoId: []
   });
 
   constructor(
@@ -55,7 +55,7 @@ export class AreaSusceptivelUpdateComponent implements OnInit {
       id: areaSusceptivel.id,
       identificacao: areaSusceptivel.identificacao,
       nivelProximidade: areaSusceptivel.nivelProximidade,
-      ativo: areaSusceptivel.ativo
+      ativoId: areaSusceptivel.ativoId
     });
   }
 
@@ -79,7 +79,7 @@ export class AreaSusceptivelUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       identificacao: this.editForm.get(['identificacao']).value,
       nivelProximidade: this.editForm.get(['nivelProximidade']).value,
-      ativo: this.editForm.get(['ativo']).value
+      ativoId: this.editForm.get(['ativoId']).value
     };
     return entity;
   }

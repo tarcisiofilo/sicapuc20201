@@ -18,25 +18,26 @@
     ],
     "relationships": [
         {
-            "relationshipName": "setorMineracao",
-            "otherEntityName": "setorMineracao",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
             "relationshipType": "one-to-one",
             "otherEntityName": "pessoa",
             "otherEntityRelationshipName": "funcionario",
             "relationshipName": "pessoa",
             "otherEntityField": "id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "setorMineracao",
+            "otherEntityRelationshipName": "funcionarios",
+            "relationshipName": "setorMineracao",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20200204174633",
     "entityTableName": "funcionario",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

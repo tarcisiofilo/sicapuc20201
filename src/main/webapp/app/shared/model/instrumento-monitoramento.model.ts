@@ -1,5 +1,4 @@
 import { IMedicaoInstrumento } from 'app/shared/model/medicao-instrumento.model';
-import { IVistoria } from 'app/shared/model/vistoria.model';
 
 export const enum TipoInstrumentoMonitoramento {
   PIEZOMETRO = 'PIEZOMETRO',
@@ -22,7 +21,7 @@ export interface IInstrumentoMonitoramento {
   varianciaTolerada?: number;
   limiteSuperior?: number;
   medicaoInstrumentos?: IMedicaoInstrumento[];
-  vistoria?: IVistoria;
+  vistoriaId?: number;
 }
 
 export class InstrumentoMonitoramento implements IInstrumentoMonitoramento {
@@ -36,6 +35,6 @@ export class InstrumentoMonitoramento implements IInstrumentoMonitoramento {
     public varianciaTolerada?: number,
     public limiteSuperior?: number,
     public medicaoInstrumentos?: IMedicaoInstrumento[],
-    public vistoria?: IVistoria
+    public vistoriaId?: number
   ) {}
 }

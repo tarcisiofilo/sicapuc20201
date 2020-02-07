@@ -11,7 +11,7 @@
         {
             "fieldName": "tipoNotificacao",
             "fieldType": "TipoNoficacao",
-            "fieldValues": "DNPM,EMAIL,SMS_WHATAPP,DISPOSITIVO_SEGURANCA,SIRENE",
+            "fieldValues": "DNPM,EMAIL,SMS,WHATAPP,DISPOSITIVO_SEGURANCA,SIRENE",
             "fieldValidateRules": [
                 "required"
             ]
@@ -28,9 +28,9 @@
     ],
     "changelogDate": "20200204174642",
     "entityTableName": "notificacao",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

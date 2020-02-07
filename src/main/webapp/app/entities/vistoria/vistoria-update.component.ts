@@ -27,7 +27,7 @@ export class VistoriaUpdateComponent implements OnInit {
     identificao: [null, [Validators.required]],
     data: [null, [Validators.required]],
     valor: [null, [Validators.required]],
-    instrumentoMonitoramento: []
+    instrumentoMonitoramentoId: []
   });
 
   constructor(
@@ -52,11 +52,11 @@ export class VistoriaUpdateComponent implements OnInit {
       )
       .subscribe(
         (res: IInstrumentoMonitoramento[]) => {
-          if (!this.vistoria.instrumentoMonitoramento || !this.vistoria.instrumentoMonitoramento.id) {
+          if (!this.vistoria.instrumentoMonitoramentoId) {
             this.instrumentomonitoramentos = res;
           } else {
             this.instrumentoMonitoramentoService
-              .find(this.vistoria.instrumentoMonitoramento.id)
+              .find(this.vistoria.instrumentoMonitoramentoId)
               .pipe(
                 filter((subResMayBeOk: HttpResponse<IInstrumentoMonitoramento>) => subResMayBeOk.ok),
                 map((subResponse: HttpResponse<IInstrumentoMonitoramento>) => subResponse.body)
@@ -77,7 +77,7 @@ export class VistoriaUpdateComponent implements OnInit {
       identificao: vistoria.identificao,
       data: vistoria.data != null ? vistoria.data.format(DATE_TIME_FORMAT) : null,
       valor: vistoria.valor,
-      instrumentoMonitoramento: vistoria.instrumentoMonitoramento
+      instrumentoMonitoramentoId: vistoria.instrumentoMonitoramentoId
     });
   }
 
@@ -102,7 +102,7 @@ export class VistoriaUpdateComponent implements OnInit {
       identificao: this.editForm.get(['identificao']).value,
       data: this.editForm.get(['data']).value != null ? moment(this.editForm.get(['data']).value, DATE_TIME_FORMAT) : undefined,
       valor: this.editForm.get(['valor']).value,
-      instrumentoMonitoramento: this.editForm.get(['instrumentoMonitoramento']).value
+      instrumentoMonitoramentoId: this.editForm.get(['instrumentoMonitoramentoId']).value
     };
     return entity;
   }

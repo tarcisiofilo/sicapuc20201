@@ -23,7 +23,14 @@
             ]
         },
         {
-            "fieldName": "notificacaoSmsWhatsapp",
+            "fieldName": "notificacaoSms",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "notificacaoWhatsapp",
             "fieldType": "Boolean",
             "fieldValidateRules": [
                 "required"
@@ -44,20 +51,12 @@
             ]
         }
     ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "incidente",
-            "otherEntityRelationshipName": "nivelIncidente",
-            "relationshipName": "incidente",
-            "ownerSide": false
-        }
-    ],
+    "relationships": [],
     "changelogDate": "20200204174643",
     "entityTableName": "nivel_incidente",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

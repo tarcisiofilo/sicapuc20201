@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.MinaOperacao;
 import com.sica.repository.MinaOperacaoRepository;
+import com.sica.service.MinaOperacaoService;
+import com.sica.service.dto.MinaOperacaoDTO;
+import com.sica.service.mapper.MinaOperacaoMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -37,14 +40,17 @@ public class MinaOperacaoResourceIT {
     private static final String DEFAULT_NOME = "AAAAAAAAAA";
     private static final String UPDATED_NOME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_SEGMENTO = "AAAAAAAAAA";
-    private static final String UPDATED_SEGMENTO = "BBBBBBBBBB";
-
     private static final TipoOperacao DEFAULT_TIPO_OPERACAO = TipoOperacao.MINERIO_FERRO_PELOTAS;
     private static final TipoOperacao UPDATED_TIPO_OPERACAO = TipoOperacao.NIQUEL;
 
     @Autowired
     private MinaOperacaoRepository minaOperacaoRepository;
+
+    @Autowired
+    private MinaOperacaoMapper minaOperacaoMapper;
+
+    @Autowired
+    private MinaOperacaoService minaOperacaoService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -68,7 +74,7 @@ public class MinaOperacaoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MinaOperacaoResource minaOperacaoResource = new MinaOperacaoResource(minaOperacaoRepository);
+        final MinaOperacaoResource minaOperacaoResource = new MinaOperacaoResource(minaOperacaoService);
         this.restMinaOperacaoMockMvc = MockMvcBuilders.standaloneSetup(minaOperacaoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -86,7 +92,6 @@ public class MinaOperacaoResourceIT {
     public static MinaOperacao createEntity(EntityManager em) {
         MinaOperacao minaOperacao = new MinaOperacao()
             .nome(DEFAULT_NOME)
-            .segmento(DEFAULT_SEGMENTO)
             .tipoOperacao(DEFAULT_TIPO_OPERACAO);
         return minaOperacao;
     }
@@ -99,7 +104,6 @@ public class MinaOperacaoResourceIT {
     public static MinaOperacao createUpdatedEntity(EntityManager em) {
         MinaOperacao minaOperacao = new MinaOperacao()
             .nome(UPDATED_NOME)
-            .segmento(UPDATED_SEGMENTO)
             .tipoOperacao(UPDATED_TIPO_OPERACAO);
         return minaOperacao;
     }
@@ -115,9 +119,10 @@ public class MinaOperacaoResourceIT {
         int databaseSizeBeforeCreate = minaOperacaoRepository.findAll().size();
 
         // Create the MinaOperacao
+        MinaOperacaoDTO minaOperacaoDTO = minaOperacaoMapper.toDto(minaOperacao);
         restMinaOperacaoMockMvc.perform(post("/api/mina-operacaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(minaOperacao)))
+            .content(TestUtil.convertObjectToJsonBytes(minaOperacaoDTO)))
             .andExpect(status().isCreated());
 
         // Validate the MinaOperacao in the database
@@ -125,7 +130,6 @@ public class MinaOperacaoResourceIT {
         assertThat(minaOperacaoList).hasSize(databaseSizeBeforeCreate + 1);
         MinaOperacao testMinaOperacao = minaOperacaoList.get(minaOperacaoList.size() - 1);
         assertThat(testMinaOperacao.getNome()).isEqualTo(DEFAULT_NOME);
-        assertThat(testMinaOperacao.getSegmento()).isEqualTo(DEFAULT_SEGMENTO);
         assertThat(testMinaOperacao.getTipoOperacao()).isEqualTo(DEFAULT_TIPO_OPERACAO);
     }
 
@@ -136,11 +140,12 @@ public class MinaOperacaoResourceIT {
 
         // Create the MinaOperacao with an existing ID
         minaOperacao.setId(1L);
+        MinaOperacaoDTO minaOperacaoDTO = minaOperacaoMapper.toDto(minaOperacao);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restMinaOperacaoMockMvc.perform(post("/api/mina-operacaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(minaOperacao)))
+            .content(TestUtil.convertObjectToJsonBytes(minaOperacaoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the MinaOperacao in the database
@@ -157,28 +162,11 @@ public class MinaOperacaoResourceIT {
         minaOperacao.setNome(null);
 
         // Create the MinaOperacao, which fails.
+        MinaOperacaoDTO minaOperacaoDTO = minaOperacaoMapper.toDto(minaOperacao);
 
         restMinaOperacaoMockMvc.perform(post("/api/mina-operacaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(minaOperacao)))
-            .andExpect(status().isBadRequest());
-
-        List<MinaOperacao> minaOperacaoList = minaOperacaoRepository.findAll();
-        assertThat(minaOperacaoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkSegmentoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = minaOperacaoRepository.findAll().size();
-        // set the field null
-        minaOperacao.setSegmento(null);
-
-        // Create the MinaOperacao, which fails.
-
-        restMinaOperacaoMockMvc.perform(post("/api/mina-operacaos")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(minaOperacao)))
+            .content(TestUtil.convertObjectToJsonBytes(minaOperacaoDTO)))
             .andExpect(status().isBadRequest());
 
         List<MinaOperacao> minaOperacaoList = minaOperacaoRepository.findAll();
@@ -193,10 +181,11 @@ public class MinaOperacaoResourceIT {
         minaOperacao.setTipoOperacao(null);
 
         // Create the MinaOperacao, which fails.
+        MinaOperacaoDTO minaOperacaoDTO = minaOperacaoMapper.toDto(minaOperacao);
 
         restMinaOperacaoMockMvc.perform(post("/api/mina-operacaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(minaOperacao)))
+            .content(TestUtil.convertObjectToJsonBytes(minaOperacaoDTO)))
             .andExpect(status().isBadRequest());
 
         List<MinaOperacao> minaOperacaoList = minaOperacaoRepository.findAll();
@@ -215,7 +204,6 @@ public class MinaOperacaoResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(minaOperacao.getId().intValue())))
             .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME.toString())))
-            .andExpect(jsonPath("$.[*].segmento").value(hasItem(DEFAULT_SEGMENTO.toString())))
             .andExpect(jsonPath("$.[*].tipoOperacao").value(hasItem(DEFAULT_TIPO_OPERACAO.toString())));
     }
     
@@ -231,7 +219,6 @@ public class MinaOperacaoResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(minaOperacao.getId().intValue()))
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME.toString()))
-            .andExpect(jsonPath("$.segmento").value(DEFAULT_SEGMENTO.toString()))
             .andExpect(jsonPath("$.tipoOperacao").value(DEFAULT_TIPO_OPERACAO.toString()));
     }
 
@@ -257,12 +244,12 @@ public class MinaOperacaoResourceIT {
         em.detach(updatedMinaOperacao);
         updatedMinaOperacao
             .nome(UPDATED_NOME)
-            .segmento(UPDATED_SEGMENTO)
             .tipoOperacao(UPDATED_TIPO_OPERACAO);
+        MinaOperacaoDTO minaOperacaoDTO = minaOperacaoMapper.toDto(updatedMinaOperacao);
 
         restMinaOperacaoMockMvc.perform(put("/api/mina-operacaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedMinaOperacao)))
+            .content(TestUtil.convertObjectToJsonBytes(minaOperacaoDTO)))
             .andExpect(status().isOk());
 
         // Validate the MinaOperacao in the database
@@ -270,7 +257,6 @@ public class MinaOperacaoResourceIT {
         assertThat(minaOperacaoList).hasSize(databaseSizeBeforeUpdate);
         MinaOperacao testMinaOperacao = minaOperacaoList.get(minaOperacaoList.size() - 1);
         assertThat(testMinaOperacao.getNome()).isEqualTo(UPDATED_NOME);
-        assertThat(testMinaOperacao.getSegmento()).isEqualTo(UPDATED_SEGMENTO);
         assertThat(testMinaOperacao.getTipoOperacao()).isEqualTo(UPDATED_TIPO_OPERACAO);
     }
 
@@ -280,11 +266,12 @@ public class MinaOperacaoResourceIT {
         int databaseSizeBeforeUpdate = minaOperacaoRepository.findAll().size();
 
         // Create the MinaOperacao
+        MinaOperacaoDTO minaOperacaoDTO = minaOperacaoMapper.toDto(minaOperacao);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restMinaOperacaoMockMvc.perform(put("/api/mina-operacaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(minaOperacao)))
+            .content(TestUtil.convertObjectToJsonBytes(minaOperacaoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the MinaOperacao in the database
@@ -323,5 +310,28 @@ public class MinaOperacaoResourceIT {
         assertThat(minaOperacao1).isNotEqualTo(minaOperacao2);
         minaOperacao1.setId(null);
         assertThat(minaOperacao1).isNotEqualTo(minaOperacao2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(MinaOperacaoDTO.class);
+        MinaOperacaoDTO minaOperacaoDTO1 = new MinaOperacaoDTO();
+        minaOperacaoDTO1.setId(1L);
+        MinaOperacaoDTO minaOperacaoDTO2 = new MinaOperacaoDTO();
+        assertThat(minaOperacaoDTO1).isNotEqualTo(minaOperacaoDTO2);
+        minaOperacaoDTO2.setId(minaOperacaoDTO1.getId());
+        assertThat(minaOperacaoDTO1).isEqualTo(minaOperacaoDTO2);
+        minaOperacaoDTO2.setId(2L);
+        assertThat(minaOperacaoDTO1).isNotEqualTo(minaOperacaoDTO2);
+        minaOperacaoDTO1.setId(null);
+        assertThat(minaOperacaoDTO1).isNotEqualTo(minaOperacaoDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(minaOperacaoMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(minaOperacaoMapper.fromId(null)).isNull();
     }
 }

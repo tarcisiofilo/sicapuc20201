@@ -23,23 +23,23 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.diretor" for="field_diretor">Diretor</label>
-                    <select class="form-control" id="field_diretor" name="diretor" formControlName="diretor">
+                    <select class="form-control" id="field_diretor" name="diretor" formControlName="diretorId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="funcionarioOption.id === editForm.get('diretor').value?.id ? editForm.get('diretor').value : funcionarioOption" *ngFor="let funcionarioOption of diretors; trackBy: trackFuncionarioById">{{funcionarioOption.id}}</option>
+                        <option [ngValue]="funcionarioOption.id" *ngFor="let funcionarioOption of funcionarios; trackBy: trackFuncionarioById">{{funcionarioOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.gerente" for="field_gerente">Gerente</label>
-                    <select class="form-control" id="field_gerente" name="gerente" formControlName="gerente">
+                    <select class="form-control" id="field_gerente" name="gerente" formControlName="gerenteId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="funcionarioOption.id === editForm.get('gerente').value?.id ? editForm.get('gerente').value : funcionarioOption" *ngFor="let funcionarioOption of gerentes; trackBy: trackFuncionarioById">{{funcionarioOption.id}}</option>
+                        <option [ngValue]="funcionarioOption.id" *ngFor="let funcionarioOption of funcionarios; trackBy: trackFuncionarioById">{{funcionarioOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.setorMineracao.minaOperacao" for="field_minaOperacao">Mina Operacao</label>
-                    <select class="form-control" id="field_minaOperacao" name="minaOperacao" formControlName="minaOperacao">
+                    <select class="form-control" id="field_minaOperacao" name="minaOperacao" formControlName="minaOperacaoId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="minaOperacaoOption.id === editForm.get('minaOperacao').value?.id ? editForm.get('minaOperacao').value : minaOperacaoOption" *ngFor="let minaOperacaoOption of minaoperacaos; trackBy: trackMinaOperacaoById">{{minaOperacaoOption.id}}</option>
+                        <option [ngValue]="minaOperacaoOption.id" *ngFor="let minaOperacaoOption of minaoperacaos; trackBy: trackMinaOperacaoById">{{minaOperacaoOption.id}}</option>
                     </select>
                 </div>
             </div>

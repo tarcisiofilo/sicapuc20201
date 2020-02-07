@@ -23,7 +23,7 @@ describe('Service Tests', () => {
       service = injector.get(AtivoService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Ativo(0, 0, 'AAAAAAA', 0);
+      elemDefault = new Ativo(0, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -59,9 +59,7 @@ describe('Service Tests', () => {
       it('should update a Ativo', async () => {
         const returnedFromService = Object.assign(
           {
-            idTipoAtivo: 1,
-            tipoAtivo: 'BBBBBB',
-            periodicidadeDiasManutencao: 1
+            nome: 'BBBBBB'
           },
           elemDefault
         );
@@ -79,9 +77,7 @@ describe('Service Tests', () => {
       it('should return a list of Ativo', async () => {
         const returnedFromService = Object.assign(
           {
-            idTipoAtivo: 1,
-            tipoAtivo: 'BBBBBB',
-            periodicidadeDiasManutencao: 1
+            nome: 'BBBBBB'
           },
           elemDefault
         );

@@ -15,28 +15,18 @@
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="sicapuc20201App.ativo.idTipoAtivo">Id Tipo Ativo</span></th>
-            <th><span jhiTranslate="sicapuc20201App.ativo.tipoAtivo">Tipo Ativo</span></th>
-            <th><span jhiTranslate="sicapuc20201App.ativo.periodicidadeDiasManutencao">Periodicidade Dias Manutencao</span></th>
+            <th><span jhiTranslate="sicapuc20201App.ativo.nome">Nome</span></th>
             <th><span jhiTranslate="sicapuc20201App.ativo.setorMineracao">Setor Mineracao</span></th>
-            <th><span jhiTranslate="sicapuc20201App.ativo.incidente">Incidente</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let ativo of ativos ;trackBy: trackId">
                 <td><a [routerLink]="['/ativo', ativo.id, 'view' ]">{{ativo.id}}</a></td>
-                <td>{{ativo.idTipoAtivo}}</td>
-                <td>{{ativo.tipoAtivo}}</td>
-                <td>{{ativo.periodicidadeDiasManutencao}}</td>
+                <td>{{ativo.nome}}</td>
                 <td>
-                    <div *ngIf="ativo.setorMineracao">
-                        <a [routerLink]="['../setor-mineracao', ativo.setorMineracao?.id, 'view' ]" >{{ativo.setorMineracao?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="ativo.incidente">
-                        <a [routerLink]="['../incidente', ativo.incidente?.id, 'view' ]" >{{ativo.incidente?.id}}</a>
+                    <div *ngIf="ativo.setorMineracaoId">
+                        <a [routerLink]="['../setor-mineracao', ativo.setorMineracaoId , 'view' ]" >{{ativo.setorMineracaoId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

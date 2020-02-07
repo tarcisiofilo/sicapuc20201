@@ -24,7 +24,7 @@ export class SireneUpdateComponent implements OnInit {
     id: [],
     identificacao: [null, [Validators.required]],
     urlAtivar: [null, [Validators.required]],
-    areaSusceptivel: []
+    areaSusceptivelId: []
   });
 
   constructor(
@@ -55,7 +55,7 @@ export class SireneUpdateComponent implements OnInit {
       id: sirene.id,
       identificacao: sirene.identificacao,
       urlAtivar: sirene.urlAtivar,
-      areaSusceptivel: sirene.areaSusceptivel
+      areaSusceptivelId: sirene.areaSusceptivelId
     });
   }
 
@@ -79,7 +79,7 @@ export class SireneUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       identificacao: this.editForm.get(['identificacao']).value,
       urlAtivar: this.editForm.get(['urlAtivar']).value,
-      areaSusceptivel: this.editForm.get(['areaSusceptivel']).value
+      areaSusceptivelId: this.editForm.get(['areaSusceptivelId']).value
     };
     return entity;
   }

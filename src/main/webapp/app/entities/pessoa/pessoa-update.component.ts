@@ -7,8 +7,6 @@ import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { IPessoa, Pessoa } from 'app/shared/model/pessoa.model';
 import { PessoaService } from './pessoa.service';
-import { IFuncionario } from 'app/shared/model/funcionario.model';
-import { FuncionarioService } from 'app/entities/funcionario';
 import { IFamilia } from 'app/shared/model/familia.model';
 import { FamiliaService } from 'app/entities/familia';
 
@@ -20,8 +18,6 @@ export class PessoaUpdateComponent implements OnInit {
   pessoa: IPessoa;
   isSaving: boolean;
 
-  funcionarios: IFuncionario[];
-
   familias: IFamilia[];
 
   editForm = this.fb.group({
@@ -30,13 +26,12 @@ export class PessoaUpdateComponent implements OnInit {
     nome: [null, [Validators.required]],
     email: [null, [Validators.required]],
     telefone: [null, [Validators.required]],
-    familia: []
+    familiaId: []
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected pessoaService: PessoaService,
-    protected funcionarioService: FuncionarioService,
     protected familiaService: FamiliaService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -48,13 +43,6 @@ export class PessoaUpdateComponent implements OnInit {
       this.updateForm(pessoa);
       this.pessoa = pessoa;
     });
-    this.funcionarioService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IFuncionario[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IFuncionario[]>) => response.body)
-      )
-      .subscribe((res: IFuncionario[]) => (this.funcionarios = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.familiaService
       .query()
       .pipe(
@@ -71,7 +59,7 @@ export class PessoaUpdateComponent implements OnInit {
       nome: pessoa.nome,
       email: pessoa.email,
       telefone: pessoa.telefone,
-      familia: pessoa.familia
+      familiaId: pessoa.familiaId
     });
   }
 
@@ -97,7 +85,7 @@ export class PessoaUpdateComponent implements OnInit {
       nome: this.editForm.get(['nome']).value,
       email: this.editForm.get(['email']).value,
       telefone: this.editForm.get(['telefone']).value,
-      familia: this.editForm.get(['familia']).value
+      familiaId: this.editForm.get(['familiaId']).value
     };
     return entity;
   }
@@ -116,10 +104,6 @@ export class PessoaUpdateComponent implements OnInit {
   }
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
-  }
-
-  trackFuncionarioById(index: number, item: IFuncionario) {
-    return item.id;
   }
 
   trackFamiliaById(index: number, item: IFamilia) {

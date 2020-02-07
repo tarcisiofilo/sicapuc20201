@@ -11,6 +11,8 @@ import { IMedicaoInstrumento } from 'app/shared/model/medicao-instrumento.model'
 import { MedicaoInstrumentoService } from 'app/entities/medicao-instrumento';
 import { INivelIncidente } from 'app/shared/model/nivel-incidente.model';
 import { NivelIncidenteService } from 'app/entities/nivel-incidente';
+import { IAtivo } from 'app/shared/model/ativo.model';
+import { AtivoService } from 'app/entities/ativo';
 
 @Component({
   selector: 'jhi-incidente-update',
@@ -24,12 +26,16 @@ export class IncidenteUpdateComponent implements OnInit {
 
   nivelincidentes: INivelIncidente[];
 
+  ativos: IAtivo[];
+
   editForm = this.fb.group({
     id: [],
     identificacao: [null, [Validators.required]],
     origem: [null, [Validators.required]],
-    medicaoInstrumento: [],
-    nivelIncidente: []
+    mensagem: [null, [Validators.required]],
+    medicaoInstrumentoId: [],
+    nivelIncidenteId: [],
+    ativos: []
   });
 
   constructor(
@@ -37,6 +43,7 @@ export class IncidenteUpdateComponent implements OnInit {
     protected incidenteService: IncidenteService,
     protected medicaoInstrumentoService: MedicaoInstrumentoService,
     protected nivelIncidenteService: NivelIncidenteService,
+    protected ativoService: AtivoService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -55,11 +62,11 @@ export class IncidenteUpdateComponent implements OnInit {
       )
       .subscribe(
         (res: IMedicaoInstrumento[]) => {
-          if (!this.incidente.medicaoInstrumento || !this.incidente.medicaoInstrumento.id) {
+          if (!this.incidente.medicaoInstrumentoId) {
             this.medicaoinstrumentos = res;
           } else {
             this.medicaoInstrumentoService
-              .find(this.incidente.medicaoInstrumento.id)
+              .find(this.incidente.medicaoInstrumentoId)
               .pipe(
                 filter((subResMayBeOk: HttpResponse<IMedicaoInstrumento>) => subResMayBeOk.ok),
                 map((subResponse: HttpResponse<IMedicaoInstrumento>) => subResponse.body)
@@ -73,30 +80,19 @@ export class IncidenteUpdateComponent implements OnInit {
         (res: HttpErrorResponse) => this.onError(res.message)
       );
     this.nivelIncidenteService
-      .query({ filter: 'incidente-is-null' })
+      .query()
       .pipe(
         filter((mayBeOk: HttpResponse<INivelIncidente[]>) => mayBeOk.ok),
         map((response: HttpResponse<INivelIncidente[]>) => response.body)
       )
-      .subscribe(
-        (res: INivelIncidente[]) => {
-          if (!this.incidente.nivelIncidente || !this.incidente.nivelIncidente.id) {
-            this.nivelincidentes = res;
-          } else {
-            this.nivelIncidenteService
-              .find(this.incidente.nivelIncidente.id)
-              .pipe(
-                filter((subResMayBeOk: HttpResponse<INivelIncidente>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<INivelIncidente>) => subResponse.body)
-              )
-              .subscribe(
-                (subRes: INivelIncidente) => (this.nivelincidentes = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
-          }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+      .subscribe((res: INivelIncidente[]) => (this.nivelincidentes = res), (res: HttpErrorResponse) => this.onError(res.message));
+    this.ativoService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<IAtivo[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IAtivo[]>) => response.body)
+      )
+      .subscribe((res: IAtivo[]) => (this.ativos = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(incidente: IIncidente) {
@@ -104,8 +100,10 @@ export class IncidenteUpdateComponent implements OnInit {
       id: incidente.id,
       identificacao: incidente.identificacao,
       origem: incidente.origem,
-      medicaoInstrumento: incidente.medicaoInstrumento,
-      nivelIncidente: incidente.nivelIncidente
+      mensagem: incidente.mensagem,
+      medicaoInstrumentoId: incidente.medicaoInstrumentoId,
+      nivelIncidenteId: incidente.nivelIncidenteId,
+      ativos: incidente.ativos
     });
   }
 
@@ -129,8 +127,10 @@ export class IncidenteUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       identificacao: this.editForm.get(['identificacao']).value,
       origem: this.editForm.get(['origem']).value,
-      medicaoInstrumento: this.editForm.get(['medicaoInstrumento']).value,
-      nivelIncidente: this.editForm.get(['nivelIncidente']).value
+      mensagem: this.editForm.get(['mensagem']).value,
+      medicaoInstrumentoId: this.editForm.get(['medicaoInstrumentoId']).value,
+      nivelIncidenteId: this.editForm.get(['nivelIncidenteId']).value,
+      ativos: this.editForm.get(['ativos']).value
     };
     return entity;
   }
@@ -157,5 +157,20 @@ export class IncidenteUpdateComponent implements OnInit {
 
   trackNivelIncidenteById(index: number, item: INivelIncidente) {
     return item.id;
+  }
+
+  trackAtivoById(index: number, item: IAtivo) {
+    return item.id;
+  }
+
+  getSelected(selectedVals: Array<any>, option: any) {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

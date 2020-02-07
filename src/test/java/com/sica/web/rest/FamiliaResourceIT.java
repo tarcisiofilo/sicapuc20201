@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Familia;
 import com.sica.repository.FamiliaRepository;
+import com.sica.service.FamiliaService;
+import com.sica.service.dto.FamiliaDTO;
+import com.sica.service.mapper.FamiliaMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +43,12 @@ public class FamiliaResourceIT {
     private FamiliaRepository familiaRepository;
 
     @Autowired
+    private FamiliaMapper familiaMapper;
+
+    @Autowired
+    private FamiliaService familiaService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -61,7 +70,7 @@ public class FamiliaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FamiliaResource familiaResource = new FamiliaResource(familiaRepository);
+        final FamiliaResource familiaResource = new FamiliaResource(familiaService);
         this.restFamiliaMockMvc = MockMvcBuilders.standaloneSetup(familiaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -104,9 +113,10 @@ public class FamiliaResourceIT {
         int databaseSizeBeforeCreate = familiaRepository.findAll().size();
 
         // Create the Familia
+        FamiliaDTO familiaDTO = familiaMapper.toDto(familia);
         restFamiliaMockMvc.perform(post("/api/familias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(familia)))
+            .content(TestUtil.convertObjectToJsonBytes(familiaDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Familia in the database
@@ -123,11 +133,12 @@ public class FamiliaResourceIT {
 
         // Create the Familia with an existing ID
         familia.setId(1L);
+        FamiliaDTO familiaDTO = familiaMapper.toDto(familia);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFamiliaMockMvc.perform(post("/api/familias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(familia)))
+            .content(TestUtil.convertObjectToJsonBytes(familiaDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Familia in the database
@@ -144,10 +155,11 @@ public class FamiliaResourceIT {
         familia.setIdentificacao(null);
 
         // Create the Familia, which fails.
+        FamiliaDTO familiaDTO = familiaMapper.toDto(familia);
 
         restFamiliaMockMvc.perform(post("/api/familias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(familia)))
+            .content(TestUtil.convertObjectToJsonBytes(familiaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Familia> familiaList = familiaRepository.findAll();
@@ -204,10 +216,11 @@ public class FamiliaResourceIT {
         em.detach(updatedFamilia);
         updatedFamilia
             .identificacao(UPDATED_IDENTIFICACAO);
+        FamiliaDTO familiaDTO = familiaMapper.toDto(updatedFamilia);
 
         restFamiliaMockMvc.perform(put("/api/familias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedFamilia)))
+            .content(TestUtil.convertObjectToJsonBytes(familiaDTO)))
             .andExpect(status().isOk());
 
         // Validate the Familia in the database
@@ -223,11 +236,12 @@ public class FamiliaResourceIT {
         int databaseSizeBeforeUpdate = familiaRepository.findAll().size();
 
         // Create the Familia
+        FamiliaDTO familiaDTO = familiaMapper.toDto(familia);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFamiliaMockMvc.perform(put("/api/familias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(familia)))
+            .content(TestUtil.convertObjectToJsonBytes(familiaDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Familia in the database
@@ -266,5 +280,28 @@ public class FamiliaResourceIT {
         assertThat(familia1).isNotEqualTo(familia2);
         familia1.setId(null);
         assertThat(familia1).isNotEqualTo(familia2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(FamiliaDTO.class);
+        FamiliaDTO familiaDTO1 = new FamiliaDTO();
+        familiaDTO1.setId(1L);
+        FamiliaDTO familiaDTO2 = new FamiliaDTO();
+        assertThat(familiaDTO1).isNotEqualTo(familiaDTO2);
+        familiaDTO2.setId(familiaDTO1.getId());
+        assertThat(familiaDTO1).isEqualTo(familiaDTO2);
+        familiaDTO2.setId(2L);
+        assertThat(familiaDTO1).isNotEqualTo(familiaDTO2);
+        familiaDTO1.setId(null);
+        assertThat(familiaDTO1).isNotEqualTo(familiaDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(familiaMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(familiaMapper.fromId(null)).isNull();
     }
 }

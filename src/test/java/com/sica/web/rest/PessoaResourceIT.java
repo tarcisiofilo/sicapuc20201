@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Pessoa;
 import com.sica.repository.PessoaRepository;
+import com.sica.service.PessoaService;
+import com.sica.service.dto.PessoaDTO;
+import com.sica.service.mapper.PessoaMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +52,12 @@ public class PessoaResourceIT {
     private PessoaRepository pessoaRepository;
 
     @Autowired
+    private PessoaMapper pessoaMapper;
+
+    @Autowired
+    private PessoaService pessoaService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -70,7 +79,7 @@ public class PessoaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PessoaResource pessoaResource = new PessoaResource(pessoaRepository);
+        final PessoaResource pessoaResource = new PessoaResource(pessoaService);
         this.restPessoaMockMvc = MockMvcBuilders.standaloneSetup(pessoaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -119,9 +128,10 @@ public class PessoaResourceIT {
         int databaseSizeBeforeCreate = pessoaRepository.findAll().size();
 
         // Create the Pessoa
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
         restPessoaMockMvc.perform(post("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Pessoa in the database
@@ -141,11 +151,12 @@ public class PessoaResourceIT {
 
         // Create the Pessoa with an existing ID
         pessoa.setId(1L);
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPessoaMockMvc.perform(post("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Pessoa in the database
@@ -162,10 +173,11 @@ public class PessoaResourceIT {
         pessoa.setCpf(null);
 
         // Create the Pessoa, which fails.
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
 
         restPessoaMockMvc.perform(post("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Pessoa> pessoaList = pessoaRepository.findAll();
@@ -180,10 +192,11 @@ public class PessoaResourceIT {
         pessoa.setNome(null);
 
         // Create the Pessoa, which fails.
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
 
         restPessoaMockMvc.perform(post("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Pessoa> pessoaList = pessoaRepository.findAll();
@@ -198,10 +211,11 @@ public class PessoaResourceIT {
         pessoa.setEmail(null);
 
         // Create the Pessoa, which fails.
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
 
         restPessoaMockMvc.perform(post("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Pessoa> pessoaList = pessoaRepository.findAll();
@@ -216,10 +230,11 @@ public class PessoaResourceIT {
         pessoa.setTelefone(null);
 
         // Create the Pessoa, which fails.
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
 
         restPessoaMockMvc.perform(post("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Pessoa> pessoaList = pessoaRepository.findAll();
@@ -285,10 +300,11 @@ public class PessoaResourceIT {
             .nome(UPDATED_NOME)
             .email(UPDATED_EMAIL)
             .telefone(UPDATED_TELEFONE);
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(updatedPessoa);
 
         restPessoaMockMvc.perform(put("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedPessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isOk());
 
         // Validate the Pessoa in the database
@@ -307,11 +323,12 @@ public class PessoaResourceIT {
         int databaseSizeBeforeUpdate = pessoaRepository.findAll().size();
 
         // Create the Pessoa
+        PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPessoaMockMvc.perform(put("/api/pessoas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pessoa)))
+            .content(TestUtil.convertObjectToJsonBytes(pessoaDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Pessoa in the database
@@ -350,5 +367,28 @@ public class PessoaResourceIT {
         assertThat(pessoa1).isNotEqualTo(pessoa2);
         pessoa1.setId(null);
         assertThat(pessoa1).isNotEqualTo(pessoa2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(PessoaDTO.class);
+        PessoaDTO pessoaDTO1 = new PessoaDTO();
+        pessoaDTO1.setId(1L);
+        PessoaDTO pessoaDTO2 = new PessoaDTO();
+        assertThat(pessoaDTO1).isNotEqualTo(pessoaDTO2);
+        pessoaDTO2.setId(pessoaDTO1.getId());
+        assertThat(pessoaDTO1).isEqualTo(pessoaDTO2);
+        pessoaDTO2.setId(2L);
+        assertThat(pessoaDTO1).isNotEqualTo(pessoaDTO2);
+        pessoaDTO1.setId(null);
+        assertThat(pessoaDTO1).isNotEqualTo(pessoaDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(pessoaMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(pessoaMapper.fromId(null)).isNull();
     }
 }

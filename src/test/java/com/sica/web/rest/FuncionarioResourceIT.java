@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Funcionario;
 import com.sica.repository.FuncionarioRepository;
+import com.sica.service.FuncionarioService;
+import com.sica.service.dto.FuncionarioDTO;
+import com.sica.service.mapper.FuncionarioMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,12 @@ public class FuncionarioResourceIT {
     private FuncionarioRepository funcionarioRepository;
 
     @Autowired
+    private FuncionarioMapper funcionarioMapper;
+
+    @Autowired
+    private FuncionarioService funcionarioService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -64,7 +73,7 @@ public class FuncionarioResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FuncionarioResource funcionarioResource = new FuncionarioResource(funcionarioRepository);
+        final FuncionarioResource funcionarioResource = new FuncionarioResource(funcionarioService);
         this.restFuncionarioMockMvc = MockMvcBuilders.standaloneSetup(funcionarioResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -109,9 +118,10 @@ public class FuncionarioResourceIT {
         int databaseSizeBeforeCreate = funcionarioRepository.findAll().size();
 
         // Create the Funcionario
+        FuncionarioDTO funcionarioDTO = funcionarioMapper.toDto(funcionario);
         restFuncionarioMockMvc.perform(post("/api/funcionarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(funcionario)))
+            .content(TestUtil.convertObjectToJsonBytes(funcionarioDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Funcionario in the database
@@ -129,11 +139,12 @@ public class FuncionarioResourceIT {
 
         // Create the Funcionario with an existing ID
         funcionario.setId(1L);
+        FuncionarioDTO funcionarioDTO = funcionarioMapper.toDto(funcionario);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFuncionarioMockMvc.perform(post("/api/funcionarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(funcionario)))
+            .content(TestUtil.convertObjectToJsonBytes(funcionarioDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Funcionario in the database
@@ -150,10 +161,11 @@ public class FuncionarioResourceIT {
         funcionario.setCargo(null);
 
         // Create the Funcionario, which fails.
+        FuncionarioDTO funcionarioDTO = funcionarioMapper.toDto(funcionario);
 
         restFuncionarioMockMvc.perform(post("/api/funcionarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(funcionario)))
+            .content(TestUtil.convertObjectToJsonBytes(funcionarioDTO)))
             .andExpect(status().isBadRequest());
 
         List<Funcionario> funcionarioList = funcionarioRepository.findAll();
@@ -168,10 +180,11 @@ public class FuncionarioResourceIT {
         funcionario.setIdDispositivoMonitoramento(null);
 
         // Create the Funcionario, which fails.
+        FuncionarioDTO funcionarioDTO = funcionarioMapper.toDto(funcionario);
 
         restFuncionarioMockMvc.perform(post("/api/funcionarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(funcionario)))
+            .content(TestUtil.convertObjectToJsonBytes(funcionarioDTO)))
             .andExpect(status().isBadRequest());
 
         List<Funcionario> funcionarioList = funcionarioRepository.findAll();
@@ -231,10 +244,11 @@ public class FuncionarioResourceIT {
         updatedFuncionario
             .cargo(UPDATED_CARGO)
             .idDispositivoMonitoramento(UPDATED_ID_DISPOSITIVO_MONITORAMENTO);
+        FuncionarioDTO funcionarioDTO = funcionarioMapper.toDto(updatedFuncionario);
 
         restFuncionarioMockMvc.perform(put("/api/funcionarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedFuncionario)))
+            .content(TestUtil.convertObjectToJsonBytes(funcionarioDTO)))
             .andExpect(status().isOk());
 
         // Validate the Funcionario in the database
@@ -251,11 +265,12 @@ public class FuncionarioResourceIT {
         int databaseSizeBeforeUpdate = funcionarioRepository.findAll().size();
 
         // Create the Funcionario
+        FuncionarioDTO funcionarioDTO = funcionarioMapper.toDto(funcionario);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFuncionarioMockMvc.perform(put("/api/funcionarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(funcionario)))
+            .content(TestUtil.convertObjectToJsonBytes(funcionarioDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Funcionario in the database
@@ -294,5 +309,28 @@ public class FuncionarioResourceIT {
         assertThat(funcionario1).isNotEqualTo(funcionario2);
         funcionario1.setId(null);
         assertThat(funcionario1).isNotEqualTo(funcionario2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(FuncionarioDTO.class);
+        FuncionarioDTO funcionarioDTO1 = new FuncionarioDTO();
+        funcionarioDTO1.setId(1L);
+        FuncionarioDTO funcionarioDTO2 = new FuncionarioDTO();
+        assertThat(funcionarioDTO1).isNotEqualTo(funcionarioDTO2);
+        funcionarioDTO2.setId(funcionarioDTO1.getId());
+        assertThat(funcionarioDTO1).isEqualTo(funcionarioDTO2);
+        funcionarioDTO2.setId(2L);
+        assertThat(funcionarioDTO1).isNotEqualTo(funcionarioDTO2);
+        funcionarioDTO1.setId(null);
+        assertThat(funcionarioDTO1).isNotEqualTo(funcionarioDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(funcionarioMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(funcionarioMapper.fromId(null)).isNull();
     }
 }

@@ -17,8 +17,10 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="sicapuc20201App.incidente.identificacao">Identificacao</span></th>
             <th><span jhiTranslate="sicapuc20201App.incidente.origem">Origem</span></th>
+            <th><span jhiTranslate="sicapuc20201App.incidente.mensagem">Mensagem</span></th>
             <th><span jhiTranslate="sicapuc20201App.incidente.medicaoInstrumento">Medicao Instrumento</span></th>
             <th><span jhiTranslate="sicapuc20201App.incidente.nivelIncidente">Nivel Incidente</span></th>
+            <th><span jhiTranslate="sicapuc20201App.incidente.ativo">Ativo</span></th>
             <th></th>
             </tr>
             </thead>
@@ -27,15 +29,21 @@
                 <td><a [routerLink]="['/incidente', incidente.id, 'view' ]">{{incidente.id}}</a></td>
                 <td>{{incidente.identificacao}}</td>
                 <td jhiTranslate="{{'sicapuc20201App.OrigemIncidente.' + incidente.origem}}">{{incidente.origem}}</td>
+                <td>{{incidente.mensagem}}</td>
                 <td>
-                    <div *ngIf="incidente.medicaoInstrumento">
-                        <a [routerLink]="['../medicao-instrumento', incidente.medicaoInstrumento?.id, 'view' ]" >{{incidente.medicaoInstrumento?.id}}</a>
+                    <div *ngIf="incidente.medicaoInstrumentoId">
+                        <a [routerLink]="['../medicao-instrumento', incidente.medicaoInstrumentoId , 'view' ]" >{{incidente.medicaoInstrumentoId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="incidente.nivelIncidente">
-                        <a [routerLink]="['../nivel-incidente', incidente.nivelIncidente?.id, 'view' ]" >{{incidente.nivelIncidente?.id}}</a>
+                    <div *ngIf="incidente.nivelIncidenteId">
+                        <a [routerLink]="['../nivel-incidente', incidente.nivelIncidenteId , 'view' ]" >{{incidente.nivelIncidenteId}}</a>
                     </div>
+                </td>
+                <td>
+                    <span *ngFor="let ativo of incidente.ativos; let last = last">
+                            <a class="form-control-static" [routerLink]="['../ativo', ativo?.id, 'view' ]">{{ativo.id}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">

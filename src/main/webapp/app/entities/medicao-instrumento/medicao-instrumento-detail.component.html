@@ -15,8 +15,8 @@
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.medicaoInstrumento.instrumentoMonitoramento">Instrumento Monitoramento</span></dt>
                 <dd>
-                    <div *ngIf="medicaoInstrumento.instrumentoMonitoramento">
-                        <a [routerLink]="['/instrumento-monitoramento', medicaoInstrumento.instrumentoMonitoramento?.id, 'view']">{{medicaoInstrumento.instrumentoMonitoramento?.id}}</a>
+                    <div *ngIf="medicaoInstrumento.instrumentoMonitoramentoId">
+                        <a [routerLink]="['/instrumento-monitoramento', medicaoInstrumento.instrumentoMonitoramentoId, 'view']">{{medicaoInstrumento.instrumentoMonitoramentoId}}</a>
                     </div>
                 </dd>
             </dl>

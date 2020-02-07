@@ -15,8 +15,8 @@
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.sirene.areaSusceptivel">Area Susceptivel</span></dt>
                 <dd>
-                    <div *ngIf="sirene.areaSusceptivel">
-                        <a [routerLink]="['/area-susceptivel', sirene.areaSusceptivel?.id, 'view']">{{sirene.areaSusceptivel?.id}}</a>
+                    <div *ngIf="sirene.areaSusceptivelId">
+                        <a [routerLink]="['/area-susceptivel', sirene.areaSusceptivelId, 'view']">{{sirene.areaSusceptivelId}}</a>
                     </div>
                 </dd>
             </dl>

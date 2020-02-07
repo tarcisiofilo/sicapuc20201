@@ -10,17 +10,10 @@ export const enum TipoOperacao {
 export interface IMinaOperacao {
   id?: number;
   nome?: string;
-  segmento?: string;
   tipoOperacao?: TipoOperacao;
   setorMineracaos?: ISetorMineracao[];
 }
 
 export class MinaOperacao implements IMinaOperacao {
-  constructor(
-    public id?: number,
-    public nome?: string,
-    public segmento?: string,
-    public tipoOperacao?: TipoOperacao,
-    public setorMineracaos?: ISetorMineracao[]
-  ) {}
+  constructor(public id?: number, public nome?: string, public tipoOperacao?: TipoOperacao, public setorMineracaos?: ISetorMineracao[]) {}
 }

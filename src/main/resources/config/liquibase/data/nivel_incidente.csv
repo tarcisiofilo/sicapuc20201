@@ -1,11 +1,11 @@
-id;nome;notifica_dnpm;notifica_email;notificacao_sms_whatsapp;notificacao_dispositivo_seguranca;notifica_sirene
-1;Ranch impactful;true;false;false;false;true
-2;pixel Pennsylvania;true;false;true;false;false
-3;viral;true;true;true;true;false
-4;Cambridgeshire methodology;true;false;false;false;false
-5;24/7;false;false;true;false;false
-6;digital;false;true;true;false;false
-7;Grocery Rand Namibia Dollar;true;false;true;false;true
-8;Human Jewelery Engineer;false;false;true;true;true
-9;hard drive Mexico Gardens;true;true;false;false;true
-10;system;false;true;true;false;true
+id;nome;notifica_dnpm;notifica_email;notificacao_sms;notificacao_whatsapp;notificacao_dispositivo_seguranca;notifica_sirene
+1;payment Illinois dot-com;true;false;true;true;false;false
+2;Decentralized;false;false;false;false;true;false
+3;scalable;false;false;true;true;false;false
+4;Grocery Rand Namibia Dollar;true;false;true;false;true;true
+5;TCP parsing Networked;false;true;true;true;true;true
+6;Mexico Gardens;true;true;false;false;true;false
+7;channels Buckinghamshire Open-source;false;true;true;true;false;false
+8;Avon Applications;false;true;true;false;false;false
+9;Rubber Awesome Frozen Mouse;false;true;true;false;false;false
+10;Shoes Rubber Mall;true;false;true;false;false;true

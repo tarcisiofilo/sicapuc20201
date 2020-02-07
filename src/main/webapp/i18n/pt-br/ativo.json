@@ -15,9 +15,7 @@
       "detail": {
         "title": "Ativo"
       },
-      "idTipoAtivo": "Id Tipo Ativo",
-      "tipoAtivo": "Tipo Ativo",
-      "periodicidadeDiasManutencao": "Periodicidade Dias Manutencao",
+      "nome": "Nome",
       "setorMineracao": "Setor Mineracao",
       "areaSusceptivel": "Area Susceptivel",
       "incidente": "Incidente"

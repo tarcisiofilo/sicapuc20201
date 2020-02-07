@@ -9,13 +9,6 @@
             ]
         },
         {
-            "fieldName": "segmento",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "tipoOperacao",
             "fieldType": "TipoOperacao",
             "fieldValues": "MINERIO_FERRO_PELOTAS,NIQUEL,MANGANES_FERROLIGAS,CARVAO_COBRE",
@@ -34,9 +27,9 @@
     ],
     "changelogDate": "20200204174630",
     "entityTableName": "mina_operacao",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

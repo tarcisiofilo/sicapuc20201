@@ -19,8 +19,8 @@
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.vistoria.instrumentoMonitoramento">Instrumento Monitoramento</span></dt>
                 <dd>
-                    <div *ngIf="vistoria.instrumentoMonitoramento">
-                        <a [routerLink]="['/instrumento-monitoramento', vistoria.instrumentoMonitoramento?.id, 'view']">{{vistoria.instrumentoMonitoramento?.id}}</a>
+                    <div *ngIf="vistoria.instrumentoMonitoramentoId">
+                        <a [routerLink]="['/instrumento-monitoramento', vistoria.instrumentoMonitoramentoId, 'view']">{{vistoria.instrumentoMonitoramentoId}}</a>
                     </div>
                 </dd>
             </dl>

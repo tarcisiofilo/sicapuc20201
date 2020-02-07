@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Sirene;
 import com.sica.repository.SireneRepository;
+import com.sica.service.SireneService;
+import com.sica.service.dto.SireneDTO;
+import com.sica.service.mapper.SireneMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,12 @@ public class SireneResourceIT {
     private SireneRepository sireneRepository;
 
     @Autowired
+    private SireneMapper sireneMapper;
+
+    @Autowired
+    private SireneService sireneService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -64,7 +73,7 @@ public class SireneResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SireneResource sireneResource = new SireneResource(sireneRepository);
+        final SireneResource sireneResource = new SireneResource(sireneService);
         this.restSireneMockMvc = MockMvcBuilders.standaloneSetup(sireneResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -109,9 +118,10 @@ public class SireneResourceIT {
         int databaseSizeBeforeCreate = sireneRepository.findAll().size();
 
         // Create the Sirene
+        SireneDTO sireneDTO = sireneMapper.toDto(sirene);
         restSireneMockMvc.perform(post("/api/sirenes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sirene)))
+            .content(TestUtil.convertObjectToJsonBytes(sireneDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Sirene in the database
@@ -129,11 +139,12 @@ public class SireneResourceIT {
 
         // Create the Sirene with an existing ID
         sirene.setId(1L);
+        SireneDTO sireneDTO = sireneMapper.toDto(sirene);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSireneMockMvc.perform(post("/api/sirenes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sirene)))
+            .content(TestUtil.convertObjectToJsonBytes(sireneDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Sirene in the database
@@ -150,10 +161,11 @@ public class SireneResourceIT {
         sirene.setIdentificacao(null);
 
         // Create the Sirene, which fails.
+        SireneDTO sireneDTO = sireneMapper.toDto(sirene);
 
         restSireneMockMvc.perform(post("/api/sirenes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sirene)))
+            .content(TestUtil.convertObjectToJsonBytes(sireneDTO)))
             .andExpect(status().isBadRequest());
 
         List<Sirene> sireneList = sireneRepository.findAll();
@@ -168,10 +180,11 @@ public class SireneResourceIT {
         sirene.setUrlAtivar(null);
 
         // Create the Sirene, which fails.
+        SireneDTO sireneDTO = sireneMapper.toDto(sirene);
 
         restSireneMockMvc.perform(post("/api/sirenes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sirene)))
+            .content(TestUtil.convertObjectToJsonBytes(sireneDTO)))
             .andExpect(status().isBadRequest());
 
         List<Sirene> sireneList = sireneRepository.findAll();
@@ -231,10 +244,11 @@ public class SireneResourceIT {
         updatedSirene
             .identificacao(UPDATED_IDENTIFICACAO)
             .urlAtivar(UPDATED_URL_ATIVAR);
+        SireneDTO sireneDTO = sireneMapper.toDto(updatedSirene);
 
         restSireneMockMvc.perform(put("/api/sirenes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSirene)))
+            .content(TestUtil.convertObjectToJsonBytes(sireneDTO)))
             .andExpect(status().isOk());
 
         // Validate the Sirene in the database
@@ -251,11 +265,12 @@ public class SireneResourceIT {
         int databaseSizeBeforeUpdate = sireneRepository.findAll().size();
 
         // Create the Sirene
+        SireneDTO sireneDTO = sireneMapper.toDto(sirene);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSireneMockMvc.perform(put("/api/sirenes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sirene)))
+            .content(TestUtil.convertObjectToJsonBytes(sireneDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Sirene in the database
@@ -294,5 +309,28 @@ public class SireneResourceIT {
         assertThat(sirene1).isNotEqualTo(sirene2);
         sirene1.setId(null);
         assertThat(sirene1).isNotEqualTo(sirene2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(SireneDTO.class);
+        SireneDTO sireneDTO1 = new SireneDTO();
+        sireneDTO1.setId(1L);
+        SireneDTO sireneDTO2 = new SireneDTO();
+        assertThat(sireneDTO1).isNotEqualTo(sireneDTO2);
+        sireneDTO2.setId(sireneDTO1.getId());
+        assertThat(sireneDTO1).isEqualTo(sireneDTO2);
+        sireneDTO2.setId(2L);
+        assertThat(sireneDTO1).isNotEqualTo(sireneDTO2);
+        sireneDTO1.setId(null);
+        assertThat(sireneDTO1).isNotEqualTo(sireneDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(sireneMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(sireneMapper.fromId(null)).isNull();
     }
 }

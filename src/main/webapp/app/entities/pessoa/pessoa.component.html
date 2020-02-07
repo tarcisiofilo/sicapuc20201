@@ -31,8 +31,8 @@
                 <td>{{pessoa.email}}</td>
                 <td>{{pessoa.telefone}}</td>
                 <td>
-                    <div *ngIf="pessoa.familia">
-                        <a [routerLink]="['../familia', pessoa.familia?.id, 'view' ]" >{{pessoa.familia?.id}}</a>
+                    <div *ngIf="pessoa.familiaId">
+                        <a [routerLink]="['../familia', pessoa.familiaId , 'view' ]" >{{pessoa.familiaId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

@@ -8,7 +8,6 @@ enum TipoInstrumentoMonitoramento {
 
 entity MinaOperacao {
   nome String required
-  segmento String required
   tipoOperacao TipoOperacao required
 }
 
@@ -38,9 +37,7 @@ entity Familia {
 }
 
 entity Ativo {
-	idTipoAtivo Long required,
-	tipoAtivo String required,
-	periodicidadeDiasManutencao Long required,    
+	nome String required
 }
 
 entity Sirene {
@@ -51,6 +48,7 @@ entity Sirene {
 entity Incidente {
 	identificacao String required
     origem OrigemIncidente required
+    mensagem String required
 }
 
 relationship OneToOne {
@@ -87,19 +85,12 @@ entity MedicaoInstrumento {
 }
 
 relationship OneToMany {
-	InstrumentoMonitoramento to MedicaoInstrumento
+	InstrumentoMonitoramento to MedicaoInstrumento{instrumentoMonitoramento}
 }
 
 enum TipoNoficacao {
-	DNPM, EMAIL, SMS_WHATAPP, DISPOSITIVO_SEGURANCA, SIRENE
+	DNPM, EMAIL, SMS, WHATAPP, DISPOSITIVO_SEGURANCA, SIRENE
 }
-
-entity Notificacao {
-	dataNotifacao ZonedDateTime required
-    tipoNotificacao TipoNoficacao required
-}
-
-
 
 enum OrigemIncidente {
 	MONITORAMENTO_SENSORES, MANUAL
@@ -109,60 +100,59 @@ entity NivelIncidente {
 	nome String required
     notificaDNPM Boolean required
     notificaEmail Boolean required
-    notificacaoSmsWhatsapp Boolean required
+    notificacaoSms Boolean required
+    notificacaoWhatsapp Boolean required
     notificacaoDispositivoSeguranca Boolean required
     notificaSirene Boolean required
 }
 
-relationship OneToMany {
-	Incidente to Notificacao
+relationship ManyToOne {
+	Incidente{nivelIncidente} to NivelIncidente
 }
 
 relationship OneToOne {
-	Incidente to NivelIncidente
+	Ativo{setorMineracao} to SetorMineracao
 }
 
-relationship OneToOne {
-	Ativo to SetorMineracao
-}
-
-relationship OneToMany {
+relationship ManyToMany {
 	Incidente to Ativo
 }
 
 relationship OneToMany {
-	Ativo to AreaSusceptivel
+	Ativo to AreaSusceptivel{ativo}
 }
 
 relationship OneToMany {
-	Familia to Pessoa
+	Familia to Pessoa{familia}
 }
 
 relationship OneToMany {
-	AreaSusceptivel to Familia
+	AreaSusceptivel to Familia{areaSusceptivel}
 }
 
 relationship OneToMany {
 	AreaSusceptivel to Sirene
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	SetorMineracao{diretor} to Funcionario
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	SetorMineracao{gerente} to Funcionario
 }
 
 
 relationship OneToMany {
-	SetorMineracao{funcionarios} to Funcionario
+	SetorMineracao{funcionarios} to Funcionario{setorMineracao}
 }
 
 relationship OneToOne {
-	Funcionario to Pessoa
+	Funcionario{pessoa} to Pessoa
 }
 relationship OneToMany {
-	MinaOperacao to SetorMineracao
+	MinaOperacao to SetorMineracao{minaOperacao}
 }
+
+dto * with mapstruct
 

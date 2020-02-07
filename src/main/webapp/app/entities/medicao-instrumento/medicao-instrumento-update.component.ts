@@ -30,7 +30,7 @@ export class MedicaoInstrumentoUpdateComponent implements OnInit {
     id: [],
     data: [null, [Validators.required]],
     valor: [null, [Validators.required]],
-    instrumentoMonitoramento: []
+    instrumentoMonitoramentoId: []
   });
 
   constructor(
@@ -72,7 +72,7 @@ export class MedicaoInstrumentoUpdateComponent implements OnInit {
       id: medicaoInstrumento.id,
       data: medicaoInstrumento.data != null ? medicaoInstrumento.data.format(DATE_TIME_FORMAT) : null,
       valor: medicaoInstrumento.valor,
-      instrumentoMonitoramento: medicaoInstrumento.instrumentoMonitoramento
+      instrumentoMonitoramentoId: medicaoInstrumento.instrumentoMonitoramentoId
     });
   }
 
@@ -96,7 +96,7 @@ export class MedicaoInstrumentoUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       data: this.editForm.get(['data']).value != null ? moment(this.editForm.get(['data']).value, DATE_TIME_FORMAT) : undefined,
       valor: this.editForm.get(['valor']).value,
-      instrumentoMonitoramento: this.editForm.get(['instrumentoMonitoramento']).value
+      instrumentoMonitoramentoId: this.editForm.get(['instrumentoMonitoramentoId']).value
     };
     return entity;
   }

@@ -43,9 +43,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.medicaoInstrumento.instrumentoMonitoramento" for="field_instrumentoMonitoramento">Instrumento Monitoramento</label>
-                    <select class="form-control" id="field_instrumentoMonitoramento" name="instrumentoMonitoramento" formControlName="instrumentoMonitoramento">
+                    <select class="form-control" id="field_instrumentoMonitoramento" name="instrumentoMonitoramento" formControlName="instrumentoMonitoramentoId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="instrumentoMonitoramentoOption.id === editForm.get('instrumentoMonitoramento').value?.id ? editForm.get('instrumentoMonitoramento').value : instrumentoMonitoramentoOption" *ngFor="let instrumentoMonitoramentoOption of instrumentomonitoramentos; trackBy: trackInstrumentoMonitoramentoById">{{instrumentoMonitoramentoOption.id}}</option>
+                        <option [ngValue]="instrumentoMonitoramentoOption.id" *ngFor="let instrumentoMonitoramentoOption of instrumentomonitoramentos; trackBy: trackInstrumentoMonitoramentoById">{{instrumentoMonitoramentoOption.id}}</option>
                     </select>
                 </div>
             </div>

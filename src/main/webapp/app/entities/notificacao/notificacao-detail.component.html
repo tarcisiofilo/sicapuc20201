@@ -15,8 +15,8 @@
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.notificacao.incidente">Incidente</span></dt>
                 <dd>
-                    <div *ngIf="notificacao.incidente">
-                        <a [routerLink]="['/incidente', notificacao.incidente?.id, 'view']">{{notificacao.incidente?.id}}</a>
+                    <div *ngIf="notificacao.incidenteId">
+                        <a [routerLink]="['/incidente', notificacao.incidenteId, 'view']">{{notificacao.incidenteId}}</a>
                     </div>
                 </dd>
             </dl>

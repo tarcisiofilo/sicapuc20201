@@ -4,7 +4,8 @@
       "null": "",
       "DNPM": "DNPM",
       "EMAIL": "EMAIL",
-      "SMS_WHATAPP": "SMS_WHATAPP",
+      "SMS": "SMS",
+      "WHATAPP": "WHATAPP",
       "DISPOSITIVO_SEGURANCA": "DISPOSITIVO_SEGURANCA",
       "SIRENE": "SIRENE"
     }

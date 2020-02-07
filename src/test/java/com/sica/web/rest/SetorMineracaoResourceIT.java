@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.SetorMineracao;
 import com.sica.repository.SetorMineracaoRepository;
+import com.sica.service.SetorMineracaoService;
+import com.sica.service.dto.SetorMineracaoDTO;
+import com.sica.service.mapper.SetorMineracaoMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +43,12 @@ public class SetorMineracaoResourceIT {
     private SetorMineracaoRepository setorMineracaoRepository;
 
     @Autowired
+    private SetorMineracaoMapper setorMineracaoMapper;
+
+    @Autowired
+    private SetorMineracaoService setorMineracaoService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -61,7 +70,7 @@ public class SetorMineracaoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SetorMineracaoResource setorMineracaoResource = new SetorMineracaoResource(setorMineracaoRepository);
+        final SetorMineracaoResource setorMineracaoResource = new SetorMineracaoResource(setorMineracaoService);
         this.restSetorMineracaoMockMvc = MockMvcBuilders.standaloneSetup(setorMineracaoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -104,9 +113,10 @@ public class SetorMineracaoResourceIT {
         int databaseSizeBeforeCreate = setorMineracaoRepository.findAll().size();
 
         // Create the SetorMineracao
+        SetorMineracaoDTO setorMineracaoDTO = setorMineracaoMapper.toDto(setorMineracao);
         restSetorMineracaoMockMvc.perform(post("/api/setor-mineracaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(setorMineracao)))
+            .content(TestUtil.convertObjectToJsonBytes(setorMineracaoDTO)))
             .andExpect(status().isCreated());
 
         // Validate the SetorMineracao in the database
@@ -123,11 +133,12 @@ public class SetorMineracaoResourceIT {
 
         // Create the SetorMineracao with an existing ID
         setorMineracao.setId(1L);
+        SetorMineracaoDTO setorMineracaoDTO = setorMineracaoMapper.toDto(setorMineracao);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSetorMineracaoMockMvc.perform(post("/api/setor-mineracaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(setorMineracao)))
+            .content(TestUtil.convertObjectToJsonBytes(setorMineracaoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the SetorMineracao in the database
@@ -144,10 +155,11 @@ public class SetorMineracaoResourceIT {
         setorMineracao.setNome(null);
 
         // Create the SetorMineracao, which fails.
+        SetorMineracaoDTO setorMineracaoDTO = setorMineracaoMapper.toDto(setorMineracao);
 
         restSetorMineracaoMockMvc.perform(post("/api/setor-mineracaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(setorMineracao)))
+            .content(TestUtil.convertObjectToJsonBytes(setorMineracaoDTO)))
             .andExpect(status().isBadRequest());
 
         List<SetorMineracao> setorMineracaoList = setorMineracaoRepository.findAll();
@@ -204,10 +216,11 @@ public class SetorMineracaoResourceIT {
         em.detach(updatedSetorMineracao);
         updatedSetorMineracao
             .nome(UPDATED_NOME);
+        SetorMineracaoDTO setorMineracaoDTO = setorMineracaoMapper.toDto(updatedSetorMineracao);
 
         restSetorMineracaoMockMvc.perform(put("/api/setor-mineracaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSetorMineracao)))
+            .content(TestUtil.convertObjectToJsonBytes(setorMineracaoDTO)))
             .andExpect(status().isOk());
 
         // Validate the SetorMineracao in the database
@@ -223,11 +236,12 @@ public class SetorMineracaoResourceIT {
         int databaseSizeBeforeUpdate = setorMineracaoRepository.findAll().size();
 
         // Create the SetorMineracao
+        SetorMineracaoDTO setorMineracaoDTO = setorMineracaoMapper.toDto(setorMineracao);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSetorMineracaoMockMvc.perform(put("/api/setor-mineracaos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(setorMineracao)))
+            .content(TestUtil.convertObjectToJsonBytes(setorMineracaoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the SetorMineracao in the database
@@ -266,5 +280,28 @@ public class SetorMineracaoResourceIT {
         assertThat(setorMineracao1).isNotEqualTo(setorMineracao2);
         setorMineracao1.setId(null);
         assertThat(setorMineracao1).isNotEqualTo(setorMineracao2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(SetorMineracaoDTO.class);
+        SetorMineracaoDTO setorMineracaoDTO1 = new SetorMineracaoDTO();
+        setorMineracaoDTO1.setId(1L);
+        SetorMineracaoDTO setorMineracaoDTO2 = new SetorMineracaoDTO();
+        assertThat(setorMineracaoDTO1).isNotEqualTo(setorMineracaoDTO2);
+        setorMineracaoDTO2.setId(setorMineracaoDTO1.getId());
+        assertThat(setorMineracaoDTO1).isEqualTo(setorMineracaoDTO2);
+        setorMineracaoDTO2.setId(2L);
+        assertThat(setorMineracaoDTO1).isNotEqualTo(setorMineracaoDTO2);
+        setorMineracaoDTO1.setId(null);
+        assertThat(setorMineracaoDTO1).isNotEqualTo(setorMineracaoDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(setorMineracaoMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(setorMineracaoMapper.fromId(null)).isNull();
     }
 }

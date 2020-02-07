@@ -15,6 +15,13 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "mensagem",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
@@ -27,31 +34,26 @@
             "ownerSide": true
         },
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "otherEntityName": "nivelIncidente",
             "otherEntityRelationshipName": "incidente",
             "relationshipName": "nivelIncidente",
-            "otherEntityField": "id",
-            "ownerSide": true
+            "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "notificacao",
-            "otherEntityRelationshipName": "incidente",
-            "relationshipName": "notificacao"
-        },
-        {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-many",
             "otherEntityName": "ativo",
             "otherEntityRelationshipName": "incidente",
-            "relationshipName": "ativo"
+            "relationshipName": "ativo",
+            "otherEntityField": "id",
+            "ownerSide": true
         }
     ],
     "changelogDate": "20200204174638",
     "entityTableName": "incidente",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

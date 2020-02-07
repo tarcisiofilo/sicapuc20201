@@ -1,8 +1,8 @@
 package com.sica.web.rest;
 
-import com.sica.domain.Vistoria;
-import com.sica.repository.VistoriaRepository;
+import com.sica.service.VistoriaService;
 import com.sica.web.rest.errors.BadRequestAlertException;
+import com.sica.service.dto.VistoriaDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -33,26 +33,26 @@ public class VistoriaResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final VistoriaRepository vistoriaRepository;
+    private final VistoriaService vistoriaService;
 
-    public VistoriaResource(VistoriaRepository vistoriaRepository) {
-        this.vistoriaRepository = vistoriaRepository;
+    public VistoriaResource(VistoriaService vistoriaService) {
+        this.vistoriaService = vistoriaService;
     }
 
     /**
      * {@code POST  /vistorias} : Create a new vistoria.
      *
-     * @param vistoria the vistoria to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new vistoria, or with status {@code 400 (Bad Request)} if the vistoria has already an ID.
+     * @param vistoriaDTO the vistoriaDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new vistoriaDTO, or with status {@code 400 (Bad Request)} if the vistoria has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/vistorias")
-    public ResponseEntity<Vistoria> createVistoria(@Valid @RequestBody Vistoria vistoria) throws URISyntaxException {
-        log.debug("REST request to save Vistoria : {}", vistoria);
-        if (vistoria.getId() != null) {
+    public ResponseEntity<VistoriaDTO> createVistoria(@Valid @RequestBody VistoriaDTO vistoriaDTO) throws URISyntaxException {
+        log.debug("REST request to save Vistoria : {}", vistoriaDTO);
+        if (vistoriaDTO.getId() != null) {
             throw new BadRequestAlertException("A new vistoria cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Vistoria result = vistoriaRepository.save(vistoria);
+        VistoriaDTO result = vistoriaService.save(vistoriaDTO);
         return ResponseEntity.created(new URI("/api/vistorias/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -61,21 +61,21 @@ public class VistoriaResource {
     /**
      * {@code PUT  /vistorias} : Updates an existing vistoria.
      *
-     * @param vistoria the vistoria to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vistoria,
-     * or with status {@code 400 (Bad Request)} if the vistoria is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the vistoria couldn't be updated.
+     * @param vistoriaDTO the vistoriaDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vistoriaDTO,
+     * or with status {@code 400 (Bad Request)} if the vistoriaDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the vistoriaDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/vistorias")
-    public ResponseEntity<Vistoria> updateVistoria(@Valid @RequestBody Vistoria vistoria) throws URISyntaxException {
-        log.debug("REST request to update Vistoria : {}", vistoria);
-        if (vistoria.getId() == null) {
+    public ResponseEntity<VistoriaDTO> updateVistoria(@Valid @RequestBody VistoriaDTO vistoriaDTO) throws URISyntaxException {
+        log.debug("REST request to update Vistoria : {}", vistoriaDTO);
+        if (vistoriaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Vistoria result = vistoriaRepository.save(vistoria);
+        VistoriaDTO result = vistoriaService.save(vistoriaDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vistoria.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vistoriaDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,34 +85,34 @@ public class VistoriaResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vistorias in body.
      */
     @GetMapping("/vistorias")
-    public List<Vistoria> getAllVistorias() {
+    public List<VistoriaDTO> getAllVistorias() {
         log.debug("REST request to get all Vistorias");
-        return vistoriaRepository.findAll();
+        return vistoriaService.findAll();
     }
 
     /**
      * {@code GET  /vistorias/:id} : get the "id" vistoria.
      *
-     * @param id the id of the vistoria to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vistoria, or with status {@code 404 (Not Found)}.
+     * @param id the id of the vistoriaDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vistoriaDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/vistorias/{id}")
-    public ResponseEntity<Vistoria> getVistoria(@PathVariable Long id) {
+    public ResponseEntity<VistoriaDTO> getVistoria(@PathVariable Long id) {
         log.debug("REST request to get Vistoria : {}", id);
-        Optional<Vistoria> vistoria = vistoriaRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(vistoria);
+        Optional<VistoriaDTO> vistoriaDTO = vistoriaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(vistoriaDTO);
     }
 
     /**
      * {@code DELETE  /vistorias/:id} : delete the "id" vistoria.
      *
-     * @param id the id of the vistoria to delete.
+     * @param id the id of the vistoriaDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/vistorias/{id}")
     public ResponseEntity<Void> deleteVistoria(@PathVariable Long id) {
         log.debug("REST request to delete Vistoria : {}", id);
-        vistoriaRepository.deleteById(id);
+        vistoriaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

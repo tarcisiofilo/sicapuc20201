@@ -7,10 +7,10 @@ import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { IFuncionario, Funcionario } from 'app/shared/model/funcionario.model';
 import { FuncionarioService } from './funcionario.service';
-import { ISetorMineracao } from 'app/shared/model/setor-mineracao.model';
-import { SetorMineracaoService } from 'app/entities/setor-mineracao';
 import { IPessoa } from 'app/shared/model/pessoa.model';
 import { PessoaService } from 'app/entities/pessoa';
+import { ISetorMineracao } from 'app/shared/model/setor-mineracao.model';
+import { SetorMineracaoService } from 'app/entities/setor-mineracao';
 
 @Component({
   selector: 'jhi-funcionario-update',
@@ -20,23 +20,23 @@ export class FuncionarioUpdateComponent implements OnInit {
   funcionario: IFuncionario;
   isSaving: boolean;
 
-  setormineracaos: ISetorMineracao[];
-
   pessoas: IPessoa[];
+
+  setormineracaos: ISetorMineracao[];
 
   editForm = this.fb.group({
     id: [],
     cargo: [null, [Validators.required]],
     idDispositivoMonitoramento: [null, [Validators.required]],
-    setorMineracao: [],
-    pessoa: []
+    pessoaId: [],
+    setorMineracaoId: []
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected funcionarioService: FuncionarioService,
-    protected setorMineracaoService: SetorMineracaoService,
     protected pessoaService: PessoaService,
+    protected setorMineracaoService: SetorMineracaoService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -47,13 +47,6 @@ export class FuncionarioUpdateComponent implements OnInit {
       this.updateForm(funcionario);
       this.funcionario = funcionario;
     });
-    this.setorMineracaoService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<ISetorMineracao[]>) => mayBeOk.ok),
-        map((response: HttpResponse<ISetorMineracao[]>) => response.body)
-      )
-      .subscribe((res: ISetorMineracao[]) => (this.setormineracaos = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.pessoaService
       .query({ filter: 'funcionario-is-null' })
       .pipe(
@@ -62,11 +55,11 @@ export class FuncionarioUpdateComponent implements OnInit {
       )
       .subscribe(
         (res: IPessoa[]) => {
-          if (!this.funcionario.pessoa || !this.funcionario.pessoa.id) {
+          if (!this.funcionario.pessoaId) {
             this.pessoas = res;
           } else {
             this.pessoaService
-              .find(this.funcionario.pessoa.id)
+              .find(this.funcionario.pessoaId)
               .pipe(
                 filter((subResMayBeOk: HttpResponse<IPessoa>) => subResMayBeOk.ok),
                 map((subResponse: HttpResponse<IPessoa>) => subResponse.body)
@@ -79,6 +72,13 @@ export class FuncionarioUpdateComponent implements OnInit {
         },
         (res: HttpErrorResponse) => this.onError(res.message)
       );
+    this.setorMineracaoService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<ISetorMineracao[]>) => mayBeOk.ok),
+        map((response: HttpResponse<ISetorMineracao[]>) => response.body)
+      )
+      .subscribe((res: ISetorMineracao[]) => (this.setormineracaos = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(funcionario: IFuncionario) {
@@ -86,8 +86,8 @@ export class FuncionarioUpdateComponent implements OnInit {
       id: funcionario.id,
       cargo: funcionario.cargo,
       idDispositivoMonitoramento: funcionario.idDispositivoMonitoramento,
-      setorMineracao: funcionario.setorMineracao,
-      pessoa: funcionario.pessoa
+      pessoaId: funcionario.pessoaId,
+      setorMineracaoId: funcionario.setorMineracaoId
     });
   }
 
@@ -111,8 +111,8 @@ export class FuncionarioUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       cargo: this.editForm.get(['cargo']).value,
       idDispositivoMonitoramento: this.editForm.get(['idDispositivoMonitoramento']).value,
-      setorMineracao: this.editForm.get(['setorMineracao']).value,
-      pessoa: this.editForm.get(['pessoa']).value
+      pessoaId: this.editForm.get(['pessoaId']).value,
+      setorMineracaoId: this.editForm.get(['setorMineracaoId']).value
     };
     return entity;
   }
@@ -133,11 +133,11 @@ export class FuncionarioUpdateComponent implements OnInit {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  trackSetorMineracaoById(index: number, item: ISetorMineracao) {
+  trackPessoaById(index: number, item: IPessoa) {
     return item.id;
   }
 
-  trackPessoaById(index: number, item: IPessoa) {
+  trackSetorMineracaoById(index: number, item: ISetorMineracao) {
     return item.id;
   }
 }

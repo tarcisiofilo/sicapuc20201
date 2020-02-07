@@ -30,7 +30,8 @@
                     <select class="form-control" name="tipoNotificacao" formControlName="tipoNotificacao" id="field_tipoNotificacao">
                         <option value="DNPM">{{'sicapuc20201App.TipoNoficacao.DNPM' | translate}}</option>
                         <option value="EMAIL">{{'sicapuc20201App.TipoNoficacao.EMAIL' | translate}}</option>
-                        <option value="SMS_WHATAPP">{{'sicapuc20201App.TipoNoficacao.SMS_WHATAPP' | translate}}</option>
+                        <option value="SMS">{{'sicapuc20201App.TipoNoficacao.SMS' | translate}}</option>
+                        <option value="WHATAPP">{{'sicapuc20201App.TipoNoficacao.WHATAPP' | translate}}</option>
                         <option value="DISPOSITIVO_SEGURANCA">{{'sicapuc20201App.TipoNoficacao.DISPOSITIVO_SEGURANCA' | translate}}</option>
                         <option value="SIRENE">{{'sicapuc20201App.TipoNoficacao.SIRENE' | translate}}</option>
                     </select>
@@ -44,9 +45,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.notificacao.incidente" for="field_incidente">Incidente</label>
-                    <select class="form-control" id="field_incidente" name="incidente" formControlName="incidente">
+                    <select class="form-control" id="field_incidente" name="incidente" formControlName="incidenteId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="incidenteOption.id === editForm.get('incidente').value?.id ? editForm.get('incidente').value : incidenteOption" *ngFor="let incidenteOption of incidentes; trackBy: trackIncidenteById">{{incidenteOption.id}}</option>
+                        <option [ngValue]="incidenteOption.id" *ngFor="let incidenteOption of incidentes; trackBy: trackIncidenteById">{{incidenteOption.id}}</option>
                     </select>
                 </div>
             </div>

@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Ativo;
 import com.sica.repository.AtivoRepository;
+import com.sica.service.AtivoService;
+import com.sica.service.dto.AtivoDTO;
+import com.sica.service.mapper.AtivoMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,17 +36,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = Sicapuc20201App.class)
 public class AtivoResourceIT {
 
-    private static final Long DEFAULT_ID_TIPO_ATIVO = 1L;
-    private static final Long UPDATED_ID_TIPO_ATIVO = 2L;
-
-    private static final String DEFAULT_TIPO_ATIVO = "AAAAAAAAAA";
-    private static final String UPDATED_TIPO_ATIVO = "BBBBBBBBBB";
-
-    private static final Long DEFAULT_PERIODICIDADE_DIAS_MANUTENCAO = 1L;
-    private static final Long UPDATED_PERIODICIDADE_DIAS_MANUTENCAO = 2L;
+    private static final String DEFAULT_NOME = "AAAAAAAAAA";
+    private static final String UPDATED_NOME = "BBBBBBBBBB";
 
     @Autowired
     private AtivoRepository ativoRepository;
+
+    @Autowired
+    private AtivoMapper ativoMapper;
+
+    @Autowired
+    private AtivoService ativoService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -67,7 +70,7 @@ public class AtivoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AtivoResource ativoResource = new AtivoResource(ativoRepository);
+        final AtivoResource ativoResource = new AtivoResource(ativoService);
         this.restAtivoMockMvc = MockMvcBuilders.standaloneSetup(ativoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,9 +87,7 @@ public class AtivoResourceIT {
      */
     public static Ativo createEntity(EntityManager em) {
         Ativo ativo = new Ativo()
-            .idTipoAtivo(DEFAULT_ID_TIPO_ATIVO)
-            .tipoAtivo(DEFAULT_TIPO_ATIVO)
-            .periodicidadeDiasManutencao(DEFAULT_PERIODICIDADE_DIAS_MANUTENCAO);
+            .nome(DEFAULT_NOME);
         return ativo;
     }
     /**
@@ -97,9 +98,7 @@ public class AtivoResourceIT {
      */
     public static Ativo createUpdatedEntity(EntityManager em) {
         Ativo ativo = new Ativo()
-            .idTipoAtivo(UPDATED_ID_TIPO_ATIVO)
-            .tipoAtivo(UPDATED_TIPO_ATIVO)
-            .periodicidadeDiasManutencao(UPDATED_PERIODICIDADE_DIAS_MANUTENCAO);
+            .nome(UPDATED_NOME);
         return ativo;
     }
 
@@ -114,18 +113,17 @@ public class AtivoResourceIT {
         int databaseSizeBeforeCreate = ativoRepository.findAll().size();
 
         // Create the Ativo
+        AtivoDTO ativoDTO = ativoMapper.toDto(ativo);
         restAtivoMockMvc.perform(post("/api/ativos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ativo)))
+            .content(TestUtil.convertObjectToJsonBytes(ativoDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Ativo in the database
         List<Ativo> ativoList = ativoRepository.findAll();
         assertThat(ativoList).hasSize(databaseSizeBeforeCreate + 1);
         Ativo testAtivo = ativoList.get(ativoList.size() - 1);
-        assertThat(testAtivo.getIdTipoAtivo()).isEqualTo(DEFAULT_ID_TIPO_ATIVO);
-        assertThat(testAtivo.getTipoAtivo()).isEqualTo(DEFAULT_TIPO_ATIVO);
-        assertThat(testAtivo.getPeriodicidadeDiasManutencao()).isEqualTo(DEFAULT_PERIODICIDADE_DIAS_MANUTENCAO);
+        assertThat(testAtivo.getNome()).isEqualTo(DEFAULT_NOME);
     }
 
     @Test
@@ -135,11 +133,12 @@ public class AtivoResourceIT {
 
         // Create the Ativo with an existing ID
         ativo.setId(1L);
+        AtivoDTO ativoDTO = ativoMapper.toDto(ativo);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAtivoMockMvc.perform(post("/api/ativos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ativo)))
+            .content(TestUtil.convertObjectToJsonBytes(ativoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Ativo in the database
@@ -150,52 +149,17 @@ public class AtivoResourceIT {
 
     @Test
     @Transactional
-    public void checkIdTipoAtivoIsRequired() throws Exception {
+    public void checkNomeIsRequired() throws Exception {
         int databaseSizeBeforeTest = ativoRepository.findAll().size();
         // set the field null
-        ativo.setIdTipoAtivo(null);
+        ativo.setNome(null);
 
         // Create the Ativo, which fails.
+        AtivoDTO ativoDTO = ativoMapper.toDto(ativo);
 
         restAtivoMockMvc.perform(post("/api/ativos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ativo)))
-            .andExpect(status().isBadRequest());
-
-        List<Ativo> ativoList = ativoRepository.findAll();
-        assertThat(ativoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkTipoAtivoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ativoRepository.findAll().size();
-        // set the field null
-        ativo.setTipoAtivo(null);
-
-        // Create the Ativo, which fails.
-
-        restAtivoMockMvc.perform(post("/api/ativos")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ativo)))
-            .andExpect(status().isBadRequest());
-
-        List<Ativo> ativoList = ativoRepository.findAll();
-        assertThat(ativoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkPeriodicidadeDiasManutencaoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ativoRepository.findAll().size();
-        // set the field null
-        ativo.setPeriodicidadeDiasManutencao(null);
-
-        // Create the Ativo, which fails.
-
-        restAtivoMockMvc.perform(post("/api/ativos")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ativo)))
+            .content(TestUtil.convertObjectToJsonBytes(ativoDTO)))
             .andExpect(status().isBadRequest());
 
         List<Ativo> ativoList = ativoRepository.findAll();
@@ -213,9 +177,7 @@ public class AtivoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(ativo.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idTipoAtivo").value(hasItem(DEFAULT_ID_TIPO_ATIVO.intValue())))
-            .andExpect(jsonPath("$.[*].tipoAtivo").value(hasItem(DEFAULT_TIPO_ATIVO.toString())))
-            .andExpect(jsonPath("$.[*].periodicidadeDiasManutencao").value(hasItem(DEFAULT_PERIODICIDADE_DIAS_MANUTENCAO.intValue())));
+            .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME.toString())));
     }
     
     @Test
@@ -229,9 +191,7 @@ public class AtivoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(ativo.getId().intValue()))
-            .andExpect(jsonPath("$.idTipoAtivo").value(DEFAULT_ID_TIPO_ATIVO.intValue()))
-            .andExpect(jsonPath("$.tipoAtivo").value(DEFAULT_TIPO_ATIVO.toString()))
-            .andExpect(jsonPath("$.periodicidadeDiasManutencao").value(DEFAULT_PERIODICIDADE_DIAS_MANUTENCAO.intValue()));
+            .andExpect(jsonPath("$.nome").value(DEFAULT_NOME.toString()));
     }
 
     @Test
@@ -255,22 +215,19 @@ public class AtivoResourceIT {
         // Disconnect from session so that the updates on updatedAtivo are not directly saved in db
         em.detach(updatedAtivo);
         updatedAtivo
-            .idTipoAtivo(UPDATED_ID_TIPO_ATIVO)
-            .tipoAtivo(UPDATED_TIPO_ATIVO)
-            .periodicidadeDiasManutencao(UPDATED_PERIODICIDADE_DIAS_MANUTENCAO);
+            .nome(UPDATED_NOME);
+        AtivoDTO ativoDTO = ativoMapper.toDto(updatedAtivo);
 
         restAtivoMockMvc.perform(put("/api/ativos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedAtivo)))
+            .content(TestUtil.convertObjectToJsonBytes(ativoDTO)))
             .andExpect(status().isOk());
 
         // Validate the Ativo in the database
         List<Ativo> ativoList = ativoRepository.findAll();
         assertThat(ativoList).hasSize(databaseSizeBeforeUpdate);
         Ativo testAtivo = ativoList.get(ativoList.size() - 1);
-        assertThat(testAtivo.getIdTipoAtivo()).isEqualTo(UPDATED_ID_TIPO_ATIVO);
-        assertThat(testAtivo.getTipoAtivo()).isEqualTo(UPDATED_TIPO_ATIVO);
-        assertThat(testAtivo.getPeriodicidadeDiasManutencao()).isEqualTo(UPDATED_PERIODICIDADE_DIAS_MANUTENCAO);
+        assertThat(testAtivo.getNome()).isEqualTo(UPDATED_NOME);
     }
 
     @Test
@@ -279,11 +236,12 @@ public class AtivoResourceIT {
         int databaseSizeBeforeUpdate = ativoRepository.findAll().size();
 
         // Create the Ativo
+        AtivoDTO ativoDTO = ativoMapper.toDto(ativo);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAtivoMockMvc.perform(put("/api/ativos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ativo)))
+            .content(TestUtil.convertObjectToJsonBytes(ativoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Ativo in the database
@@ -322,5 +280,28 @@ public class AtivoResourceIT {
         assertThat(ativo1).isNotEqualTo(ativo2);
         ativo1.setId(null);
         assertThat(ativo1).isNotEqualTo(ativo2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(AtivoDTO.class);
+        AtivoDTO ativoDTO1 = new AtivoDTO();
+        ativoDTO1.setId(1L);
+        AtivoDTO ativoDTO2 = new AtivoDTO();
+        assertThat(ativoDTO1).isNotEqualTo(ativoDTO2);
+        ativoDTO2.setId(ativoDTO1.getId());
+        assertThat(ativoDTO1).isEqualTo(ativoDTO2);
+        ativoDTO2.setId(2L);
+        assertThat(ativoDTO1).isNotEqualTo(ativoDTO2);
+        ativoDTO1.setId(null);
+        assertThat(ativoDTO1).isNotEqualTo(ativoDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(ativoMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(ativoMapper.fromId(null)).isNull();
     }
 }

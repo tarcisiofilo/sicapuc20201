@@ -1,8 +1,8 @@
 package com.sica.web.rest;
 
-import com.sica.domain.Sirene;
-import com.sica.repository.SireneRepository;
+import com.sica.service.SireneService;
 import com.sica.web.rest.errors.BadRequestAlertException;
+import com.sica.service.dto.SireneDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -33,26 +33,26 @@ public class SireneResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SireneRepository sireneRepository;
+    private final SireneService sireneService;
 
-    public SireneResource(SireneRepository sireneRepository) {
-        this.sireneRepository = sireneRepository;
+    public SireneResource(SireneService sireneService) {
+        this.sireneService = sireneService;
     }
 
     /**
      * {@code POST  /sirenes} : Create a new sirene.
      *
-     * @param sirene the sirene to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new sirene, or with status {@code 400 (Bad Request)} if the sirene has already an ID.
+     * @param sireneDTO the sireneDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new sireneDTO, or with status {@code 400 (Bad Request)} if the sirene has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/sirenes")
-    public ResponseEntity<Sirene> createSirene(@Valid @RequestBody Sirene sirene) throws URISyntaxException {
-        log.debug("REST request to save Sirene : {}", sirene);
-        if (sirene.getId() != null) {
+    public ResponseEntity<SireneDTO> createSirene(@Valid @RequestBody SireneDTO sireneDTO) throws URISyntaxException {
+        log.debug("REST request to save Sirene : {}", sireneDTO);
+        if (sireneDTO.getId() != null) {
             throw new BadRequestAlertException("A new sirene cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Sirene result = sireneRepository.save(sirene);
+        SireneDTO result = sireneService.save(sireneDTO);
         return ResponseEntity.created(new URI("/api/sirenes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -61,21 +61,21 @@ public class SireneResource {
     /**
      * {@code PUT  /sirenes} : Updates an existing sirene.
      *
-     * @param sirene the sirene to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated sirene,
-     * or with status {@code 400 (Bad Request)} if the sirene is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the sirene couldn't be updated.
+     * @param sireneDTO the sireneDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated sireneDTO,
+     * or with status {@code 400 (Bad Request)} if the sireneDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the sireneDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/sirenes")
-    public ResponseEntity<Sirene> updateSirene(@Valid @RequestBody Sirene sirene) throws URISyntaxException {
-        log.debug("REST request to update Sirene : {}", sirene);
-        if (sirene.getId() == null) {
+    public ResponseEntity<SireneDTO> updateSirene(@Valid @RequestBody SireneDTO sireneDTO) throws URISyntaxException {
+        log.debug("REST request to update Sirene : {}", sireneDTO);
+        if (sireneDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Sirene result = sireneRepository.save(sirene);
+        SireneDTO result = sireneService.save(sireneDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sirene.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sireneDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,34 +85,34 @@ public class SireneResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sirenes in body.
      */
     @GetMapping("/sirenes")
-    public List<Sirene> getAllSirenes() {
+    public List<SireneDTO> getAllSirenes() {
         log.debug("REST request to get all Sirenes");
-        return sireneRepository.findAll();
+        return sireneService.findAll();
     }
 
     /**
      * {@code GET  /sirenes/:id} : get the "id" sirene.
      *
-     * @param id the id of the sirene to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the sirene, or with status {@code 404 (Not Found)}.
+     * @param id the id of the sireneDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the sireneDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/sirenes/{id}")
-    public ResponseEntity<Sirene> getSirene(@PathVariable Long id) {
+    public ResponseEntity<SireneDTO> getSirene(@PathVariable Long id) {
         log.debug("REST request to get Sirene : {}", id);
-        Optional<Sirene> sirene = sireneRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(sirene);
+        Optional<SireneDTO> sireneDTO = sireneService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(sireneDTO);
     }
 
     /**
      * {@code DELETE  /sirenes/:id} : delete the "id" sirene.
      *
-     * @param id the id of the sirene to delete.
+     * @param id the id of the sireneDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/sirenes/{id}")
     public ResponseEntity<Void> deleteSirene(@PathVariable Long id) {
         log.debug("REST request to delete Sirene : {}", id);
-        sireneRepository.deleteById(id);
+        sireneService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

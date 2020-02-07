@@ -1,6 +1,3 @@
-import { IMedicaoInstrumento } from 'app/shared/model/medicao-instrumento.model';
-import { INivelIncidente } from 'app/shared/model/nivel-incidente.model';
-import { INotificacao } from 'app/shared/model/notificacao.model';
 import { IAtivo } from 'app/shared/model/ativo.model';
 
 export const enum OrigemIncidente {
@@ -12,9 +9,9 @@ export interface IIncidente {
   id?: number;
   identificacao?: string;
   origem?: OrigemIncidente;
-  medicaoInstrumento?: IMedicaoInstrumento;
-  nivelIncidente?: INivelIncidente;
-  notificacaos?: INotificacao[];
+  mensagem?: string;
+  medicaoInstrumentoId?: number;
+  nivelIncidenteId?: number;
   ativos?: IAtivo[];
 }
 
@@ -23,9 +20,9 @@ export class Incidente implements IIncidente {
     public id?: number,
     public identificacao?: string,
     public origem?: OrigemIncidente,
-    public medicaoInstrumento?: IMedicaoInstrumento,
-    public nivelIncidente?: INivelIncidente,
-    public notificacaos?: INotificacao[],
+    public mensagem?: string,
+    public medicaoInstrumentoId?: number,
+    public nivelIncidenteId?: number,
     public ativos?: IAtivo[]
   ) {}
 }

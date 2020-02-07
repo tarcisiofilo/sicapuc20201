@@ -27,8 +27,8 @@
                 <td>{{areaSusceptivel.identificacao}}</td>
                 <td>{{areaSusceptivel.nivelProximidade}}</td>
                 <td>
-                    <div *ngIf="areaSusceptivel.ativo">
-                        <a [routerLink]="['../ativo', areaSusceptivel.ativo?.id, 'view' ]" >{{areaSusceptivel.ativo?.id}}</a>
+                    <div *ngIf="areaSusceptivel.ativoId">
+                        <a [routerLink]="['../ativo', areaSusceptivel.ativoId , 'view' ]" >{{areaSusceptivel.ativoId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

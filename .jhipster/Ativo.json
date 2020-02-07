@@ -2,22 +2,8 @@
     "name": "Ativo",
     "fields": [
         {
-            "fieldName": "idTipoAtivo",
-            "fieldType": "Long",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "tipoAtivo",
+            "fieldName": "nome",
             "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "periodicidadeDiasManutencao",
-            "fieldType": "Long",
             "fieldValidateRules": [
                 "required"
             ]
@@ -39,18 +25,19 @@
             "relationshipName": "areaSusceptivel"
         },
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "many-to-many",
             "otherEntityName": "incidente",
             "otherEntityRelationshipName": "ativo",
             "relationshipName": "incidente",
-            "otherEntityField": "id"
+            "otherEntityField": "id",
+            "ownerSide": false
         }
     ],
     "changelogDate": "20200204174636",
     "entityTableName": "ativo",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

@@ -27,8 +27,8 @@
                 <td>{{medicaoInstrumento.data | date:'medium'}}</td>
                 <td>{{medicaoInstrumento.valor}}</td>
                 <td>
-                    <div *ngIf="medicaoInstrumento.instrumentoMonitoramento">
-                        <a [routerLink]="['../instrumento-monitoramento', medicaoInstrumento.instrumentoMonitoramento?.id, 'view' ]" >{{medicaoInstrumento.instrumentoMonitoramento?.id}}</a>
+                    <div *ngIf="medicaoInstrumento.instrumentoMonitoramentoId">
+                        <a [routerLink]="['../instrumento-monitoramento', medicaoInstrumento.instrumentoMonitoramentoId , 'view' ]" >{{medicaoInstrumento.instrumentoMonitoramentoId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

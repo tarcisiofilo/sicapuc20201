@@ -56,9 +56,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.pessoa.familia" for="field_familia">Familia</label>
-                    <select class="form-control" id="field_familia" name="familia" formControlName="familia">
+                    <select class="form-control" id="field_familia" name="familia" formControlName="familiaId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="familiaOption.id === editForm.get('familia').value?.id ? editForm.get('familia').value : familiaOption" *ngFor="let familiaOption of familias; trackBy: trackFamiliaById">{{familiaOption.id}}</option>
+                        <option [ngValue]="familiaOption.id" *ngFor="let familiaOption of familias; trackBy: trackFamiliaById">{{familiaOption.id}}</option>
                     </select>
                 </div>
             </div>

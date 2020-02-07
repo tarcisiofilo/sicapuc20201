@@ -14,11 +14,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="setor_mineracao"/>
 
-        <addForeignKeyConstraint baseColumnNames="incidente_id"
-                                 baseTableName="ativo"
-                                 constraintName="fk_ativo_incidente_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="incidente"/>
-
     </changeSet>
 </databaseChangeLog>

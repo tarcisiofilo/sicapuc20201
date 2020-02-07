@@ -17,8 +17,8 @@
       },
       "cargo": "Cargo",
       "idDispositivoMonitoramento": "Id Dispositivo Monitoramento",
-      "setorMineracao": "Setor Mineracao",
-      "pessoa": "Pessoa"
+      "pessoa": "Pessoa",
+      "setorMineracao": "Setor Mineracao"
     }
   }
 }

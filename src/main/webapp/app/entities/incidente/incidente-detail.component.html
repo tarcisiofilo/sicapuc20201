@@ -13,17 +13,27 @@
                 <dd>
                     <span jhiTranslate="{{'sicapuc20201App.OrigemIncidente.' + incidente.origem}}">{{incidente.origem}}</span>
                 </dd>
+                <dt><span jhiTranslate="sicapuc20201App.incidente.mensagem">Mensagem</span></dt>
+                <dd>
+                    <span>{{incidente.mensagem}}</span>
+                </dd>
                 <dt><span jhiTranslate="sicapuc20201App.incidente.medicaoInstrumento">Medicao Instrumento</span></dt>
                 <dd>
-                    <div *ngIf="incidente.medicaoInstrumento">
-                        <a [routerLink]="['/medicao-instrumento', incidente.medicaoInstrumento?.id, 'view']">{{incidente.medicaoInstrumento?.id}}</a>
+                    <div *ngIf="incidente.medicaoInstrumentoId">
+                        <a [routerLink]="['/medicao-instrumento', incidente.medicaoInstrumentoId, 'view']">{{incidente.medicaoInstrumentoId}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.incidente.nivelIncidente">Nivel Incidente</span></dt>
                 <dd>
-                    <div *ngIf="incidente.nivelIncidente">
-                        <a [routerLink]="['/nivel-incidente', incidente.nivelIncidente?.id, 'view']">{{incidente.nivelIncidente?.id}}</a>
+                    <div *ngIf="incidente.nivelIncidenteId">
+                        <a [routerLink]="['/nivel-incidente', incidente.nivelIncidenteId, 'view']">{{incidente.nivelIncidenteId}}</a>
                     </div>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.incidente.ativo">Ativo</span></dt>
+                <dd>
+                    <span *ngFor="let ativo of incidente.ativos; let last = last">
+                        <a [routerLink]="['/ativo', ativo?.id, 'view' ]">{{ativo.id}}</a>{{last ? '' : ', '}}
+                    </span>
                 </dd>
             </dl>
 

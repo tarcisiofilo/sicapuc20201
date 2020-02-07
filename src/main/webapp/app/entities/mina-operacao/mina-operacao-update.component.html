@@ -21,17 +21,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="sicapuc20201App.minaOperacao.segmento" for="field_segmento">Segmento</label>
-                    <input type="text" class="form-control" name="segmento" id="field_segmento"
-                           formControlName="segmento"/>
-                    <div *ngIf="editForm.get('segmento').invalid && (editForm.get('segmento').dirty || editForm.get('segmento').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('segmento').errors.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.minaOperacao.tipoOperacao" for="field_tipoOperacao">Tipo Operacao</label>
                     <select class="form-control" name="tipoOperacao" formControlName="tipoOperacao" id="field_tipoOperacao">
                         <option value="MINERIO_FERRO_PELOTAS">{{'sicapuc20201App.TipoOperacao.MINERIO_FERRO_PELOTAS' | translate}}</option>

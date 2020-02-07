@@ -20,5 +20,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="nivel_incidente"/>
 
+        <addForeignKeyConstraint baseColumnNames="incidente_id"
+                                 baseTableName="incidente_ativo"
+                                 constraintName="fk_incidente_ativo_incidente_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="incidente"/>
+
+        <addForeignKeyConstraint baseColumnNames="ativo_id"
+                                 baseTableName="incidente_ativo"
+                                 constraintName="fk_incidente_ativo_ativo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ativo"/>
+        
     </changeSet>
 </databaseChangeLog>

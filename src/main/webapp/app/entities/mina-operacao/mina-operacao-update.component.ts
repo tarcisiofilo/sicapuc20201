@@ -17,7 +17,6 @@ export class MinaOperacaoUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     nome: [null, [Validators.required]],
-    segmento: [null, [Validators.required]],
     tipoOperacao: [null, [Validators.required]]
   });
 
@@ -35,7 +34,6 @@ export class MinaOperacaoUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: minaOperacao.id,
       nome: minaOperacao.nome,
-      segmento: minaOperacao.segmento,
       tipoOperacao: minaOperacao.tipoOperacao
     });
   }
@@ -59,7 +57,6 @@ export class MinaOperacaoUpdateComponent implements OnInit {
       ...new MinaOperacao(),
       id: this.editForm.get(['id']).value,
       nome: this.editForm.get(['nome']).value,
-      segmento: this.editForm.get(['segmento']).value,
       tipoOperacao: this.editForm.get(['tipoOperacao']).value
     };
     return entity;

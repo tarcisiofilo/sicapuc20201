@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.AreaSusceptivel;
 import com.sica.repository.AreaSusceptivelRepository;
+import com.sica.service.AreaSusceptivelService;
+import com.sica.service.dto.AreaSusceptivelDTO;
+import com.sica.service.mapper.AreaSusceptivelMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,12 @@ public class AreaSusceptivelResourceIT {
     private AreaSusceptivelRepository areaSusceptivelRepository;
 
     @Autowired
+    private AreaSusceptivelMapper areaSusceptivelMapper;
+
+    @Autowired
+    private AreaSusceptivelService areaSusceptivelService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -64,7 +73,7 @@ public class AreaSusceptivelResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AreaSusceptivelResource areaSusceptivelResource = new AreaSusceptivelResource(areaSusceptivelRepository);
+        final AreaSusceptivelResource areaSusceptivelResource = new AreaSusceptivelResource(areaSusceptivelService);
         this.restAreaSusceptivelMockMvc = MockMvcBuilders.standaloneSetup(areaSusceptivelResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -109,9 +118,10 @@ public class AreaSusceptivelResourceIT {
         int databaseSizeBeforeCreate = areaSusceptivelRepository.findAll().size();
 
         // Create the AreaSusceptivel
+        AreaSusceptivelDTO areaSusceptivelDTO = areaSusceptivelMapper.toDto(areaSusceptivel);
         restAreaSusceptivelMockMvc.perform(post("/api/area-susceptivels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivel)))
+            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivelDTO)))
             .andExpect(status().isCreated());
 
         // Validate the AreaSusceptivel in the database
@@ -129,11 +139,12 @@ public class AreaSusceptivelResourceIT {
 
         // Create the AreaSusceptivel with an existing ID
         areaSusceptivel.setId(1L);
+        AreaSusceptivelDTO areaSusceptivelDTO = areaSusceptivelMapper.toDto(areaSusceptivel);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAreaSusceptivelMockMvc.perform(post("/api/area-susceptivels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivel)))
+            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivelDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the AreaSusceptivel in the database
@@ -150,10 +161,11 @@ public class AreaSusceptivelResourceIT {
         areaSusceptivel.setIdentificacao(null);
 
         // Create the AreaSusceptivel, which fails.
+        AreaSusceptivelDTO areaSusceptivelDTO = areaSusceptivelMapper.toDto(areaSusceptivel);
 
         restAreaSusceptivelMockMvc.perform(post("/api/area-susceptivels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivel)))
+            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivelDTO)))
             .andExpect(status().isBadRequest());
 
         List<AreaSusceptivel> areaSusceptivelList = areaSusceptivelRepository.findAll();
@@ -168,10 +180,11 @@ public class AreaSusceptivelResourceIT {
         areaSusceptivel.setNivelProximidade(null);
 
         // Create the AreaSusceptivel, which fails.
+        AreaSusceptivelDTO areaSusceptivelDTO = areaSusceptivelMapper.toDto(areaSusceptivel);
 
         restAreaSusceptivelMockMvc.perform(post("/api/area-susceptivels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivel)))
+            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivelDTO)))
             .andExpect(status().isBadRequest());
 
         List<AreaSusceptivel> areaSusceptivelList = areaSusceptivelRepository.findAll();
@@ -231,10 +244,11 @@ public class AreaSusceptivelResourceIT {
         updatedAreaSusceptivel
             .identificacao(UPDATED_IDENTIFICACAO)
             .nivelProximidade(UPDATED_NIVEL_PROXIMIDADE);
+        AreaSusceptivelDTO areaSusceptivelDTO = areaSusceptivelMapper.toDto(updatedAreaSusceptivel);
 
         restAreaSusceptivelMockMvc.perform(put("/api/area-susceptivels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedAreaSusceptivel)))
+            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivelDTO)))
             .andExpect(status().isOk());
 
         // Validate the AreaSusceptivel in the database
@@ -251,11 +265,12 @@ public class AreaSusceptivelResourceIT {
         int databaseSizeBeforeUpdate = areaSusceptivelRepository.findAll().size();
 
         // Create the AreaSusceptivel
+        AreaSusceptivelDTO areaSusceptivelDTO = areaSusceptivelMapper.toDto(areaSusceptivel);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAreaSusceptivelMockMvc.perform(put("/api/area-susceptivels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivel)))
+            .content(TestUtil.convertObjectToJsonBytes(areaSusceptivelDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the AreaSusceptivel in the database
@@ -294,5 +309,28 @@ public class AreaSusceptivelResourceIT {
         assertThat(areaSusceptivel1).isNotEqualTo(areaSusceptivel2);
         areaSusceptivel1.setId(null);
         assertThat(areaSusceptivel1).isNotEqualTo(areaSusceptivel2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(AreaSusceptivelDTO.class);
+        AreaSusceptivelDTO areaSusceptivelDTO1 = new AreaSusceptivelDTO();
+        areaSusceptivelDTO1.setId(1L);
+        AreaSusceptivelDTO areaSusceptivelDTO2 = new AreaSusceptivelDTO();
+        assertThat(areaSusceptivelDTO1).isNotEqualTo(areaSusceptivelDTO2);
+        areaSusceptivelDTO2.setId(areaSusceptivelDTO1.getId());
+        assertThat(areaSusceptivelDTO1).isEqualTo(areaSusceptivelDTO2);
+        areaSusceptivelDTO2.setId(2L);
+        assertThat(areaSusceptivelDTO1).isNotEqualTo(areaSusceptivelDTO2);
+        areaSusceptivelDTO1.setId(null);
+        assertThat(areaSusceptivelDTO1).isNotEqualTo(areaSusceptivelDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(areaSusceptivelMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(areaSusceptivelMapper.fromId(null)).isNull();
     }
 }

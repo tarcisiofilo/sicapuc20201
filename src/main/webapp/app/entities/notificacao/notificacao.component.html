@@ -27,8 +27,8 @@
                 <td>{{notificacao.dataNotifacao | date:'medium'}}</td>
                 <td jhiTranslate="{{'sicapuc20201App.TipoNoficacao.' + notificacao.tipoNotificacao}}">{{notificacao.tipoNotificacao}}</td>
                 <td>
-                    <div *ngIf="notificacao.incidente">
-                        <a [routerLink]="['../incidente', notificacao.incidente?.id, 'view' ]" >{{notificacao.incidente?.id}}</a>
+                    <div *ngIf="notificacao.incidenteId">
+                        <a [routerLink]="['../incidente', notificacao.incidenteId , 'view' ]" >{{notificacao.incidenteId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

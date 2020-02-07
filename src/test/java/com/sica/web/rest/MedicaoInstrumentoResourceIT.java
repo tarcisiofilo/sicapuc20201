@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.MedicaoInstrumento;
 import com.sica.repository.MedicaoInstrumentoRepository;
+import com.sica.service.MedicaoInstrumentoService;
+import com.sica.service.dto.MedicaoInstrumentoDTO;
+import com.sica.service.mapper.MedicaoInstrumentoMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +51,12 @@ public class MedicaoInstrumentoResourceIT {
     private MedicaoInstrumentoRepository medicaoInstrumentoRepository;
 
     @Autowired
+    private MedicaoInstrumentoMapper medicaoInstrumentoMapper;
+
+    @Autowired
+    private MedicaoInstrumentoService medicaoInstrumentoService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -69,7 +78,7 @@ public class MedicaoInstrumentoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MedicaoInstrumentoResource medicaoInstrumentoResource = new MedicaoInstrumentoResource(medicaoInstrumentoRepository);
+        final MedicaoInstrumentoResource medicaoInstrumentoResource = new MedicaoInstrumentoResource(medicaoInstrumentoService);
         this.restMedicaoInstrumentoMockMvc = MockMvcBuilders.standaloneSetup(medicaoInstrumentoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -114,9 +123,10 @@ public class MedicaoInstrumentoResourceIT {
         int databaseSizeBeforeCreate = medicaoInstrumentoRepository.findAll().size();
 
         // Create the MedicaoInstrumento
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO = medicaoInstrumentoMapper.toDto(medicaoInstrumento);
         restMedicaoInstrumentoMockMvc.perform(post("/api/medicao-instrumentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumento)))
+            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumentoDTO)))
             .andExpect(status().isCreated());
 
         // Validate the MedicaoInstrumento in the database
@@ -134,11 +144,12 @@ public class MedicaoInstrumentoResourceIT {
 
         // Create the MedicaoInstrumento with an existing ID
         medicaoInstrumento.setId(1L);
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO = medicaoInstrumentoMapper.toDto(medicaoInstrumento);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restMedicaoInstrumentoMockMvc.perform(post("/api/medicao-instrumentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumento)))
+            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumentoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the MedicaoInstrumento in the database
@@ -155,10 +166,11 @@ public class MedicaoInstrumentoResourceIT {
         medicaoInstrumento.setData(null);
 
         // Create the MedicaoInstrumento, which fails.
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO = medicaoInstrumentoMapper.toDto(medicaoInstrumento);
 
         restMedicaoInstrumentoMockMvc.perform(post("/api/medicao-instrumentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumento)))
+            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<MedicaoInstrumento> medicaoInstrumentoList = medicaoInstrumentoRepository.findAll();
@@ -173,10 +185,11 @@ public class MedicaoInstrumentoResourceIT {
         medicaoInstrumento.setValor(null);
 
         // Create the MedicaoInstrumento, which fails.
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO = medicaoInstrumentoMapper.toDto(medicaoInstrumento);
 
         restMedicaoInstrumentoMockMvc.perform(post("/api/medicao-instrumentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumento)))
+            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<MedicaoInstrumento> medicaoInstrumentoList = medicaoInstrumentoRepository.findAll();
@@ -236,10 +249,11 @@ public class MedicaoInstrumentoResourceIT {
         updatedMedicaoInstrumento
             .data(UPDATED_DATA)
             .valor(UPDATED_VALOR);
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO = medicaoInstrumentoMapper.toDto(updatedMedicaoInstrumento);
 
         restMedicaoInstrumentoMockMvc.perform(put("/api/medicao-instrumentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedMedicaoInstrumento)))
+            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumentoDTO)))
             .andExpect(status().isOk());
 
         // Validate the MedicaoInstrumento in the database
@@ -256,11 +270,12 @@ public class MedicaoInstrumentoResourceIT {
         int databaseSizeBeforeUpdate = medicaoInstrumentoRepository.findAll().size();
 
         // Create the MedicaoInstrumento
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO = medicaoInstrumentoMapper.toDto(medicaoInstrumento);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restMedicaoInstrumentoMockMvc.perform(put("/api/medicao-instrumentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumento)))
+            .content(TestUtil.convertObjectToJsonBytes(medicaoInstrumentoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the MedicaoInstrumento in the database
@@ -299,5 +314,28 @@ public class MedicaoInstrumentoResourceIT {
         assertThat(medicaoInstrumento1).isNotEqualTo(medicaoInstrumento2);
         medicaoInstrumento1.setId(null);
         assertThat(medicaoInstrumento1).isNotEqualTo(medicaoInstrumento2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(MedicaoInstrumentoDTO.class);
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO1 = new MedicaoInstrumentoDTO();
+        medicaoInstrumentoDTO1.setId(1L);
+        MedicaoInstrumentoDTO medicaoInstrumentoDTO2 = new MedicaoInstrumentoDTO();
+        assertThat(medicaoInstrumentoDTO1).isNotEqualTo(medicaoInstrumentoDTO2);
+        medicaoInstrumentoDTO2.setId(medicaoInstrumentoDTO1.getId());
+        assertThat(medicaoInstrumentoDTO1).isEqualTo(medicaoInstrumentoDTO2);
+        medicaoInstrumentoDTO2.setId(2L);
+        assertThat(medicaoInstrumentoDTO1).isNotEqualTo(medicaoInstrumentoDTO2);
+        medicaoInstrumentoDTO1.setId(null);
+        assertThat(medicaoInstrumentoDTO1).isNotEqualTo(medicaoInstrumentoDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(medicaoInstrumentoMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(medicaoInstrumentoMapper.fromId(null)).isNull();
     }
 }

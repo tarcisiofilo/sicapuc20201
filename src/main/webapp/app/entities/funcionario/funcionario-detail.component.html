@@ -13,16 +13,16 @@
                 <dd>
                     <span>{{funcionario.idDispositivoMonitoramento}}</span>
                 </dd>
-                <dt><span jhiTranslate="sicapuc20201App.funcionario.setorMineracao">Setor Mineracao</span></dt>
-                <dd>
-                    <div *ngIf="funcionario.setorMineracao">
-                        <a [routerLink]="['/setor-mineracao', funcionario.setorMineracao?.id, 'view']">{{funcionario.setorMineracao?.id}}</a>
-                    </div>
-                </dd>
                 <dt><span jhiTranslate="sicapuc20201App.funcionario.pessoa">Pessoa</span></dt>
                 <dd>
-                    <div *ngIf="funcionario.pessoa">
-                        <a [routerLink]="['/pessoa', funcionario.pessoa?.id, 'view']">{{funcionario.pessoa?.id}}</a>
+                    <div *ngIf="funcionario.pessoaId">
+                        <a [routerLink]="['/pessoa', funcionario.pessoaId, 'view']">{{funcionario.pessoaId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sicapuc20201App.funcionario.setorMineracao">Setor Mineracao</span></dt>
+                <dd>
+                    <div *ngIf="funcionario.setorMineracaoId">
+                        <a [routerLink]="['/setor-mineracao', funcionario.setorMineracaoId, 'view']">{{funcionario.setorMineracaoId}}</a>
                     </div>
                 </dd>
             </dl>

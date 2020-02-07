@@ -33,19 +33,36 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.mensagem" for="field_mensagem">Mensagem</label>
+                    <input type="text" class="form-control" name="mensagem" id="field_mensagem"
+                           formControlName="mensagem"/>
+                    <div *ngIf="editForm.get('mensagem').invalid && (editForm.get('mensagem').dirty || editForm.get('mensagem').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('mensagem').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.medicaoInstrumento" for="field_medicaoInstrumento">Medicao Instrumento</label>
-                    <select class="form-control" id="field_medicaoInstrumento" name="medicaoInstrumento" formControlName="medicaoInstrumento">
+                    <select class="form-control" id="field_medicaoInstrumento" name="medicaoInstrumento" formControlName="medicaoInstrumentoId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="medicaoInstrumentoOption.id === editForm.get('medicaoInstrumento').value?.id ? editForm.get('medicaoInstrumento').value : medicaoInstrumentoOption" *ngFor="let medicaoInstrumentoOption of medicaoinstrumentos; trackBy: trackMedicaoInstrumentoById">{{medicaoInstrumentoOption.id}}</option>
+                        <option [ngValue]="medicaoInstrumentoOption.id" *ngFor="let medicaoInstrumentoOption of medicaoinstrumentos; trackBy: trackMedicaoInstrumentoById">{{medicaoInstrumentoOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.incidente.nivelIncidente" for="field_nivelIncidente">Nivel Incidente</label>
-                    <select class="form-control" id="field_nivelIncidente" name="nivelIncidente" formControlName="nivelIncidente">
+                    <select class="form-control" id="field_nivelIncidente" name="nivelIncidente" formControlName="nivelIncidenteId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="nivelIncidenteOption.id === editForm.get('nivelIncidente').value?.id ? editForm.get('nivelIncidente').value : nivelIncidenteOption" *ngFor="let nivelIncidenteOption of nivelincidentes; trackBy: trackNivelIncidenteById">{{nivelIncidenteOption.id}}</option>
+                        <option [ngValue]="nivelIncidenteOption.id" *ngFor="let nivelIncidenteOption of nivelincidentes; trackBy: trackNivelIncidenteById">{{nivelIncidenteOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="sicapuc20201App.incidente.ativo" for="field_ativos">Ativo</label>
+                    <select class="form-control" id="field_ativos" multiple name="ativos" formControlName="ativos">
+                        <option [ngValue]="getSelected(editForm.get('ativos').value, ativoOption)" *ngFor="let ativoOption of ativos; trackBy: trackAtivoById">{{ativoOption.id}}</option>
                     </select>
                 </div>
             </div>

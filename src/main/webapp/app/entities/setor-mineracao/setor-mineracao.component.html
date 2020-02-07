@@ -27,18 +27,18 @@
                 <td><a [routerLink]="['/setor-mineracao', setorMineracao.id, 'view' ]">{{setorMineracao.id}}</a></td>
                 <td>{{setorMineracao.nome}}</td>
                 <td>
-                    <div *ngIf="setorMineracao.diretor">
-                        <a [routerLink]="['../funcionario', setorMineracao.diretor?.id, 'view' ]" >{{setorMineracao.diretor?.id}}</a>
+                    <div *ngIf="setorMineracao.diretorId">
+                        <a [routerLink]="['../funcionario', setorMineracao.diretorId , 'view' ]" >{{setorMineracao.diretorId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="setorMineracao.gerente">
-                        <a [routerLink]="['../funcionario', setorMineracao.gerente?.id, 'view' ]" >{{setorMineracao.gerente?.id}}</a>
+                    <div *ngIf="setorMineracao.gerenteId">
+                        <a [routerLink]="['../funcionario', setorMineracao.gerenteId , 'view' ]" >{{setorMineracao.gerenteId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="setorMineracao.minaOperacao">
-                        <a [routerLink]="['../mina-operacao', setorMineracao.minaOperacao?.id, 'view' ]" >{{setorMineracao.minaOperacao?.id}}</a>
+                    <div *ngIf="setorMineracao.minaOperacaoId">
+                        <a [routerLink]="['../mina-operacao', setorMineracao.minaOperacaoId , 'view' ]" >{{setorMineracao.minaOperacaoId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

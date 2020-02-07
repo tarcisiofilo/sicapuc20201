@@ -16,7 +16,6 @@
         "title": "Mina Operacao"
       },
       "nome": "Nome",
-      "segmento": "Segmento",
       "tipoOperacao": "Tipo Operacao",
       "setorMineracao": "Setor Mineracao"
     }

@@ -26,11 +26,8 @@ export class AtivoUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idTipoAtivo: [null, [Validators.required]],
-    tipoAtivo: [null, [Validators.required]],
-    periodicidadeDiasManutencao: [null, [Validators.required]],
-    setorMineracao: [],
-    incidente: []
+    nome: [null, [Validators.required]],
+    setorMineracaoId: []
   });
 
   constructor(
@@ -56,11 +53,11 @@ export class AtivoUpdateComponent implements OnInit {
       )
       .subscribe(
         (res: ISetorMineracao[]) => {
-          if (!this.ativo.setorMineracao || !this.ativo.setorMineracao.id) {
+          if (!this.ativo.setorMineracaoId) {
             this.setormineracaos = res;
           } else {
             this.setorMineracaoService
-              .find(this.ativo.setorMineracao.id)
+              .find(this.ativo.setorMineracaoId)
               .pipe(
                 filter((subResMayBeOk: HttpResponse<ISetorMineracao>) => subResMayBeOk.ok),
                 map((subResponse: HttpResponse<ISetorMineracao>) => subResponse.body)
@@ -85,11 +82,8 @@ export class AtivoUpdateComponent implements OnInit {
   updateForm(ativo: IAtivo) {
     this.editForm.patchValue({
       id: ativo.id,
-      idTipoAtivo: ativo.idTipoAtivo,
-      tipoAtivo: ativo.tipoAtivo,
-      periodicidadeDiasManutencao: ativo.periodicidadeDiasManutencao,
-      setorMineracao: ativo.setorMineracao,
-      incidente: ativo.incidente
+      nome: ativo.nome,
+      setorMineracaoId: ativo.setorMineracaoId
     });
   }
 
@@ -111,11 +105,8 @@ export class AtivoUpdateComponent implements OnInit {
     const entity = {
       ...new Ativo(),
       id: this.editForm.get(['id']).value,
-      idTipoAtivo: this.editForm.get(['idTipoAtivo']).value,
-      tipoAtivo: this.editForm.get(['tipoAtivo']).value,
-      periodicidadeDiasManutencao: this.editForm.get(['periodicidadeDiasManutencao']).value,
-      setorMineracao: this.editForm.get(['setorMineracao']).value,
-      incidente: this.editForm.get(['incidente']).value
+      nome: this.editForm.get(['nome']).value,
+      setorMineracaoId: this.editForm.get(['setorMineracaoId']).value
     };
     return entity;
   }
@@ -142,5 +133,16 @@ export class AtivoUpdateComponent implements OnInit {
 
   trackIncidenteById(index: number, item: IIncidente) {
     return item.id;
+  }
+
+  getSelected(selectedVals: Array<any>, option: any) {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

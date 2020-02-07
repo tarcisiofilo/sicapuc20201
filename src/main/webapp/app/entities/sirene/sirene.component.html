@@ -27,8 +27,8 @@
                 <td>{{sirene.identificacao}}</td>
                 <td>{{sirene.urlAtivar}}</td>
                 <td>
-                    <div *ngIf="sirene.areaSusceptivel">
-                        <a [routerLink]="['../area-susceptivel', sirene.areaSusceptivel?.id, 'view' ]" >{{sirene.areaSusceptivel?.id}}</a>
+                    <div *ngIf="sirene.areaSusceptivelId">
+                        <a [routerLink]="['../area-susceptivel', sirene.areaSusceptivelId , 'view' ]" >{{sirene.areaSusceptivelId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

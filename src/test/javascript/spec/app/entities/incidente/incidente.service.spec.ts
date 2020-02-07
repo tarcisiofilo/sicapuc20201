@@ -23,7 +23,7 @@ describe('Service Tests', () => {
       service = injector.get(IncidenteService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Incidente(0, 'AAAAAAA', OrigemIncidente.MONITORAMENTO_SENSORES);
+      elemDefault = new Incidente(0, 'AAAAAAA', OrigemIncidente.MONITORAMENTO_SENSORES, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -60,7 +60,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             identificacao: 'BBBBBB',
-            origem: 'BBBBBB'
+            origem: 'BBBBBB',
+            mensagem: 'BBBBBB'
           },
           elemDefault
         );
@@ -79,7 +80,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             identificacao: 'BBBBBB',
-            origem: 'BBBBBB'
+            origem: 'BBBBBB',
+            mensagem: 'BBBBBB'
           },
           elemDefault
         );

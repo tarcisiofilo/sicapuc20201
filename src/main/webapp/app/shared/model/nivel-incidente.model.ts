@@ -1,14 +1,12 @@
-import { IIncidente } from 'app/shared/model/incidente.model';
-
 export interface INivelIncidente {
   id?: number;
   nome?: string;
   notificaDNPM?: boolean;
   notificaEmail?: boolean;
-  notificacaoSmsWhatsapp?: boolean;
+  notificacaoSms?: boolean;
+  notificacaoWhatsapp?: boolean;
   notificacaoDispositivoSeguranca?: boolean;
   notificaSirene?: boolean;
-  incidente?: IIncidente;
 }
 
 export class NivelIncidente implements INivelIncidente {
@@ -17,14 +15,15 @@ export class NivelIncidente implements INivelIncidente {
     public nome?: string,
     public notificaDNPM?: boolean,
     public notificaEmail?: boolean,
-    public notificacaoSmsWhatsapp?: boolean,
+    public notificacaoSms?: boolean,
+    public notificacaoWhatsapp?: boolean,
     public notificacaoDispositivoSeguranca?: boolean,
-    public notificaSirene?: boolean,
-    public incidente?: IIncidente
+    public notificaSirene?: boolean
   ) {
     this.notificaDNPM = this.notificaDNPM || false;
     this.notificaEmail = this.notificaEmail || false;
-    this.notificacaoSmsWhatsapp = this.notificacaoSmsWhatsapp || false;
+    this.notificacaoSms = this.notificacaoSms || false;
+    this.notificacaoWhatsapp = this.notificacaoWhatsapp || false;
     this.notificacaoDispositivoSeguranca = this.notificacaoDispositivoSeguranca || false;
     this.notificaSirene = this.notificaSirene || false;
   }

@@ -25,8 +25,8 @@
                 <td><a [routerLink]="['/familia', familia.id, 'view' ]">{{familia.id}}</a></td>
                 <td>{{familia.identificacao}}</td>
                 <td>
-                    <div *ngIf="familia.areaSusceptivel">
-                        <a [routerLink]="['../area-susceptivel', familia.areaSusceptivel?.id, 'view' ]" >{{familia.areaSusceptivel?.id}}</a>
+                    <div *ngIf="familia.areaSusceptivelId">
+                        <a [routerLink]="['../area-susceptivel', familia.areaSusceptivelId , 'view' ]" >{{familia.areaSusceptivelId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

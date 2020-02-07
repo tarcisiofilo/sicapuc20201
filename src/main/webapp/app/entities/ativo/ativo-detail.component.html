@@ -5,28 +5,14 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="sicapuc20201App.ativo.idTipoAtivo">Id Tipo Ativo</span></dt>
+                <dt><span jhiTranslate="sicapuc20201App.ativo.nome">Nome</span></dt>
                 <dd>
-                    <span>{{ativo.idTipoAtivo}}</span>
-                </dd>
-                <dt><span jhiTranslate="sicapuc20201App.ativo.tipoAtivo">Tipo Ativo</span></dt>
-                <dd>
-                    <span>{{ativo.tipoAtivo}}</span>
-                </dd>
-                <dt><span jhiTranslate="sicapuc20201App.ativo.periodicidadeDiasManutencao">Periodicidade Dias Manutencao</span></dt>
-                <dd>
-                    <span>{{ativo.periodicidadeDiasManutencao}}</span>
+                    <span>{{ativo.nome}}</span>
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.ativo.setorMineracao">Setor Mineracao</span></dt>
                 <dd>
-                    <div *ngIf="ativo.setorMineracao">
-                        <a [routerLink]="['/setor-mineracao', ativo.setorMineracao?.id, 'view']">{{ativo.setorMineracao?.id}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="sicapuc20201App.ativo.incidente">Incidente</span></dt>
-                <dd>
-                    <div *ngIf="ativo.incidente">
-                        <a [routerLink]="['/incidente', ativo.incidente?.id, 'view']">{{ativo.incidente?.id}}</a>
+                    <div *ngIf="ativo.setorMineracaoId">
+                        <a [routerLink]="['/setor-mineracao', ativo.setorMineracaoId, 'view']">{{ativo.setorMineracaoId}}</a>
                     </div>
                 </dd>
             </dl>

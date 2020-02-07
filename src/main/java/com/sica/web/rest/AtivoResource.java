@@ -1,8 +1,8 @@
 package com.sica.web.rest;
 
-import com.sica.domain.Ativo;
-import com.sica.repository.AtivoRepository;
+import com.sica.service.AtivoService;
 import com.sica.web.rest.errors.BadRequestAlertException;
+import com.sica.service.dto.AtivoDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -33,26 +33,26 @@ public class AtivoResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final AtivoRepository ativoRepository;
+    private final AtivoService ativoService;
 
-    public AtivoResource(AtivoRepository ativoRepository) {
-        this.ativoRepository = ativoRepository;
+    public AtivoResource(AtivoService ativoService) {
+        this.ativoService = ativoService;
     }
 
     /**
      * {@code POST  /ativos} : Create a new ativo.
      *
-     * @param ativo the ativo to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ativo, or with status {@code 400 (Bad Request)} if the ativo has already an ID.
+     * @param ativoDTO the ativoDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ativoDTO, or with status {@code 400 (Bad Request)} if the ativo has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ativos")
-    public ResponseEntity<Ativo> createAtivo(@Valid @RequestBody Ativo ativo) throws URISyntaxException {
-        log.debug("REST request to save Ativo : {}", ativo);
-        if (ativo.getId() != null) {
+    public ResponseEntity<AtivoDTO> createAtivo(@Valid @RequestBody AtivoDTO ativoDTO) throws URISyntaxException {
+        log.debug("REST request to save Ativo : {}", ativoDTO);
+        if (ativoDTO.getId() != null) {
             throw new BadRequestAlertException("A new ativo cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Ativo result = ativoRepository.save(ativo);
+        AtivoDTO result = ativoService.save(ativoDTO);
         return ResponseEntity.created(new URI("/api/ativos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -61,21 +61,21 @@ public class AtivoResource {
     /**
      * {@code PUT  /ativos} : Updates an existing ativo.
      *
-     * @param ativo the ativo to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ativo,
-     * or with status {@code 400 (Bad Request)} if the ativo is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the ativo couldn't be updated.
+     * @param ativoDTO the ativoDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ativoDTO,
+     * or with status {@code 400 (Bad Request)} if the ativoDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ativoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ativos")
-    public ResponseEntity<Ativo> updateAtivo(@Valid @RequestBody Ativo ativo) throws URISyntaxException {
-        log.debug("REST request to update Ativo : {}", ativo);
-        if (ativo.getId() == null) {
+    public ResponseEntity<AtivoDTO> updateAtivo(@Valid @RequestBody AtivoDTO ativoDTO) throws URISyntaxException {
+        log.debug("REST request to update Ativo : {}", ativoDTO);
+        if (ativoDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Ativo result = ativoRepository.save(ativo);
+        AtivoDTO result = ativoService.save(ativoDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ativo.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ativoDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,34 +85,34 @@ public class AtivoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ativos in body.
      */
     @GetMapping("/ativos")
-    public List<Ativo> getAllAtivos() {
+    public List<AtivoDTO> getAllAtivos() {
         log.debug("REST request to get all Ativos");
-        return ativoRepository.findAll();
+        return ativoService.findAll();
     }
 
     /**
      * {@code GET  /ativos/:id} : get the "id" ativo.
      *
-     * @param id the id of the ativo to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ativo, or with status {@code 404 (Not Found)}.
+     * @param id the id of the ativoDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ativoDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/ativos/{id}")
-    public ResponseEntity<Ativo> getAtivo(@PathVariable Long id) {
+    public ResponseEntity<AtivoDTO> getAtivo(@PathVariable Long id) {
         log.debug("REST request to get Ativo : {}", id);
-        Optional<Ativo> ativo = ativoRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(ativo);
+        Optional<AtivoDTO> ativoDTO = ativoService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(ativoDTO);
     }
 
     /**
      * {@code DELETE  /ativos/:id} : delete the "id" ativo.
      *
-     * @param id the id of the ativo to delete.
+     * @param id the id of the ativoDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/ativos/{id}")
     public ResponseEntity<Void> deleteAtivo(@PathVariable Long id) {
         log.debug("REST request to delete Ativo : {}", id);
-        ativoRepository.deleteById(id);
+        ativoService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

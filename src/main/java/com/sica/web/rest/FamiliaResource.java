@@ -1,8 +1,8 @@
 package com.sica.web.rest;
 
-import com.sica.domain.Familia;
-import com.sica.repository.FamiliaRepository;
+import com.sica.service.FamiliaService;
 import com.sica.web.rest.errors.BadRequestAlertException;
+import com.sica.service.dto.FamiliaDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -33,26 +33,26 @@ public class FamiliaResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final FamiliaRepository familiaRepository;
+    private final FamiliaService familiaService;
 
-    public FamiliaResource(FamiliaRepository familiaRepository) {
-        this.familiaRepository = familiaRepository;
+    public FamiliaResource(FamiliaService familiaService) {
+        this.familiaService = familiaService;
     }
 
     /**
      * {@code POST  /familias} : Create a new familia.
      *
-     * @param familia the familia to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new familia, or with status {@code 400 (Bad Request)} if the familia has already an ID.
+     * @param familiaDTO the familiaDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new familiaDTO, or with status {@code 400 (Bad Request)} if the familia has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/familias")
-    public ResponseEntity<Familia> createFamilia(@Valid @RequestBody Familia familia) throws URISyntaxException {
-        log.debug("REST request to save Familia : {}", familia);
-        if (familia.getId() != null) {
+    public ResponseEntity<FamiliaDTO> createFamilia(@Valid @RequestBody FamiliaDTO familiaDTO) throws URISyntaxException {
+        log.debug("REST request to save Familia : {}", familiaDTO);
+        if (familiaDTO.getId() != null) {
             throw new BadRequestAlertException("A new familia cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Familia result = familiaRepository.save(familia);
+        FamiliaDTO result = familiaService.save(familiaDTO);
         return ResponseEntity.created(new URI("/api/familias/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -61,21 +61,21 @@ public class FamiliaResource {
     /**
      * {@code PUT  /familias} : Updates an existing familia.
      *
-     * @param familia the familia to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated familia,
-     * or with status {@code 400 (Bad Request)} if the familia is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the familia couldn't be updated.
+     * @param familiaDTO the familiaDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated familiaDTO,
+     * or with status {@code 400 (Bad Request)} if the familiaDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the familiaDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/familias")
-    public ResponseEntity<Familia> updateFamilia(@Valid @RequestBody Familia familia) throws URISyntaxException {
-        log.debug("REST request to update Familia : {}", familia);
-        if (familia.getId() == null) {
+    public ResponseEntity<FamiliaDTO> updateFamilia(@Valid @RequestBody FamiliaDTO familiaDTO) throws URISyntaxException {
+        log.debug("REST request to update Familia : {}", familiaDTO);
+        if (familiaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Familia result = familiaRepository.save(familia);
+        FamiliaDTO result = familiaService.save(familiaDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, familia.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, familiaDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,34 +85,34 @@ public class FamiliaResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of familias in body.
      */
     @GetMapping("/familias")
-    public List<Familia> getAllFamilias() {
+    public List<FamiliaDTO> getAllFamilias() {
         log.debug("REST request to get all Familias");
-        return familiaRepository.findAll();
+        return familiaService.findAll();
     }
 
     /**
      * {@code GET  /familias/:id} : get the "id" familia.
      *
-     * @param id the id of the familia to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the familia, or with status {@code 404 (Not Found)}.
+     * @param id the id of the familiaDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the familiaDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/familias/{id}")
-    public ResponseEntity<Familia> getFamilia(@PathVariable Long id) {
+    public ResponseEntity<FamiliaDTO> getFamilia(@PathVariable Long id) {
         log.debug("REST request to get Familia : {}", id);
-        Optional<Familia> familia = familiaRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(familia);
+        Optional<FamiliaDTO> familiaDTO = familiaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(familiaDTO);
     }
 
     /**
      * {@code DELETE  /familias/:id} : delete the "id" familia.
      *
-     * @param id the id of the familia to delete.
+     * @param id the id of the familiaDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/familias/{id}")
     public ResponseEntity<Void> deleteFamilia(@PathVariable Long id) {
         log.debug("REST request to delete Familia : {}", id);
-        familiaRepository.deleteById(id);
+        familiaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.NivelIncidente;
 import com.sica.repository.NivelIncidenteRepository;
+import com.sica.service.NivelIncidenteService;
+import com.sica.service.dto.NivelIncidenteDTO;
+import com.sica.service.mapper.NivelIncidenteMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -42,8 +45,11 @@ public class NivelIncidenteResourceIT {
     private static final Boolean DEFAULT_NOTIFICA_EMAIL = false;
     private static final Boolean UPDATED_NOTIFICA_EMAIL = true;
 
-    private static final Boolean DEFAULT_NOTIFICACAO_SMS_WHATSAPP = false;
-    private static final Boolean UPDATED_NOTIFICACAO_SMS_WHATSAPP = true;
+    private static final Boolean DEFAULT_NOTIFICACAO_SMS = false;
+    private static final Boolean UPDATED_NOTIFICACAO_SMS = true;
+
+    private static final Boolean DEFAULT_NOTIFICACAO_WHATSAPP = false;
+    private static final Boolean UPDATED_NOTIFICACAO_WHATSAPP = true;
 
     private static final Boolean DEFAULT_NOTIFICACAO_DISPOSITIVO_SEGURANCA = false;
     private static final Boolean UPDATED_NOTIFICACAO_DISPOSITIVO_SEGURANCA = true;
@@ -53,6 +59,12 @@ public class NivelIncidenteResourceIT {
 
     @Autowired
     private NivelIncidenteRepository nivelIncidenteRepository;
+
+    @Autowired
+    private NivelIncidenteMapper nivelIncidenteMapper;
+
+    @Autowired
+    private NivelIncidenteService nivelIncidenteService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -76,7 +88,7 @@ public class NivelIncidenteResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final NivelIncidenteResource nivelIncidenteResource = new NivelIncidenteResource(nivelIncidenteRepository);
+        final NivelIncidenteResource nivelIncidenteResource = new NivelIncidenteResource(nivelIncidenteService);
         this.restNivelIncidenteMockMvc = MockMvcBuilders.standaloneSetup(nivelIncidenteResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -96,7 +108,8 @@ public class NivelIncidenteResourceIT {
             .nome(DEFAULT_NOME)
             .notificaDNPM(DEFAULT_NOTIFICA_DNPM)
             .notificaEmail(DEFAULT_NOTIFICA_EMAIL)
-            .notificacaoSmsWhatsapp(DEFAULT_NOTIFICACAO_SMS_WHATSAPP)
+            .notificacaoSms(DEFAULT_NOTIFICACAO_SMS)
+            .notificacaoWhatsapp(DEFAULT_NOTIFICACAO_WHATSAPP)
             .notificacaoDispositivoSeguranca(DEFAULT_NOTIFICACAO_DISPOSITIVO_SEGURANCA)
             .notificaSirene(DEFAULT_NOTIFICA_SIRENE);
         return nivelIncidente;
@@ -112,7 +125,8 @@ public class NivelIncidenteResourceIT {
             .nome(UPDATED_NOME)
             .notificaDNPM(UPDATED_NOTIFICA_DNPM)
             .notificaEmail(UPDATED_NOTIFICA_EMAIL)
-            .notificacaoSmsWhatsapp(UPDATED_NOTIFICACAO_SMS_WHATSAPP)
+            .notificacaoSms(UPDATED_NOTIFICACAO_SMS)
+            .notificacaoWhatsapp(UPDATED_NOTIFICACAO_WHATSAPP)
             .notificacaoDispositivoSeguranca(UPDATED_NOTIFICACAO_DISPOSITIVO_SEGURANCA)
             .notificaSirene(UPDATED_NOTIFICA_SIRENE);
         return nivelIncidente;
@@ -129,9 +143,10 @@ public class NivelIncidenteResourceIT {
         int databaseSizeBeforeCreate = nivelIncidenteRepository.findAll().size();
 
         // Create the NivelIncidente
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isCreated());
 
         // Validate the NivelIncidente in the database
@@ -141,7 +156,8 @@ public class NivelIncidenteResourceIT {
         assertThat(testNivelIncidente.getNome()).isEqualTo(DEFAULT_NOME);
         assertThat(testNivelIncidente.isNotificaDNPM()).isEqualTo(DEFAULT_NOTIFICA_DNPM);
         assertThat(testNivelIncidente.isNotificaEmail()).isEqualTo(DEFAULT_NOTIFICA_EMAIL);
-        assertThat(testNivelIncidente.isNotificacaoSmsWhatsapp()).isEqualTo(DEFAULT_NOTIFICACAO_SMS_WHATSAPP);
+        assertThat(testNivelIncidente.isNotificacaoSms()).isEqualTo(DEFAULT_NOTIFICACAO_SMS);
+        assertThat(testNivelIncidente.isNotificacaoWhatsapp()).isEqualTo(DEFAULT_NOTIFICACAO_WHATSAPP);
         assertThat(testNivelIncidente.isNotificacaoDispositivoSeguranca()).isEqualTo(DEFAULT_NOTIFICACAO_DISPOSITIVO_SEGURANCA);
         assertThat(testNivelIncidente.isNotificaSirene()).isEqualTo(DEFAULT_NOTIFICA_SIRENE);
     }
@@ -153,11 +169,12 @@ public class NivelIncidenteResourceIT {
 
         // Create the NivelIncidente with an existing ID
         nivelIncidente.setId(1L);
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the NivelIncidente in the database
@@ -174,10 +191,11 @@ public class NivelIncidenteResourceIT {
         nivelIncidente.setNome(null);
 
         // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
@@ -192,10 +210,11 @@ public class NivelIncidenteResourceIT {
         nivelIncidente.setNotificaDNPM(null);
 
         // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
@@ -210,10 +229,11 @@ public class NivelIncidenteResourceIT {
         nivelIncidente.setNotificaEmail(null);
 
         // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
@@ -222,16 +242,36 @@ public class NivelIncidenteResourceIT {
 
     @Test
     @Transactional
-    public void checkNotificacaoSmsWhatsappIsRequired() throws Exception {
+    public void checkNotificacaoSmsIsRequired() throws Exception {
         int databaseSizeBeforeTest = nivelIncidenteRepository.findAll().size();
         // set the field null
-        nivelIncidente.setNotificacaoSmsWhatsapp(null);
+        nivelIncidente.setNotificacaoSms(null);
 
         // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
+        assertThat(nivelIncidenteList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkNotificacaoWhatsappIsRequired() throws Exception {
+        int databaseSizeBeforeTest = nivelIncidenteRepository.findAll().size();
+        // set the field null
+        nivelIncidente.setNotificacaoWhatsapp(null);
+
+        // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
+
+        restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
@@ -246,10 +286,11 @@ public class NivelIncidenteResourceIT {
         nivelIncidente.setNotificacaoDispositivoSeguranca(null);
 
         // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
@@ -264,10 +305,11 @@ public class NivelIncidenteResourceIT {
         nivelIncidente.setNotificaSirene(null);
 
         // Create the NivelIncidente, which fails.
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         restNivelIncidenteMockMvc.perform(post("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         List<NivelIncidente> nivelIncidenteList = nivelIncidenteRepository.findAll();
@@ -288,7 +330,8 @@ public class NivelIncidenteResourceIT {
             .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME.toString())))
             .andExpect(jsonPath("$.[*].notificaDNPM").value(hasItem(DEFAULT_NOTIFICA_DNPM.booleanValue())))
             .andExpect(jsonPath("$.[*].notificaEmail").value(hasItem(DEFAULT_NOTIFICA_EMAIL.booleanValue())))
-            .andExpect(jsonPath("$.[*].notificacaoSmsWhatsapp").value(hasItem(DEFAULT_NOTIFICACAO_SMS_WHATSAPP.booleanValue())))
+            .andExpect(jsonPath("$.[*].notificacaoSms").value(hasItem(DEFAULT_NOTIFICACAO_SMS.booleanValue())))
+            .andExpect(jsonPath("$.[*].notificacaoWhatsapp").value(hasItem(DEFAULT_NOTIFICACAO_WHATSAPP.booleanValue())))
             .andExpect(jsonPath("$.[*].notificacaoDispositivoSeguranca").value(hasItem(DEFAULT_NOTIFICACAO_DISPOSITIVO_SEGURANCA.booleanValue())))
             .andExpect(jsonPath("$.[*].notificaSirene").value(hasItem(DEFAULT_NOTIFICA_SIRENE.booleanValue())));
     }
@@ -307,7 +350,8 @@ public class NivelIncidenteResourceIT {
             .andExpect(jsonPath("$.nome").value(DEFAULT_NOME.toString()))
             .andExpect(jsonPath("$.notificaDNPM").value(DEFAULT_NOTIFICA_DNPM.booleanValue()))
             .andExpect(jsonPath("$.notificaEmail").value(DEFAULT_NOTIFICA_EMAIL.booleanValue()))
-            .andExpect(jsonPath("$.notificacaoSmsWhatsapp").value(DEFAULT_NOTIFICACAO_SMS_WHATSAPP.booleanValue()))
+            .andExpect(jsonPath("$.notificacaoSms").value(DEFAULT_NOTIFICACAO_SMS.booleanValue()))
+            .andExpect(jsonPath("$.notificacaoWhatsapp").value(DEFAULT_NOTIFICACAO_WHATSAPP.booleanValue()))
             .andExpect(jsonPath("$.notificacaoDispositivoSeguranca").value(DEFAULT_NOTIFICACAO_DISPOSITIVO_SEGURANCA.booleanValue()))
             .andExpect(jsonPath("$.notificaSirene").value(DEFAULT_NOTIFICA_SIRENE.booleanValue()));
     }
@@ -336,13 +380,15 @@ public class NivelIncidenteResourceIT {
             .nome(UPDATED_NOME)
             .notificaDNPM(UPDATED_NOTIFICA_DNPM)
             .notificaEmail(UPDATED_NOTIFICA_EMAIL)
-            .notificacaoSmsWhatsapp(UPDATED_NOTIFICACAO_SMS_WHATSAPP)
+            .notificacaoSms(UPDATED_NOTIFICACAO_SMS)
+            .notificacaoWhatsapp(UPDATED_NOTIFICACAO_WHATSAPP)
             .notificacaoDispositivoSeguranca(UPDATED_NOTIFICACAO_DISPOSITIVO_SEGURANCA)
             .notificaSirene(UPDATED_NOTIFICA_SIRENE);
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(updatedNivelIncidente);
 
         restNivelIncidenteMockMvc.perform(put("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedNivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isOk());
 
         // Validate the NivelIncidente in the database
@@ -352,7 +398,8 @@ public class NivelIncidenteResourceIT {
         assertThat(testNivelIncidente.getNome()).isEqualTo(UPDATED_NOME);
         assertThat(testNivelIncidente.isNotificaDNPM()).isEqualTo(UPDATED_NOTIFICA_DNPM);
         assertThat(testNivelIncidente.isNotificaEmail()).isEqualTo(UPDATED_NOTIFICA_EMAIL);
-        assertThat(testNivelIncidente.isNotificacaoSmsWhatsapp()).isEqualTo(UPDATED_NOTIFICACAO_SMS_WHATSAPP);
+        assertThat(testNivelIncidente.isNotificacaoSms()).isEqualTo(UPDATED_NOTIFICACAO_SMS);
+        assertThat(testNivelIncidente.isNotificacaoWhatsapp()).isEqualTo(UPDATED_NOTIFICACAO_WHATSAPP);
         assertThat(testNivelIncidente.isNotificacaoDispositivoSeguranca()).isEqualTo(UPDATED_NOTIFICACAO_DISPOSITIVO_SEGURANCA);
         assertThat(testNivelIncidente.isNotificaSirene()).isEqualTo(UPDATED_NOTIFICA_SIRENE);
     }
@@ -363,11 +410,12 @@ public class NivelIncidenteResourceIT {
         int databaseSizeBeforeUpdate = nivelIncidenteRepository.findAll().size();
 
         // Create the NivelIncidente
+        NivelIncidenteDTO nivelIncidenteDTO = nivelIncidenteMapper.toDto(nivelIncidente);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNivelIncidenteMockMvc.perform(put("/api/nivel-incidentes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(nivelIncidente)))
+            .content(TestUtil.convertObjectToJsonBytes(nivelIncidenteDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the NivelIncidente in the database
@@ -406,5 +454,28 @@ public class NivelIncidenteResourceIT {
         assertThat(nivelIncidente1).isNotEqualTo(nivelIncidente2);
         nivelIncidente1.setId(null);
         assertThat(nivelIncidente1).isNotEqualTo(nivelIncidente2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(NivelIncidenteDTO.class);
+        NivelIncidenteDTO nivelIncidenteDTO1 = new NivelIncidenteDTO();
+        nivelIncidenteDTO1.setId(1L);
+        NivelIncidenteDTO nivelIncidenteDTO2 = new NivelIncidenteDTO();
+        assertThat(nivelIncidenteDTO1).isNotEqualTo(nivelIncidenteDTO2);
+        nivelIncidenteDTO2.setId(nivelIncidenteDTO1.getId());
+        assertThat(nivelIncidenteDTO1).isEqualTo(nivelIncidenteDTO2);
+        nivelIncidenteDTO2.setId(2L);
+        assertThat(nivelIncidenteDTO1).isNotEqualTo(nivelIncidenteDTO2);
+        nivelIncidenteDTO1.setId(null);
+        assertThat(nivelIncidenteDTO1).isNotEqualTo(nivelIncidenteDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(nivelIncidenteMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(nivelIncidenteMapper.fromId(null)).isNull();
     }
 }

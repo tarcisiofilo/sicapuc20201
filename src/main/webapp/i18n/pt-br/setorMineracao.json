@@ -16,10 +16,9 @@
         "title": "Setor Mineracao"
       },
       "nome": "Nome",
+      "funcionarios": "Funcionarios",
       "diretor": "Diretor",
       "gerente": "Gerente",
-      "funcionarios": "Funcionarios",
-      "ativo": "Ativo",
       "minaOperacao": "Mina Operacao"
     }
   }

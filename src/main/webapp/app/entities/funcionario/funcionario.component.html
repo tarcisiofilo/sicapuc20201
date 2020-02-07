@@ -17,8 +17,8 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="sicapuc20201App.funcionario.cargo">Cargo</span></th>
             <th><span jhiTranslate="sicapuc20201App.funcionario.idDispositivoMonitoramento">Id Dispositivo Monitoramento</span></th>
-            <th><span jhiTranslate="sicapuc20201App.funcionario.setorMineracao">Setor Mineracao</span></th>
             <th><span jhiTranslate="sicapuc20201App.funcionario.pessoa">Pessoa</span></th>
+            <th><span jhiTranslate="sicapuc20201App.funcionario.setorMineracao">Setor Mineracao</span></th>
             <th></th>
             </tr>
             </thead>
@@ -28,13 +28,13 @@
                 <td>{{funcionario.cargo}}</td>
                 <td>{{funcionario.idDispositivoMonitoramento}}</td>
                 <td>
-                    <div *ngIf="funcionario.setorMineracao">
-                        <a [routerLink]="['../setor-mineracao', funcionario.setorMineracao?.id, 'view' ]" >{{funcionario.setorMineracao?.id}}</a>
+                    <div *ngIf="funcionario.pessoaId">
+                        <a [routerLink]="['../pessoa', funcionario.pessoaId , 'view' ]" >{{funcionario.pessoaId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="funcionario.pessoa">
-                        <a [routerLink]="['../pessoa', funcionario.pessoa?.id, 'view' ]" >{{funcionario.pessoa?.id}}</a>
+                    <div *ngIf="funcionario.setorMineracaoId">
+                        <a [routerLink]="['../setor-mineracao', funcionario.setorMineracaoId , 'view' ]" >{{funcionario.setorMineracaoId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

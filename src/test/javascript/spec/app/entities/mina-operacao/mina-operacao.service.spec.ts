@@ -23,7 +23,7 @@ describe('Service Tests', () => {
       service = injector.get(MinaOperacaoService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new MinaOperacao(0, 'AAAAAAA', 'AAAAAAA', TipoOperacao.MINERIO_FERRO_PELOTAS);
+      elemDefault = new MinaOperacao(0, 'AAAAAAA', TipoOperacao.MINERIO_FERRO_PELOTAS);
     });
 
     describe('Service methods', () => {
@@ -60,7 +60,6 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             nome: 'BBBBBB',
-            segmento: 'BBBBBB',
             tipoOperacao: 'BBBBBB'
           },
           elemDefault
@@ -80,7 +79,6 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             nome: 'BBBBBB',
-            segmento: 'BBBBBB',
             tipoOperacao: 'BBBBBB'
           },
           elemDefault

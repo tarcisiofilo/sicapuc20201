@@ -23,7 +23,7 @@ describe('Service Tests', () => {
       service = injector.get(NivelIncidenteService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new NivelIncidente(0, 'AAAAAAA', false, false, false, false, false);
+      elemDefault = new NivelIncidente(0, 'AAAAAAA', false, false, false, false, false, false);
     });
 
     describe('Service methods', () => {
@@ -62,7 +62,8 @@ describe('Service Tests', () => {
             nome: 'BBBBBB',
             notificaDNPM: true,
             notificaEmail: true,
-            notificacaoSmsWhatsapp: true,
+            notificacaoSms: true,
+            notificacaoWhatsapp: true,
             notificacaoDispositivoSeguranca: true,
             notificaSirene: true
           },
@@ -85,7 +86,8 @@ describe('Service Tests', () => {
             nome: 'BBBBBB',
             notificaDNPM: true,
             notificaEmail: true,
-            notificacaoSmsWhatsapp: true,
+            notificacaoSms: true,
+            notificacaoWhatsapp: true,
             notificacaoDispositivoSeguranca: true,
             notificaSirene: true
           },

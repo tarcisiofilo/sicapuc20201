@@ -23,8 +23,8 @@
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.pessoa.familia">Familia</span></dt>
                 <dd>
-                    <div *ngIf="pessoa.familia">
-                        <a [routerLink]="['/familia', pessoa.familia?.id, 'view']">{{pessoa.familia?.id}}</a>
+                    <div *ngIf="pessoa.familiaId">
+                        <a [routerLink]="['/familia', pessoa.familiaId, 'view']">{{pessoa.familiaId}}</a>
                     </div>
                 </dd>
             </dl>

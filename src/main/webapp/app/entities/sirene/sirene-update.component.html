@@ -34,9 +34,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.sirene.areaSusceptivel" for="field_areaSusceptivel">Area Susceptivel</label>
-                    <select class="form-control" id="field_areaSusceptivel" name="areaSusceptivel" formControlName="areaSusceptivel">
+                    <select class="form-control" id="field_areaSusceptivel" name="areaSusceptivel" formControlName="areaSusceptivelId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="areaSusceptivelOption.id === editForm.get('areaSusceptivel').value?.id ? editForm.get('areaSusceptivel').value : areaSusceptivelOption" *ngFor="let areaSusceptivelOption of areasusceptivels; trackBy: trackAreaSusceptivelById">{{areaSusceptivelOption.id}}</option>
+                        <option [ngValue]="areaSusceptivelOption.id" *ngFor="let areaSusceptivelOption of areasusceptivels; trackBy: trackAreaSusceptivelById">{{areaSusceptivelOption.id}}</option>
                     </select>
                 </div>
             </div>

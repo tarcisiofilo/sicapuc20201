@@ -11,8 +11,8 @@
                 </dd>
                 <dt><span jhiTranslate="sicapuc20201App.familia.areaSusceptivel">Area Susceptivel</span></dt>
                 <dd>
-                    <div *ngIf="familia.areaSusceptivel">
-                        <a [routerLink]="['/area-susceptivel', familia.areaSusceptivel?.id, 'view']">{{familia.areaSusceptivel?.id}}</a>
+                    <div *ngIf="familia.areaSusceptivelId">
+                        <a [routerLink]="['/area-susceptivel', familia.areaSusceptivelId, 'view']">{{familia.areaSusceptivelId}}</a>
                     </div>
                 </dd>
             </dl>

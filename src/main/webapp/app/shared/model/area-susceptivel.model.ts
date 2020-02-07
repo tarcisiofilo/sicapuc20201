@@ -1,6 +1,5 @@
 import { IFamilia } from 'app/shared/model/familia.model';
 import { ISirene } from 'app/shared/model/sirene.model';
-import { IAtivo } from 'app/shared/model/ativo.model';
 
 export interface IAreaSusceptivel {
   id?: number;
@@ -8,7 +7,7 @@ export interface IAreaSusceptivel {
   nivelProximidade?: number;
   familias?: IFamilia[];
   sirenes?: ISirene[];
-  ativo?: IAtivo;
+  ativoId?: number;
 }
 
 export class AreaSusceptivel implements IAreaSusceptivel {
@@ -18,6 +17,6 @@ export class AreaSusceptivel implements IAreaSusceptivel {
     public nivelProximidade?: number,
     public familias?: IFamilia[],
     public sirenes?: ISirene[],
-    public ativo?: IAtivo
+    public ativoId?: number
   ) {}
 }

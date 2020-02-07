@@ -10,59 +10,22 @@
                         readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="sicapuc20201App.ativo.idTipoAtivo" for="field_idTipoAtivo">Id Tipo Ativo</label>
-                    <input type="number" class="form-control" name="idTipoAtivo" id="field_idTipoAtivo"
-                           formControlName="idTipoAtivo"/>
-                    <div *ngIf="editForm.get('idTipoAtivo').invalid && (editForm.get('idTipoAtivo').dirty || editForm.get('idTipoAtivo').touched)">
+                    <label class="form-control-label" jhiTranslate="sicapuc20201App.ativo.nome" for="field_nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="field_nome"
+                           formControlName="nome"/>
+                    <div *ngIf="editForm.get('nome').invalid && (editForm.get('nome').dirty || editForm.get('nome').touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('idTipoAtivo').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('nome').errors.required" jhiTranslate="entity.validation.required">
                         This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('idTipoAtivo')?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="sicapuc20201App.ativo.tipoAtivo" for="field_tipoAtivo">Tipo Ativo</label>
-                    <input type="text" class="form-control" name="tipoAtivo" id="field_tipoAtivo"
-                           formControlName="tipoAtivo"/>
-                    <div *ngIf="editForm.get('tipoAtivo').invalid && (editForm.get('tipoAtivo').dirty || editForm.get('tipoAtivo').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('tipoAtivo').errors.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="sicapuc20201App.ativo.periodicidadeDiasManutencao" for="field_periodicidadeDiasManutencao">Periodicidade Dias Manutencao</label>
-                    <input type="number" class="form-control" name="periodicidadeDiasManutencao" id="field_periodicidadeDiasManutencao"
-                           formControlName="periodicidadeDiasManutencao"/>
-                    <div *ngIf="editForm.get('periodicidadeDiasManutencao').invalid && (editForm.get('periodicidadeDiasManutencao').dirty || editForm.get('periodicidadeDiasManutencao').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('periodicidadeDiasManutencao').errors.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('periodicidadeDiasManutencao')?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
                         </small>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.ativo.setorMineracao" for="field_setorMineracao">Setor Mineracao</label>
-                    <select class="form-control" id="field_setorMineracao" name="setorMineracao" formControlName="setorMineracao">
+                    <select class="form-control" id="field_setorMineracao" name="setorMineracao" formControlName="setorMineracaoId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="setorMineracaoOption.id === editForm.get('setorMineracao').value?.id ? editForm.get('setorMineracao').value : setorMineracaoOption" *ngFor="let setorMineracaoOption of setormineracaos; trackBy: trackSetorMineracaoById">{{setorMineracaoOption.id}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="sicapuc20201App.ativo.incidente" for="field_incidente">Incidente</label>
-                    <select class="form-control" id="field_incidente" name="incidente" formControlName="incidente">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="incidenteOption.id === editForm.get('incidente').value?.id ? editForm.get('incidente').value : incidenteOption" *ngFor="let incidenteOption of incidentes; trackBy: trackIncidenteById">{{incidenteOption.id}}</option>
+                        <option [ngValue]="setorMineracaoOption.id" *ngFor="let setorMineracaoOption of setormineracaos; trackBy: trackSetorMineracaoById">{{setorMineracaoOption.id}}</option>
                     </select>
                 </div>
             </div>

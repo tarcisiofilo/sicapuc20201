@@ -19,10 +19,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="segmento" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="tipo_operacao" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -48,7 +44,6 @@
                   context="dev">
             <column name="id" type="numeric"/>
             <column name="nome" type="string"/>
-            <column name="segmento" type="string"/>
             <column name="tipo_operacao" type="string"/>
         </loadData>
     </changeSet>

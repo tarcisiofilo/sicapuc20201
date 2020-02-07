@@ -26,7 +26,7 @@ export class NotificacaoUpdateComponent implements OnInit {
     id: [],
     dataNotifacao: [null, [Validators.required]],
     tipoNotificacao: [null, [Validators.required]],
-    incidente: []
+    incidenteId: []
   });
 
   constructor(
@@ -57,7 +57,7 @@ export class NotificacaoUpdateComponent implements OnInit {
       id: notificacao.id,
       dataNotifacao: notificacao.dataNotifacao != null ? notificacao.dataNotifacao.format(DATE_TIME_FORMAT) : null,
       tipoNotificacao: notificacao.tipoNotificacao,
-      incidente: notificacao.incidente
+      incidenteId: notificacao.incidenteId
     });
   }
 
@@ -84,7 +84,7 @@ export class NotificacaoUpdateComponent implements OnInit {
           ? moment(this.editForm.get(['dataNotifacao']).value, DATE_TIME_FORMAT)
           : undefined,
       tipoNotificacao: this.editForm.get(['tipoNotificacao']).value,
-      incidente: this.editForm.get(['incidente']).value
+      incidenteId: this.editForm.get(['incidenteId']).value
     };
     return entity;
   }

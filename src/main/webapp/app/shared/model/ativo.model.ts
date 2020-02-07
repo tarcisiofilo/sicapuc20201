@@ -1,25 +1,20 @@
-import { ISetorMineracao } from 'app/shared/model/setor-mineracao.model';
 import { IAreaSusceptivel } from 'app/shared/model/area-susceptivel.model';
 import { IIncidente } from 'app/shared/model/incidente.model';
 
 export interface IAtivo {
   id?: number;
-  idTipoAtivo?: number;
-  tipoAtivo?: string;
-  periodicidadeDiasManutencao?: number;
-  setorMineracao?: ISetorMineracao;
+  nome?: string;
+  setorMineracaoId?: number;
   areaSusceptivels?: IAreaSusceptivel[];
-  incidente?: IIncidente;
+  incidentes?: IIncidente[];
 }
 
 export class Ativo implements IAtivo {
   constructor(
     public id?: number,
-    public idTipoAtivo?: number,
-    public tipoAtivo?: string,
-    public periodicidadeDiasManutencao?: number,
-    public setorMineracao?: ISetorMineracao,
+    public nome?: string,
+    public setorMineracaoId?: number,
     public areaSusceptivels?: IAreaSusceptivel[],
-    public incidente?: IIncidente
+    public incidentes?: IIncidente[]
   ) {}
 }

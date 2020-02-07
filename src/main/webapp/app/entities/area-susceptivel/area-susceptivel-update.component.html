@@ -38,9 +38,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="sicapuc20201App.areaSusceptivel.ativo" for="field_ativo">Ativo</label>
-                    <select class="form-control" id="field_ativo" name="ativo" formControlName="ativo">
+                    <select class="form-control" id="field_ativo" name="ativo" formControlName="ativoId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="ativoOption.id === editForm.get('ativo').value?.id ? editForm.get('ativo').value : ativoOption" *ngFor="let ativoOption of ativos; trackBy: trackAtivoById">{{ativoOption.id}}</option>
+                        <option [ngValue]="ativoOption.id" *ngFor="let ativoOption of ativos; trackBy: trackAtivoById">{{ativoOption.id}}</option>
                     </select>
                 </div>
             </div>

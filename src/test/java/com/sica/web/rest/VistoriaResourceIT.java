@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.Vistoria;
 import com.sica.repository.VistoriaRepository;
+import com.sica.service.VistoriaService;
+import com.sica.service.dto.VistoriaDTO;
+import com.sica.service.mapper.VistoriaMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +54,12 @@ public class VistoriaResourceIT {
     private VistoriaRepository vistoriaRepository;
 
     @Autowired
+    private VistoriaMapper vistoriaMapper;
+
+    @Autowired
+    private VistoriaService vistoriaService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +81,7 @@ public class VistoriaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VistoriaResource vistoriaResource = new VistoriaResource(vistoriaRepository);
+        final VistoriaResource vistoriaResource = new VistoriaResource(vistoriaService);
         this.restVistoriaMockMvc = MockMvcBuilders.standaloneSetup(vistoriaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -119,9 +128,10 @@ public class VistoriaResourceIT {
         int databaseSizeBeforeCreate = vistoriaRepository.findAll().size();
 
         // Create the Vistoria
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(vistoria);
         restVistoriaMockMvc.perform(post("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(vistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Vistoria in the database
@@ -140,11 +150,12 @@ public class VistoriaResourceIT {
 
         // Create the Vistoria with an existing ID
         vistoria.setId(1L);
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(vistoria);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restVistoriaMockMvc.perform(post("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(vistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Vistoria in the database
@@ -161,10 +172,11 @@ public class VistoriaResourceIT {
         vistoria.setIdentificao(null);
 
         // Create the Vistoria, which fails.
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(vistoria);
 
         restVistoriaMockMvc.perform(post("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(vistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Vistoria> vistoriaList = vistoriaRepository.findAll();
@@ -179,10 +191,11 @@ public class VistoriaResourceIT {
         vistoria.setData(null);
 
         // Create the Vistoria, which fails.
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(vistoria);
 
         restVistoriaMockMvc.perform(post("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(vistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Vistoria> vistoriaList = vistoriaRepository.findAll();
@@ -197,10 +210,11 @@ public class VistoriaResourceIT {
         vistoria.setValor(null);
 
         // Create the Vistoria, which fails.
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(vistoria);
 
         restVistoriaMockMvc.perform(post("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(vistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isBadRequest());
 
         List<Vistoria> vistoriaList = vistoriaRepository.findAll();
@@ -263,10 +277,11 @@ public class VistoriaResourceIT {
             .identificao(UPDATED_IDENTIFICAO)
             .data(UPDATED_DATA)
             .valor(UPDATED_VALOR);
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(updatedVistoria);
 
         restVistoriaMockMvc.perform(put("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedVistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isOk());
 
         // Validate the Vistoria in the database
@@ -284,11 +299,12 @@ public class VistoriaResourceIT {
         int databaseSizeBeforeUpdate = vistoriaRepository.findAll().size();
 
         // Create the Vistoria
+        VistoriaDTO vistoriaDTO = vistoriaMapper.toDto(vistoria);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVistoriaMockMvc.perform(put("/api/vistorias")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(vistoria)))
+            .content(TestUtil.convertObjectToJsonBytes(vistoriaDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Vistoria in the database
@@ -327,5 +343,28 @@ public class VistoriaResourceIT {
         assertThat(vistoria1).isNotEqualTo(vistoria2);
         vistoria1.setId(null);
         assertThat(vistoria1).isNotEqualTo(vistoria2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(VistoriaDTO.class);
+        VistoriaDTO vistoriaDTO1 = new VistoriaDTO();
+        vistoriaDTO1.setId(1L);
+        VistoriaDTO vistoriaDTO2 = new VistoriaDTO();
+        assertThat(vistoriaDTO1).isNotEqualTo(vistoriaDTO2);
+        vistoriaDTO2.setId(vistoriaDTO1.getId());
+        assertThat(vistoriaDTO1).isEqualTo(vistoriaDTO2);
+        vistoriaDTO2.setId(2L);
+        assertThat(vistoriaDTO1).isNotEqualTo(vistoriaDTO2);
+        vistoriaDTO1.setId(null);
+        assertThat(vistoriaDTO1).isNotEqualTo(vistoriaDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(vistoriaMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(vistoriaMapper.fromId(null)).isNull();
     }
 }

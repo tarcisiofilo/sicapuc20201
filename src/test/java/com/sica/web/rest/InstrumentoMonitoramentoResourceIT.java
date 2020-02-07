@@ -3,6 +3,9 @@ package com.sica.web.rest;
 import com.sica.Sicapuc20201App;
 import com.sica.domain.InstrumentoMonitoramento;
 import com.sica.repository.InstrumentoMonitoramentoRepository;
+import com.sica.service.InstrumentoMonitoramentoService;
+import com.sica.service.dto.InstrumentoMonitoramentoDTO;
+import com.sica.service.mapper.InstrumentoMonitoramentoMapper;
 import com.sica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +63,12 @@ public class InstrumentoMonitoramentoResourceIT {
     private InstrumentoMonitoramentoRepository instrumentoMonitoramentoRepository;
 
     @Autowired
+    private InstrumentoMonitoramentoMapper instrumentoMonitoramentoMapper;
+
+    @Autowired
+    private InstrumentoMonitoramentoService instrumentoMonitoramentoService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -81,7 +90,7 @@ public class InstrumentoMonitoramentoResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final InstrumentoMonitoramentoResource instrumentoMonitoramentoResource = new InstrumentoMonitoramentoResource(instrumentoMonitoramentoRepository);
+        final InstrumentoMonitoramentoResource instrumentoMonitoramentoResource = new InstrumentoMonitoramentoResource(instrumentoMonitoramentoService);
         this.restInstrumentoMonitoramentoMockMvc = MockMvcBuilders.standaloneSetup(instrumentoMonitoramentoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -136,9 +145,10 @@ public class InstrumentoMonitoramentoResourceIT {
         int databaseSizeBeforeCreate = instrumentoMonitoramentoRepository.findAll().size();
 
         // Create the InstrumentoMonitoramento
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isCreated());
 
         // Validate the InstrumentoMonitoramento in the database
@@ -161,11 +171,12 @@ public class InstrumentoMonitoramentoResourceIT {
 
         // Create the InstrumentoMonitoramento with an existing ID
         instrumentoMonitoramento.setId(1L);
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the InstrumentoMonitoramento in the database
@@ -182,10 +193,11 @@ public class InstrumentoMonitoramentoResourceIT {
         instrumentoMonitoramento.setIdentificao(null);
 
         // Create the InstrumentoMonitoramento, which fails.
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<InstrumentoMonitoramento> instrumentoMonitoramentoList = instrumentoMonitoramentoRepository.findAll();
@@ -200,10 +212,11 @@ public class InstrumentoMonitoramentoResourceIT {
         instrumentoMonitoramento.setTipoInstrumentoMonitoramento(null);
 
         // Create the InstrumentoMonitoramento, which fails.
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<InstrumentoMonitoramento> instrumentoMonitoramentoList = instrumentoMonitoramentoRepository.findAll();
@@ -218,10 +231,11 @@ public class InstrumentoMonitoramentoResourceIT {
         instrumentoMonitoramento.setTipoMedicao(null);
 
         // Create the InstrumentoMonitoramento, which fails.
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<InstrumentoMonitoramento> instrumentoMonitoramentoList = instrumentoMonitoramentoRepository.findAll();
@@ -236,10 +250,11 @@ public class InstrumentoMonitoramentoResourceIT {
         instrumentoMonitoramento.setVarianciaTolerada(null);
 
         // Create the InstrumentoMonitoramento, which fails.
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<InstrumentoMonitoramento> instrumentoMonitoramentoList = instrumentoMonitoramentoRepository.findAll();
@@ -254,10 +269,11 @@ public class InstrumentoMonitoramentoResourceIT {
         instrumentoMonitoramento.setLimiteSuperior(null);
 
         // Create the InstrumentoMonitoramento, which fails.
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         restInstrumentoMonitoramentoMockMvc.perform(post("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         List<InstrumentoMonitoramento> instrumentoMonitoramentoList = instrumentoMonitoramentoRepository.findAll();
@@ -332,10 +348,11 @@ public class InstrumentoMonitoramentoResourceIT {
             .intervaloMedicaoAPI(UPDATED_INTERVALO_MEDICAO_API)
             .varianciaTolerada(UPDATED_VARIANCIA_TOLERADA)
             .limiteSuperior(UPDATED_LIMITE_SUPERIOR);
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(updatedInstrumentoMonitoramento);
 
         restInstrumentoMonitoramentoMockMvc.perform(put("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInstrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isOk());
 
         // Validate the InstrumentoMonitoramento in the database
@@ -357,11 +374,12 @@ public class InstrumentoMonitoramentoResourceIT {
         int databaseSizeBeforeUpdate = instrumentoMonitoramentoRepository.findAll().size();
 
         // Create the InstrumentoMonitoramento
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO = instrumentoMonitoramentoMapper.toDto(instrumentoMonitoramento);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInstrumentoMonitoramentoMockMvc.perform(put("/api/instrumento-monitoramentos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramento)))
+            .content(TestUtil.convertObjectToJsonBytes(instrumentoMonitoramentoDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the InstrumentoMonitoramento in the database
@@ -400,5 +418,28 @@ public class InstrumentoMonitoramentoResourceIT {
         assertThat(instrumentoMonitoramento1).isNotEqualTo(instrumentoMonitoramento2);
         instrumentoMonitoramento1.setId(null);
         assertThat(instrumentoMonitoramento1).isNotEqualTo(instrumentoMonitoramento2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(InstrumentoMonitoramentoDTO.class);
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO1 = new InstrumentoMonitoramentoDTO();
+        instrumentoMonitoramentoDTO1.setId(1L);
+        InstrumentoMonitoramentoDTO instrumentoMonitoramentoDTO2 = new InstrumentoMonitoramentoDTO();
+        assertThat(instrumentoMonitoramentoDTO1).isNotEqualTo(instrumentoMonitoramentoDTO2);
+        instrumentoMonitoramentoDTO2.setId(instrumentoMonitoramentoDTO1.getId());
+        assertThat(instrumentoMonitoramentoDTO1).isEqualTo(instrumentoMonitoramentoDTO2);
+        instrumentoMonitoramentoDTO2.setId(2L);
+        assertThat(instrumentoMonitoramentoDTO1).isNotEqualTo(instrumentoMonitoramentoDTO2);
+        instrumentoMonitoramentoDTO1.setId(null);
+        assertThat(instrumentoMonitoramentoDTO1).isNotEqualTo(instrumentoMonitoramentoDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(instrumentoMonitoramentoMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(instrumentoMonitoramentoMapper.fromId(null)).isNull();
     }
 }

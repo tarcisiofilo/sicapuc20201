@@ -18,11 +18,15 @@
             <column name="nome" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+
             <column name="diretor_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_setor_mineracao_diretor_id" />
-            </column>            <column name="gerente_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_setor_mineracao_gerente_id" />
+                <constraints nullable="true" />
             </column>
+
+            <column name="gerente_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="mina_operacao_id" type="bigint">
                 <constraints nullable="true" />
             </column>

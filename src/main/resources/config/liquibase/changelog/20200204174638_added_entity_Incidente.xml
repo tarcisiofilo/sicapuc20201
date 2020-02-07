@@ -22,11 +22,17 @@
             <column name="origem" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+
+            <column name="mensagem" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="medicao_instrumento_id" type="bigint">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_incidente_medicao_instrumento_id" />
-            </column>            <column name="nivel_incidente_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_incidente_nivel_incidente_id" />
             </column>
+            <column name="nivel_incidente_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
@@ -49,11 +55,23 @@
             <column name="id" type="numeric"/>
             <column name="identificacao" type="string"/>
             <column name="origem" type="string"/>
+            <column name="mensagem" type="string"/>
         </loadData>
     </changeSet>
 
     <changeSet id="20200204174638-1-relations" author="jhipster">
 
+        <createTable tableName="incidente_ativo">
+            <column name="ativo_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="incidente_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="incidente_id, ativo_id" tableName="incidente_ativo"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
