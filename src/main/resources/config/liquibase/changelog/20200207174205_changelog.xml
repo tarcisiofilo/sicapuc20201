@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="tarcisio (generated)" id="1581097328968-7">
+        <dropForeignKeyConstraint baseTableName="NOTIFICACAO" constraintName="FK_NOTIFICACAO_INCIDENTE_ID"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-8">
+        <dropTable tableName="NOTIFICACAO"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-1">
+        <dropUniqueConstraint constraintName="UC_ATIVOSETOR_MINERACAO_ID_COL" tableName="ativo"/>
+        <addUniqueConstraint columnNames="setor_mineracao_id" constraintName="UC_ATIVOSETOR_MINERACAO_ID_COL" tableName="ativo"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-2">
+        <dropUniqueConstraint constraintName="UC_FUNCIONARIOPESSOA_ID_COL" tableName="funcionario"/>
+        <addUniqueConstraint columnNames="pessoa_id" constraintName="UC_FUNCIONARIOPESSOA_ID_COL" tableName="funcionario"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-3">
+        <dropUniqueConstraint constraintName="UC_INCIDENTEMEDICAO_INSTRUMENTO_ID_COL" tableName="incidente"/>
+        <addUniqueConstraint columnNames="medicao_instrumento_id" constraintName="UC_INCIDENTEMEDICAO_INSTRUMENTO_ID_COL" tableName="incidente"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-4">
+        <dropUniqueConstraint constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+        <addUniqueConstraint columnNames="email" constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-5">
+        <dropUniqueConstraint constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="tarcisio (generated)" id="1581097328968-6">
+        <dropUniqueConstraint constraintName="UC_VISTORIAINSTRUMENTO_MONITORAMENTO_ID_COL" tableName="vistoria"/>
+        <addUniqueConstraint columnNames="instrumento_monitoramento_id" constraintName="UC_VISTORIAINSTRUMENTO_MONITORAMENTO_ID_COL" tableName="vistoria"/>
+    </changeSet>
+</databaseChangeLog>
