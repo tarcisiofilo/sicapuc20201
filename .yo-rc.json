@@ -35,6 +35,8 @@
     "otherModules": [],
     "enableTranslation": true,
     "nativeLanguage": "pt-br",
-    "languages": ["pt-br"]
+    "languages": ["pt-br"],
+    "herokuAppName": "sicapuc-20201",
+    "herokuDeployType": "git"
   }
 }
