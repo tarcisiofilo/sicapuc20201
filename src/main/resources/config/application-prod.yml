@@ -33,7 +33,9 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: ${JDBC_DATABASE_URL}
+    url: jdbc:postgresql://localhost:5432/sicapuc20201
+    username: sicapuc20201
+    password:
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -134,3 +136,4 @@ jhipster:
 # ===================================================================
 
 # application:
+
