@@ -53,10 +53,10 @@ spring:
   liquibase:
     contexts: prod
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: envia.aplicacao.pbh.gov.br
+    port: 587
+    username: adm.bhissdigital@pbh.gov.br
+    password: bhissadm
   thymeleaf:
     cache: true
 
